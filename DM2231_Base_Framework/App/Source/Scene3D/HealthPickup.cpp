@@ -100,7 +100,7 @@ bool CHealthPickup::Init(void)
 	iTextureID = LoadTexture("Image/HealthKit.tga");
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/HealthKit.tga" << endl;
+		cout << "Unable to load Image/HealthKit.tga" << endl; // Change file
 		return false;
 	}
 

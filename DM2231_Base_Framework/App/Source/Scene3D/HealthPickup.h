@@ -64,4 +64,6 @@ public:
 protected:
 	// The handle to the CGroundMap class instance
 	CGroundMap* cGroundMap;
+
+	// Add more things
 };
