@@ -343,6 +343,7 @@ void CEnemy3D::Render(void)
 	//model = glm::rotate(model, (float)glfwGetTime()/10.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::translate(model, vec3Position);
 	model = glm::scale(model, vec3Scale);
+	model = glm::rotate(model, glm::radians(180.f) + (atan2((cPlayer3D->GetPosition().x) - vec3Position.x, (cPlayer3D->GetPosition().z) - vec3Position.z)), glm::vec3(0, 1, 0));
 
 	// note: currently we set the projection matrix each frame, but since the projection 
 	// matrix rarely changes it's often best practice to set it outside the main loop only once.
@@ -413,16 +414,12 @@ void CEnemy3D::UpdateEnemyVectors(void)
 	// Check if we are too far from the player
 	if (cPlayer3D)
 	{
-	float fDistanceToPlayer = glm::length(cPlayer3D->GetPosition() - vec3Position);
-		if (fDistanceToPlayer > 15.0f)
-		{
-			// Update the direction of the enemy
-			front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
-			
-			// Update the yaw and pitch
-			fYaw = glm::degrees(glm::atan(front.z, front.x));
-			fPitch = glm::degrees(glm::asin(front.y));
-		}
+		// Update the direction of the enemy
+		front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
+
+		// Update the yaw and pitch
+		fYaw = glm::degrees(glm::atan(front.z, front.x));
+		fPitch = glm::degrees(glm::asin(front.y));
 	}
 	
 	vec3Front = front;

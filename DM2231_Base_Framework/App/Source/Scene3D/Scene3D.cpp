@@ -295,10 +295,10 @@ bool CScene3D::Init(void)
 
 	// Initialise the cEnemy3D
 	CEnemy3D* cEnemy3D = new CEnemy3D(glm::vec3(2, 10.f, 2));
-	CEnemy3D* cEnemy3D2 = new CEnemy3D(glm::vec3(2, 10.f, 4));
+	CEnemy3D* cEnemy3D2 = new CEnemy3D(glm::vec3(2, 10.f, 4));/*
 	CEnemy3D* cEnemy3D3 = new CEnemy3D(glm::vec3(5, 10.f, 0));
 	CEnemy3D* cEnemy3D4 = new CEnemy3D(glm::vec3(-2, 10.f, -2));
-	CEnemy3D* cEnemy3D5 = new CEnemy3D(glm::vec3(-2, 10.f, -4));
+	CEnemy3D* cEnemy3D5 = new CEnemy3D(glm::vec3(-2, 10.f, -4));*/
 
 	cEnemy3D->SetShader(cShader);
 	cEnemy3D->Init();
@@ -310,7 +310,7 @@ bool CScene3D::Init(void)
 	cEnemy3D2->ActivateCollider(cSimpleShader);
 	cEntityManager->Add(cEnemy3D2);
 
-	cEnemy3D3->SetShader(cShader);
+	/*cEnemy3D3->SetShader(cShader);
 	cEnemy3D3->Init();
 	cEnemy3D3->ActivateCollider(cSimpleShader);
 	cEntityManager->Add(cEnemy3D3);
@@ -323,7 +323,7 @@ bool CScene3D::Init(void)
 	cEnemy3D5->SetShader(cShader);
 	cEnemy3D5->Init();
 	cEnemy3D5->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cEnemy3D5);
+	cEntityManager->Add(cEnemy3D5);*/
 
 	// Initialise a CStructure3D
 	CStructure3D* cStructure3D = new CStructure3D(glm::vec3(10.f, 0.5f, 0.0f));
