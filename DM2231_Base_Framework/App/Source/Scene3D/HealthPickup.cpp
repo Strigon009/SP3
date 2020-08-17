@@ -68,7 +68,7 @@ bool CHealthPickup::Init(void)
 	CEntity3D::Init();
 
 	// Set the type
-	SetType(CEntity3D::TYPE::STRUCTURE);
+	SetType(CEntity3D::TYPE::HEALTH_PICKUP);
 
 	std::vector<glm::vec3> vertices;
 	std::vector <glm::vec2> uvs;
@@ -77,7 +77,7 @@ bool CHealthPickup::Init(void)
 	vec3Scale = glm::vec3(1, 1, 1);
 	vec3ColliderScale = glm::vec3(1, 1, 1);
 
-	std::string file_path = "OBJ/box2.obj";
+	std::string file_path = "OBJ/HealthKit.obj";
 	bool success = LoadOBJ(file_path.c_str(), vertices, uvs, normals);
 	if (!success)
 		return NULL;
@@ -97,10 +97,10 @@ bool CHealthPickup::Init(void)
 	index_buffer_size = index_buffer_data.size();
 
 	// load and create a texture 
-	iTextureID = LoadTexture("Image/structure2.tga");
+	iTextureID = LoadTexture("Image/HealthKit.tga");
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene3D_Structure_01.tga" << endl;
+		cout << "Unable to load Image/HealthKit.tga" << endl;
 		return false;
 	}
 

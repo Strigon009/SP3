@@ -68,7 +68,7 @@ bool CPowerUp::Init(void)
 	CEntity3D::Init();
 
 	// Set the type
-	SetType(CEntity3D::TYPE::STRUCTURE);
+	SetType(CEntity3D::TYPE::POWERUP);
 
 	std::vector<glm::vec3> vertices;
 	std::vector <glm::vec2> uvs;

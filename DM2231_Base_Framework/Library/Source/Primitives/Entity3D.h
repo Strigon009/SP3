@@ -26,6 +26,7 @@ public:
 		PROJECTILE,
 		STRUCTURE,	// Buildings etc
 		HEALTH_PICKUP,
+		POWERUP,
 		OTHERS,		// Default value: Other entities such as ground and skybox
 		NUM_TYPES
 	};
