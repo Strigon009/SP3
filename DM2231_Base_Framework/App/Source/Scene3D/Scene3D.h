@@ -7,7 +7,9 @@
 
 // Include SingletonTemplate
 #include "DesignPatterns\SingletonTemplate.h"
-
+// Include CStructure3D
+#include "Structure3D.h"
+#include "Structure3D_2.h"
 // Include shader
 #include "RenderControl\shader.h"
 
@@ -161,6 +163,11 @@ protected:
 	bool printLoseScreen;
 	bool printWinScreen;
 
+	void AddEnemy(CEnemy3D* cEnemy3D, glm::vec3 pos, glm::vec3 scale);
+	void AddWall(CStructure3D* cStructure3D, glm::vec3 pos, glm::vec3 scale);
+
+	void AddPillar(CStructure2_3D* cStructure3D, glm::vec3 pos, glm::vec3 scale);
+	
 	// Constructor
 	CScene3D(void);
 	// Destructor
