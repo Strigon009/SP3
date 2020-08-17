@@ -25,6 +25,7 @@ public:
 		NPC,
 		PROJECTILE,
 		STRUCTURE,	// Buildings etc
+		HEALTH_PICKUP,
 		OTHERS,		// Default value: Other entities such as ground and skybox
 		NUM_TYPES
 	};

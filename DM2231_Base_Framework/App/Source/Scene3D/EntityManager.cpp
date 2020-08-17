@@ -155,6 +155,16 @@ bool CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				// Quit this loop since a collision has been found
 				break;
 			}
+			else if ((*it)->GetType() == CEntity3D::TYPE::HEALTH_PICKUP)
+			{
+				// Rollback the cEntity3D's position
+				(*it)->RollbackPosition();
+
+				cout << "** Collision between Player and Health_PickUp ***" << endl;
+				bResult = true;
+				// Quit this loop since a collision has been found
+				break;
+			}
 		}
 	}
 	return bResult;

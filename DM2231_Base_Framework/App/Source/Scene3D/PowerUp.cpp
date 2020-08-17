@@ -1,9 +1,9 @@
 /**
- CPickup
+ CPowerUp
  By: Toh Da Jun
  Date: Apr 2020
  */
-#include "Pickup.h"
+#include "PowerUp.h"
 #include "System/LoadOBJ.h"
 #include <iostream>
 using namespace std;
@@ -11,7 +11,7 @@ using namespace std;
 /**
  @brief Default Constructor
  */
-CPickup::CPickup(void)
+CPowerUp::CPowerUp(void)
 	: cGroundMap(NULL)
 {
 	// Set the default position to the origin
@@ -25,7 +25,7 @@ CPickup::CPickup(void)
  @param yaw A const float variable which contains the yaw of the camera
  @param pitch A const float variable which contains the pitch of the camera
  */
-CPickup::CPickup(const glm::vec3 vec3Position,
+CPowerUp::CPowerUp(const glm::vec3 vec3Position,
 	const glm::vec3 vec3Front,
 	const float fYaw,
 	const float fPitch)
@@ -38,7 +38,7 @@ CPickup::CPickup(const glm::vec3 vec3Position,
 /**
  @brief Destructor
  */
-CPickup::~CPickup(void)
+CPowerUp::~CPowerUp(void)
 {
 	if (cGroundMap)
 	{
@@ -55,12 +55,12 @@ CPickup::~CPickup(void)
  @brief Initialise this class instance
  @return true is successfully initialised this class instance, else false
  */
-bool CPickup::Init(void)
+bool CPowerUp::Init(void)
 {
 	// Check if the shader is ready
 	if (!cShader)
 	{
-		cout << "CPickup::Init(): The shader is not available for this class instance." << endl;
+		cout << "CPowerUp::Init(): The shader is not available for this class instance." << endl;
 		return false;
 	}
 
@@ -112,7 +112,7 @@ bool CPickup::Init(void)
  @brief Set model
  @param model A glm::mat4 variable containing the model for this class instance
  */
-void CPickup::SetModel(glm::mat4 model)
+void CPowerUp::SetModel(glm::mat4 model)
 {
 	this->model = model;
 }
@@ -121,7 +121,7 @@ void CPickup::SetModel(glm::mat4 model)
  @brief Set view
  @param view A glm::mat4 variable containing the model for this class instance
  */
-void CPickup::SetView(glm::mat4 view)
+void CPowerUp::SetView(glm::mat4 view)
 {
 	this->view = view;
 }
@@ -130,7 +130,7 @@ void CPickup::SetView(glm::mat4 view)
  @brief Set projection
  @param projection A glm::mat4 variable containing the model for this class instance
  */
-void CPickup::SetProjection(glm::mat4 projection)
+void CPowerUp::SetProjection(glm::mat4 projection)
 {
 	this->projection = projection;
 }
@@ -138,7 +138,7 @@ void CPickup::SetProjection(glm::mat4 projection)
 /**
 @brief Update this class instance
 */
-void CPickup::Update(const double dElapsedTime)
+void CPowerUp::Update(const double dElapsedTime)
 {
 	vec3ColliderScale = vec3Scale;
 }
@@ -147,7 +147,7 @@ void CPickup::Update(const double dElapsedTime)
 @brief Activate the CCollider for this class instance
 @param cLineShader A Shader* variable which stores a shader which renders lines
 */
-void CPickup::ActivateCollider(Shader* cLineShader)
+void CPowerUp::ActivateCollider(Shader* cLineShader)
 {
 	// Create a new CCollider
 	cCollider = new CCollider();
@@ -162,7 +162,7 @@ void CPickup::ActivateCollider(Shader* cLineShader)
 /**
 @brief PreRender Set up the OpenGL display environment before rendering
 */
-void CPickup::PreRender(void)
+void CPowerUp::PreRender(void)
 {
 	// Draw this as last
 	glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
@@ -172,12 +172,12 @@ void CPickup::PreRender(void)
 @brief Render Render this instance
 @param cShader A Shader* variable which contains the Shader to use in this class instance
 */
-void CPickup::Render(void)
+void CPowerUp::Render(void)
 {
 	// If the shader is in this class, then do not render
 	if (!cShader)
 	{
-		cout << "CPickup::Render(): The shader is not available for this class instance." << endl;
+		cout << "CPowerUp::Render(): The shader is not available for this class instance." << endl;
 		return;
 	}
 
@@ -232,7 +232,7 @@ void CPickup::Render(void)
 /**
 @brief PostRender Set up the OpenGL display environment after rendering.
 */
-void CPickup::PostRender(void)
+void CPowerUp::PostRender(void)
 {
 	glDepthFunc(GL_LESS); // set depth function back to default
 }
