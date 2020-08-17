@@ -15,10 +15,40 @@ using namespace std;
 // Include Pistol
 #include "WeaponInfo\Pistol.h"
 
-// Include CStructure3D
-#include "Structure3D.h"
-#include "Structure3D_2.h"
+
 #include "WeaponInfo/Rifle.h"
+
+void CScene3D::AddEnemy(CEnemy3D* cEnemy3D, glm::vec3 pos, glm::vec3 scale)
+{
+	cEnemy3D = new CEnemy3D(pos);
+	cEnemy3D->SetShader(cShader);
+	cEnemy3D->Init();
+	cEnemy3D->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cEnemy3D);
+}
+
+void CScene3D::AddWall(CStructure3D* cStructure3D, glm::vec3 pos, glm::vec3 scale)
+{
+	cStructure3D = new CStructure3D(pos);
+	cStructure3D->SetShader(cShader);
+	cStructure3D->Init();
+	cStructure3D->SetScale(scale);
+	cStructure3D->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cStructure3D);
+
+}
+
+void CScene3D::AddPillar(CStructure2_3D* cStructure3D, glm::vec3 pos, glm::vec3 scale)
+{
+	cStructure3D = new CStructure2_3D(pos);
+
+	cStructure3D->SetShader(cShader);
+	cStructure3D->Init();
+	cStructure3D->SetScale(scale);
+	cStructure3D->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cStructure3D);
+
+}
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -294,124 +324,86 @@ bool CScene3D::Init(void)
 	//float randPos3 = rand() % 8 + 7;
 
 	// Initialise the cEnemy3D
-	CEnemy3D* cEnemy3D = new CEnemy3D(glm::vec3(2, 10.f, 2));
-	CEnemy3D* cEnemy3D2 = new CEnemy3D(glm::vec3(2, 10.f, 4));/*
-	CEnemy3D* cEnemy3D3 = new CEnemy3D(glm::vec3(5, 10.f, 0));
-	CEnemy3D* cEnemy3D4 = new CEnemy3D(glm::vec3(-2, 10.f, -2));
-	CEnemy3D* cEnemy3D5 = new CEnemy3D(glm::vec3(-2, 10.f, -4));*/
-
-	cEnemy3D->SetShader(cShader);
-	cEnemy3D->Init();
-	cEnemy3D->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cEnemy3D);
-
-	cEnemy3D2->SetShader(cShader);
-	cEnemy3D2->Init();
-	cEnemy3D2->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cEnemy3D2);
-
-	/*cEnemy3D3->SetShader(cShader);
-	cEnemy3D3->Init();
-	cEnemy3D3->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cEnemy3D3);
-
-	cEnemy3D4->SetShader(cShader);
-	cEnemy3D4->Init();
-	cEnemy3D4->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cEnemy3D4);
-
-	cEnemy3D5->SetShader(cShader);
-	cEnemy3D5->Init();
-	cEnemy3D5->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cEnemy3D5);*/
+	CEnemy3D* cEnemy3D = new CEnemy3D();
+	
+	AddEnemy(cEnemy3D, glm::vec3(2, 10.f, 2), glm::vec3(1,1,1));
+	AddEnemy(cEnemy3D, glm::vec3(4, 10.f, 2), glm::vec3(1,1,1));
 
 	// Initialise a CStructure3D
-	CStructure3D* cStructure3D = new CStructure3D(glm::vec3(10.f, 0.5f, 0.0f));
-	CStructure3D* cStructure3D2 = new CStructure3D(glm::vec3(-10.f, 0.5f, 0.0f));
-	CStructure3D* cStructure3D3 = new CStructure3D(glm::vec3(0.0f, 0.5f, -10.f));
-	CStructure3D* cStructure3D4 = new CStructure3D(glm::vec3(0.0f, 0.5f, 10.f));
+	CStructure3D* cStructure3D = new CStructure3D();
+	
+	AddWall(cStructure3D, glm::vec3(10.f, 0.5f, 0.0f),glm::vec3(1, 5, 100));
+	AddWall(cStructure3D, glm::vec3(-10.f, 0.5f, 0.0f), glm::vec3(1, 5, 100));
+	AddWall(cStructure3D, glm::vec3(0.0f, 0.5f, -10.f), glm::vec3(100, 5, 1));
+	AddWall(cStructure3D, glm::vec3(0.0f, 0.5f, 10.f), glm::vec3(100, 5, 1));
 
-	cStructure3D->SetShader(cShader);
-	cStructure3D->Init();
-	cStructure3D->SetScale(glm::vec3(1, 5, 100));
-	cStructure3D->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cStructure3D);
+	
+	CStructure2_3D* cStructure3D2 = new CStructure2_3D(glm::vec3(6, 0.5, 6));
 
-	cStructure3D2->SetShader(cShader);
-	cStructure3D2->Init();
-	cStructure3D2->SetScale(glm::vec3(1, 5, 100));
-	cStructure3D2->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cStructure3D2);
+	AddPillar(cStructure3D2, glm::vec3(6, 0.5, 6), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(6, 0.5, -6), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(-6, 0.5, 6), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(-6, 0.5, -6), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(-6, 0.5, 0), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(6, 0.5, 0), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(0, 0.5, -6), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(0, 0.5, 6), glm::vec3(0.5, 5, 0.5));
+	//CStructure2_3D* cStructure3D_22 = new CStructure2_3D(glm::vec3(6, 0.5, -6));
+	//CStructure2_3D* cStructure3D_23 = new CStructure2_3D(glm::vec3(-6, 0.5, 6));
+	//CStructure2_3D* cStructure3D_24 = new CStructure2_3D(glm::vec3(-6, 0.5, -6));
 
-	cStructure3D3->SetShader(cShader);
-	cStructure3D3->Init();
-	cStructure3D3->SetScale(glm::vec3(100, 5, 1));
-	cStructure3D3->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cStructure3D3);
+	//CStructure2_3D* cStructure3D_25 = new CStructure2_3D(glm::vec3(-6, 0.5, 0));
+	//CStructure2_3D* cStructure3D_26 = new CStructure2_3D(glm::vec3(6, 0.5, 0));
+	//CStructure2_3D* cStructure3D_27 = new CStructure2_3D(glm::vec3(0, 0.5, -6));
+	//CStructure2_3D* cStructure3D_28 = new CStructure2_3D(glm::vec3(0, 0.5, 6));
 
-	cStructure3D4->SetShader(cShader);
-	cStructure3D4->Init();
-	cStructure3D4->SetScale(glm::vec3(100, 5, 1));
-	cStructure3D4->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cStructure3D4);
+	//cStructure3D_2->SetShader(cShader);
+	//cStructure3D_2->Init();
+	//cStructure3D_2->SetScale(glm::vec3(0.5, 5, 0.5));
+	//cStructure3D_2->ActivateCollider(cSimpleShader);
+	//cEntityManager->Add(cStructure3D_2);
 
-	CStructure2_3D* cStructure3D_2 = new CStructure2_3D(glm::vec3(6, 0.5, 6));
-	CStructure2_3D* cStructure3D_22 = new CStructure2_3D(glm::vec3(6, 0.5, -6));
-	CStructure2_3D* cStructure3D_23 = new CStructure2_3D(glm::vec3(-6, 0.5, 6));
-	CStructure2_3D* cStructure3D_24 = new CStructure2_3D(glm::vec3(-6, 0.5, -6));
+	//cStructure3D_22->SetShader(cShader);
+	//cStructure3D_22->Init();
+	//cStructure3D_22->SetScale(glm::vec3(0.5, 5, 0.5));
+	//cStructure3D_22->ActivateCollider(cSimpleShader);
+	//cEntityManager->Add(cStructure3D_22);
 
-	CStructure2_3D* cStructure3D_25 = new CStructure2_3D(glm::vec3(-6, 0.5, 0));
-	CStructure2_3D* cStructure3D_26 = new CStructure2_3D(glm::vec3(6, 0.5, 0));
-	CStructure2_3D* cStructure3D_27 = new CStructure2_3D(glm::vec3(0, 0.5, -6));
-	CStructure2_3D* cStructure3D_28 = new CStructure2_3D(glm::vec3(0, 0.5, 6));
+	//cStructure3D_23->SetShader(cShader);
+	//cStructure3D_23->Init();
+	//cStructure3D_23->SetScale(glm::vec3(0.5, 5, 0.5));
+	//cStructure3D_23->ActivateCollider(cSimpleShader);
+	//cEntityManager->Add(cStructure3D_23);
 
-	cStructure3D_2->SetShader(cShader);
-	cStructure3D_2->Init();
-	cStructure3D_2->SetScale(glm::vec3(0.5, 5, 0.5));
-	cStructure3D_2->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cStructure3D_2);
+	//cStructure3D_24->SetShader(cShader);
+	//cStructure3D_24->Init();
+	//cStructure3D_24->SetScale(glm::vec3(0.5, 5, 0.5));
+	//cStructure3D_24->ActivateCollider(cSimpleShader);
+	//cEntityManager->Add(cStructure3D_24);
 
-	cStructure3D_22->SetShader(cShader);
-	cStructure3D_22->Init();
-	cStructure3D_22->SetScale(glm::vec3(0.5, 5, 0.5));
-	cStructure3D_22->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cStructure3D_22);
+	//cStructure3D_25->SetShader(cShader);
+	//cStructure3D_25->Init();
+	//cStructure3D_25->SetScale(glm::vec3(0.5, 5, 0.5));
+	//cStructure3D_25->ActivateCollider(cSimpleShader);
+	//cEntityManager->Add(cStructure3D_25);
 
-	cStructure3D_23->SetShader(cShader);
-	cStructure3D_23->Init();
-	cStructure3D_23->SetScale(glm::vec3(0.5, 5, 0.5));
-	cStructure3D_23->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cStructure3D_23);
+	//cStructure3D_26->SetShader(cShader);
+	//cStructure3D_26->Init();
+	//cStructure3D_26->SetScale(glm::vec3(0.5, 5, 0.5));
+	//cStructure3D_26->ActivateCollider(cSimpleShader);
+	//cEntityManager->Add(cStructure3D_26);
 
-	cStructure3D_24->SetShader(cShader);
-	cStructure3D_24->Init();
-	cStructure3D_24->SetScale(glm::vec3(0.5, 5, 0.5));
-	cStructure3D_24->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cStructure3D_24);
+	//cStructure3D_27->SetShader(cShader);
+	//cStructure3D_27->Init();
+	//cStructure3D_27->SetScale(glm::vec3(0.5, 5, 0.5));
+	//cStructure3D_27->ActivateCollider(cSimpleShader);
+	//cEntityManager->Add(cStructure3D_27);
 
-	cStructure3D_25->SetShader(cShader);
-	cStructure3D_25->Init();
-	cStructure3D_25->SetScale(glm::vec3(0.5, 5, 0.5));
-	cStructure3D_25->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cStructure3D_25);
-
-	cStructure3D_26->SetShader(cShader);
-	cStructure3D_26->Init();
-	cStructure3D_26->SetScale(glm::vec3(0.5, 5, 0.5));
-	cStructure3D_26->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cStructure3D_26);
-
-	cStructure3D_27->SetShader(cShader);
-	cStructure3D_27->Init();
-	cStructure3D_27->SetScale(glm::vec3(0.5, 5, 0.5));
-	cStructure3D_27->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cStructure3D_27);
-
-	cStructure3D_28->SetShader(cShader);
-	cStructure3D_28->Init();
-	cStructure3D_28->SetScale(glm::vec3(0.5, 5, 0.5));
-	cStructure3D_28->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cStructure3D_28);
+	//cStructure3D_28->SetShader(cShader);
+	//cStructure3D_28->Init();
+	//cStructure3D_28->SetScale(glm::vec3(0.5, 5, 0.5));
+	//cStructure3D_28->ActivateCollider(cSimpleShader);
+	//cEntityManager->Add(cStructure3D_28);
 
 	// Load the SkyBox
 	cSkyBox = CSkyBox::GetInstance();
