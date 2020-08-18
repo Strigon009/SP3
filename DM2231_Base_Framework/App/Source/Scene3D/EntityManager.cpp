@@ -118,7 +118,6 @@ bool CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 		// Check for collisions between the 2 entities
 		if (cEntity3D->CheckForCollision(*it) == true)
 		{
-			
 			if ((*it)->GetType2() == CEntity3D::ENEMYTYPE::SCRAKE)
 			{
 				
@@ -165,6 +164,7 @@ bool CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				//cSoundController->PlaySoundByID(2);
 
 				cout << "** Collision between Player and Structure ***" << endl;
+				bResult = true;
 				// Quit this loop since a collision has been found
 				break;
 			}
@@ -174,6 +174,17 @@ bool CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				(*it)->RollbackPosition();
 
 				cout << "** Collision between Player and Health_PickUp ***" << endl;
+				bResult = true;
+				// Quit this loop since a collision has been found
+				break;
+			}
+			else if ((*it)->GetType() == CEntity3D::TYPE::ARMOR_PICKUP)
+			{
+				// Rollback the cEntity3D's position
+				(*it)->RollbackPosition();
+
+				cout << "** Collision between Player and Health_PickUp ***" << endl;
+				bResult = true;
 				// Quit this loop since a collision has been found
 				break;
 			}
@@ -183,6 +194,7 @@ bool CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				(*it)->RollbackPosition();
 
 				cout << "** Collision between Player and Powerup ***" << endl;
+				bResult = true;
 				// Quit this loop since a collision has been found
 				break;
 			}
@@ -216,6 +228,35 @@ void CEntityManager::Update(const double dElapsedTime)
 			if (it_other == it)
 				continue;
 
+			// to chnage where enemy will move towards
+			if (glm::length((*it)->GetPosition() - (*it_other)->GetPosition()) <= 2)
+			{
+				if (((*it)->GetType() == CEntity3D::TYPE::NPC) &&
+					((*it_other)->GetType() == CEntity3D::TYPE::TOWER))
+				{
+					moveTo_Tower = true;
+				}
+
+				else if (((*it)->GetType() == CEntity3D::TYPE::TOWER) &&
+					((*it_other)->GetType() == CEntity3D::TYPE::NPC))
+				{
+					moveTo_Tower = true;
+				}
+			}
+			else if (glm::length((*it)->GetPosition() - (*it_other)->GetPosition()) > 2)
+			{
+				if (((*it)->GetType() == CEntity3D::TYPE::NPC) &&
+					((*it_other)->GetType() == CEntity3D::TYPE::TOWER))
+				{
+					moveTo_Tower = false;
+				}
+
+				if (((*it)->GetType() == CEntity3D::TYPE::TOWER) &&
+					((*it_other)->GetType() == CEntity3D::TYPE::NPC))
+				{
+					moveTo_Tower = false;
+				}
+			}
 			// Check for collisions between the 2 entities
 			if ((*it)->CheckForCollision(*it_other) == true)
 			{
@@ -284,6 +325,26 @@ void CEntityManager::Update(const double dElapsedTime)
 					//(*it_other)->RollbackPosition();
 					cout << "** Collision between NPC and STRUCTURE ***" << endl;
 				}
+
+				// CHECK COLLISION BETWEEN NPC AND TOWER
+				else if (((*it)->GetType() == CEntity3D::TYPE::NPC) && ((*it_other)->GetType() == CEntity3D::TYPE::TOWER))
+				{
+					(*it)->RollbackPosition();
+
+					static_cast<CStructureTower*>(*it_other)->set_towerHP(static_cast<CStructureTower*>(*it_other)->get_towerHP() - 1);
+					cout << static_cast<CStructureTower*>(*it_other)->get_towerHP() << endl;
+
+					cout << "** Collision between NPC and tower ***" << endl;
+				}
+				else if (((*it)->GetType() == CEntity3D::TYPE::TOWER) && ((*it_other)->GetType() == CEntity3D::TYPE::NPC))
+				{
+					(*it_other)->RollbackPosition();
+
+					static_cast<CStructureTower*>(*it)->set_towerHP(static_cast<CStructureTower*>(*it_other)->get_towerHP() - 1);
+					cout << static_cast<CStructureTower*>(*it)->get_towerHP() << endl;
+
+					cout << "** Collision between NPC and tower ***" << endl;
+				}
 			}
 		}
 	}
@@ -350,4 +411,14 @@ void CEntityManager::SetHealthBar(CHealthBar* pBar)
 void CEntityManager::SetArmorBar(CArmorBar* pBar)
 {
 	cArmorBar = pBar;
+}
+
+bool CEntityManager::get_moveTo()
+{
+	return moveTo_Tower;
+}
+
+void CEntityManager::set_moveTo(bool b)
+{
+	moveTo_Tower = b;
 }

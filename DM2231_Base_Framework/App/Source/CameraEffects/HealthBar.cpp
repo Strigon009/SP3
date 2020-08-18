@@ -220,7 +220,6 @@ float CHealthBar::GetHealthBarLength()
 {
 	return vec3Scale.x;
 }
-
 void CHealthBar::SetDmgMultiplier(float dmg)
 {
 	dmgmultiplier = dmg;

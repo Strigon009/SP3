@@ -4,6 +4,7 @@
  Date: Apr 2020
  */
 #include "Enemy3D.h"
+#include "EntityManager.h"
 
 // Allowing loading of LoadOBJ.h
 #include "System/LoadOBJ.h"
@@ -24,12 +25,15 @@ CEnemy3D::CEnemy3D(void)
 	, cCamera(NULL)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
-	, enemyHealth(2)
 	, enemyDamage(2)
-	
+	, enemyHealth(3)
 {
 	// Set the default position to the origin
 	vec3Position = glm::vec3(0.0f, 0.0f, 0.0f);
+
+	cManager = CEntityManager::GetInstance();
+	cPlayer3D = CPlayer3D::GetInstance();
+	cTower = CStructureTower::GetInstance();
 
 	// Update the vectors for this enemy
 	UpdateEnemyVectors();
@@ -60,6 +64,10 @@ CEnemy3D::CEnemy3D(	const glm::vec3 vec3Position,
 {
 	// Set the default position to the origin
 	this->vec3Position = vec3Position;
+
+	cManager = CEntityManager::GetInstance();
+	cPlayer3D = CPlayer3D::GetInstance();
+	cTower = CStructureTower::GetInstance();
 
 	// Update the vectors for this enemy
 	UpdateEnemyVectors();
@@ -118,6 +126,9 @@ bool CEnemy3D::Init(void)
 	std::vector<glm::vec3> vertices;
 	std:: vector <glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
+
+	vec3Scale = glm::vec3(1,1,1);
+	vec3ColliderScale = glm::vec3(1.25, 2, 0.5);
 
 	std::string file_path = "OBJ//enemy2.obj";
 	bool success = LoadOBJ(file_path.c_str(), vertices, uvs, normals);
@@ -425,6 +436,24 @@ void CEnemy3D::UpdateEnemyVectors(void)
 	if (cPlayer3D)
 	{
 		// Update the direction of the enemy
+=======
+	//	front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
+
+	//	// Update the yaw and pitch
+	//	fYaw = glm::degrees(glm::atan(front.z, front.x));
+	//	fPitch = glm::degrees(glm::asin(front.y));
+	//}
+
+	if ((cManager)->get_moveTo() == true)
+	{
+		front = glm::normalize(glm::vec3(cTower->GetPosition() - vec3Position));
+
+		// Update the yaw and pitch
+		fYaw = glm::degrees(glm::atan(front.z, front.x));
+		fPitch = glm::degrees(glm::asin(front.y));
+	}
+	else
+	{
 		front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
 
 		// Update the yaw and pitch

@@ -132,6 +132,17 @@
       <Filter>Scene3D</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene3D\Enemy3D3.cpp">
+    <ClCompile Include="Source\Scene3D\Structure3D_Tower.cpp">
+    <ClCompile Include="Source\Scene3D\HealthPickup.cpp">
+      <Filter>Scene3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene3D\PowerUp.cpp">
+      <Filter>Scene3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene3D\PauseMenu.cpp">
+      <Filter>Scene3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene3D\ArmorPickup.cpp">
       <Filter>Scene3D</Filter>
     </ClCompile>
   </ItemGroup>
@@ -217,6 +228,7 @@
     <ClInclude Include="Source\CameraEffects\HealthBar.h">
       <Filter>CameraEffects</Filter>
     </ClInclude>
+
     <ClInclude Include="Source\Scene3D\HealthPickup.h">
       <Filter>Scene3D</Filter>
     </ClInclude>
@@ -230,6 +242,22 @@
       <Filter>Scene3D</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene3D\Enemy3D3.h">
+
+    <ClInclude Include="Source\Scene3D\Structure3D_Tower.h">
+
+    <ClInclude Include="Source\Scene3D\HealthPickup.h">
+      <Filter>Scene3D</Filter>
+    </ClInclude>
+
+    <ClInclude Include="Source\Scene3D\PowerUp.h">
+      <Filter>Scene3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene3D\PauseMenu.h">
+
+      <Filter>Scene3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene3D\ArmorPickup.h">
+
       <Filter>Scene3D</Filter>
     </ClInclude>
   </ItemGroup>

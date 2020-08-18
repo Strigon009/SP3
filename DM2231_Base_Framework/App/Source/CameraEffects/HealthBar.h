@@ -43,6 +43,7 @@ public:
 	float GetHealthBarLength();
 	void SetDmgMultiplier(float dmg);
 
+
 protected:
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
@@ -51,5 +52,6 @@ protected:
 
 	float fHeight, fWidth;
 	float dmgmultiplier;
+
 
 };

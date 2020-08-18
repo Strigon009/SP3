@@ -8,6 +8,7 @@ using namespace std;
  @brief Default Constructor
  */
 CArmorBar::CArmorBar(void)
+	: cPlayer3D(NULL)
 {
 }
 
@@ -22,6 +23,8 @@ CArmorBar::~CArmorBar(void)
 
 	// We set this to NULL, since it was created elsewhere so we don't delete it here
 	cShader = NULL;
+
+	cPlayer3D = NULL;
 }
 
 /**
@@ -39,6 +42,9 @@ bool CArmorBar::Init(glm::vec3 pos, glm::vec4 color)
 
 	// Call the parent's Init()
 	CEntity3D::Init();
+
+	// Initialise the cPlayer3D
+	cPlayer3D = CPlayer3D::GetInstance();
 
 	// Set the type
 	SetType(CEntity3D::TYPE::OTHERS);
@@ -117,7 +123,9 @@ void CArmorBar::Update(const double dElapsedTime)
 	//	vec3Scale.x = 1.0f;
 	if (armorBar)
 	{
-		vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime * armorDmgMultiplier;
+		//vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime;
+		vec3Scale.x = (float)cPlayer3D->iArmor / 100;
+
 		armorBar = !armorBar;
 	}
 }
@@ -216,7 +224,6 @@ float CArmorBar::GetArmorBarLength()
 {
 	return vec3Scale.x;
 }
-
 void CArmorBar::SetArmorDmgMultiplier(float dmg)
 {
 	armorDmgMultiplier = dmg;
