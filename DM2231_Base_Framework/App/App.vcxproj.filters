@@ -122,10 +122,17 @@
     <ClCompile Include="Source\Scene3D\HealthPickup.cpp">
       <Filter>Scene3D</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
     <ClCompile Include="Source\Scene3D\PowerUp.cpp">
       <Filter>Scene3D</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene3D\PauseMenu.cpp">
+=======
+    <ClCompile Include="Source\Scene3D\PauseMenu.cpp">
+      <Filter>Scene3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene3D\PowerUp.cpp">
+>>>>>>> Stashed changes
       <Filter>Scene3D</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene3D\ArmorPickup.cpp">
@@ -217,10 +224,17 @@
     <ClInclude Include="Source\Scene3D\HealthPickup.h">
       <Filter>Scene3D</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
     <ClInclude Include="Source\Scene3D\PowerUp.h">
       <Filter>Scene3D</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene3D\PauseMenu.h">
+=======
+    <ClInclude Include="Source\Scene3D\PauseMenu.h">
+      <Filter>Scene3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene3D\PowerUp.h">
+>>>>>>> Stashed changes
       <Filter>Scene3D</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene3D\ArmorPickup.h">
