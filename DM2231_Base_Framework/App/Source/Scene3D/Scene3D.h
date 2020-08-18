@@ -7,7 +7,10 @@
 
 // Include SingletonTemplate
 #include "DesignPatterns\SingletonTemplate.h"
-
+// Include CStructure3D
+#include "Structure3D.h"
+#include "Structure3D_2.h"
+#include "Structure3D_Tower.h"
 // Include shader
 #include "RenderControl\shader.h"
 
@@ -60,6 +63,9 @@
 #include "CrossHair\CrossHair.h"
 
 #include "WeaponInfo/WeaponInfo.h"
+
+// Include Pickups
+#include "ArmorPickup.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -157,12 +163,21 @@ protected:
 
 	CWeaponInfo* cWeaponInfo;
 
+	CArmorPickup* cArmorPickup;
+
 	bool renderBoss;
 	bool bossDED;
 
 	bool printLoseScreen;
 	bool printWinScreen;
 
+	void AddEnemy(CEnemy3D* cEnemy3D, glm::vec3 pos, glm::vec3 scale);
+	void AddWall(CStructure3D* cStructure3D, glm::vec3 pos, glm::vec3 scale);
+
+	void AddPillar(CStructure2_3D* cStructure3D, glm::vec3 pos, glm::vec3 scale);
+
+	void AddArmorPickUp(CArmorPickup* cArmorPickup, glm::vec3 pos, glm::vec3 scale);
+	
 	// Constructor
 	CScene3D(void);
 	// Destructor

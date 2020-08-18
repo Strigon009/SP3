@@ -61,6 +61,8 @@ public:
 	void SetArmorBar(CArmorBar* pBar);
 	void SetInfectionBar(CInfectionBar* pBar);
 
+	bool get_moveTo();
+	void set_moveTo(bool b);
 	
 	//int enemyHealth;
 
@@ -84,6 +86,8 @@ protected:
 	CSoundController* cSoundController;
 
 	int enemy_deathCount;
+
+	bool moveTo_Tower;
 
 	// Default Constructor
 	CEntityManager(void);

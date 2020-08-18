@@ -105,6 +105,12 @@ public:
 	// PostRender
 	virtual void PostRender(void);
 
+	// Player's health
+	int iHealth;
+
+	// Player's Armor
+	int iArmor;
+
 protected:
 	// The handle to the CCamera class instance
 	CCamera* cCamera;

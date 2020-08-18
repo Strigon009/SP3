@@ -14,14 +14,8 @@ using namespace std;
 
 // Include Pistol
 #include "WeaponInfo\Pistol.h"
-
-// Include CStructure3D
-#include "Structure3D.h"
-#include "Structure3D_2.h"
 #include "WeaponInfo/Rifle.h"
 
-<<<<<<< Updated upstream
-=======
 void CScene3D::AddEnemy(CEnemy3D* cEnemy3D, glm::vec3 pos, glm::vec3 scale)
 {
 	cEnemy3D = new CEnemy3D(pos);
@@ -56,7 +50,18 @@ void CScene3D::AddPillar(CStructure2_3D* cStructure3D, glm::vec3 pos, glm::vec3 
 
 }
 
->>>>>>> Stashed changes
+void CScene3D::AddArmorPickUp(CArmorPickup* cArmorPickup, glm::vec3 pos, glm::vec3 scale)
+{
+	cArmorPickup = new CArmorPickup(pos);
+
+	cArmorPickup->SetShader(cShader);
+	cArmorPickup->Init();
+	cArmorPickup->SetScale(scale);
+	cArmorPickup->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cArmorPickup);
+
+}
+
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
@@ -85,6 +90,7 @@ CScene3D::CScene3D(void)
 	, cMinimap(NULL)
 	, cCrossHair(NULL)
 	, cWeaponInfo(NULL)
+	, cArmorPickup(NULL)
 	, renderBoss(false)
 	, printLoseScreen(false)
 	, printWinScreen(false)
@@ -251,6 +257,8 @@ CScene3D::~CScene3D(void)
 
 	// We won't delete this since it was created elsewhere
 	cSettings = NULL;
+
+	cArmorPickup = NULL;
 }
 
 /**
@@ -334,44 +342,50 @@ bool CScene3D::Init(void)
 	cPlayer3D->SetWeapon(0, cPistol);
 
 	// Initialise the cEnemy3D
-	CEnemy3D* cEnemy3D = new CEnemy3D(glm::vec3(2, 10.f, 2));
-	CEnemy3D* cEnemy3D2 = new CEnemy3D(glm::vec3(2, 10.f, 4));
-	CEnemy3D* cEnemy3D3 = new CEnemy3D(glm::vec3(5, 10.f, 0));
-	CEnemy3D* cEnemy3D4 = new CEnemy3D(glm::vec3(-2, 10.f, -2));
-	CEnemy3D* cEnemy3D5 = new CEnemy3D(glm::vec3(-2, 10.f, -4));
-
-	cEnemy3D->SetShader(cShader);
-	cEnemy3D->Init();
-	cEnemy3D->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cEnemy3D);
-
-	cEnemy3D2->SetShader(cShader);
-	cEnemy3D2->Init();
-	cEnemy3D2->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cEnemy3D2);
-
-	cEnemy3D3->SetShader(cShader);
-	cEnemy3D3->Init();
-	cEnemy3D3->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cEnemy3D3);
-
-	cEnemy3D4->SetShader(cShader);
-	cEnemy3D4->Init();
-	cEnemy3D4->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cEnemy3D4);
-
-	cEnemy3D5->SetShader(cShader);
-	cEnemy3D5->Init();
-	cEnemy3D5->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cEnemy3D5);
+	CEnemy3D* cEnemy3D = new CEnemy3D();
+	
+	//AddEnemy(cEnemy3D, glm::vec3(2, 10.f, 2), glm::vec3(1,1,1));
+	AddEnemy(cEnemy3D, glm::vec3(4, 10.f, 2), glm::vec3(1,1,1));
 
 	// Initialise a CStructure3D
-	CStructure3D* cStructure3D = new CStructure3D(glm::vec3(10.f, 0.5f, 0.0f));
-	CStructure3D* cStructure3D2 = new CStructure3D(glm::vec3(-10.f, 0.5f, 0.0f));
-	CStructure3D* cStructure3D3 = new CStructure3D(glm::vec3(0.0f, 0.5f, -10.f));
-	CStructure3D* cStructure3D4 = new CStructure3D(glm::vec3(0.0f, 0.5f, 10.f));
+	CStructure3D* cStructure3D = new CStructure3D();
+	
+	AddWall(cStructure3D, glm::vec3(10.f, 0.5f, 0.0f),glm::vec3(1, 5, 100));
+	AddWall(cStructure3D, glm::vec3(-10.f, 0.5f, 0.0f), glm::vec3(1, 5, 100));
+	AddWall(cStructure3D, glm::vec3(0.0f, 0.5f, -10.f), glm::vec3(100, 5, 1));
+	AddWall(cStructure3D, glm::vec3(0.0f, 0.5f, 10.f), glm::vec3(100, 5, 1));
 
-<<<<<<< Updated upstream
+	CStructureTower* cTower = new CStructureTower(glm::vec3(-5, 0, 5));
+
+	cTower->SetShader(cShader);
+	cTower->Init();
+	cTower->SetScale(glm::vec3(0.5, 0.5, 0.5));
+	cTower->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cTower);
+
+	//CStructure2_3D* cStructure3D2 = new CStructure2_3D(glm::vec3(6, 0.5, 6));
+
+	//AddPillar(cStructure3D2, glm::vec3(6, 0.5, 6), glm::vec3(0.5, 5, 0.5));
+	//AddPillar(cStructure3D2, glm::vec3(6, 0.5, -6), glm::vec3(0.5, 5, 0.5));
+	//AddPillar(cStructure3D2, glm::vec3(-6, 0.5, 6), glm::vec3(0.5, 5, 0.5));
+	//AddPillar(cStructure3D2, glm::vec3(-6, 0.5, -6), glm::vec3(0.5, 5, 0.5));
+	//AddPillar(cStructure3D2, glm::vec3(-6, 0.5, 0), glm::vec3(0.5, 5, 0.5));
+	//AddPillar(cStructure3D2, glm::vec3(6, 0.5, 0), glm::vec3(0.5, 5, 0.5));
+	//AddPillar(cStructure3D2, glm::vec3(0, 0.5, -6), glm::vec3(0.5, 5, 0.5));
+	//AddPillar(cStructure3D2, glm::vec3(0, 0.5, 6), glm::vec3(0.5, 5, 0.5));
+
+	
+	CStructure2_3D* cStructure3D2 = new CStructure2_3D();
+
+	AddPillar(cStructure3D2, glm::vec3(6, 0.5, 6), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(6, 0.5, -6), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(-6, 0.5, 6), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(-6, 0.5, -6), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(-6, 0.5, 0), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(6, 0.5, 0), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(0, 0.5, -6), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(0, 0.5, 6), glm::vec3(0.5, 5, 0.5));
+
 	cStructure3D->SetShader(cShader);
 	cStructure3D->Init();
 	cStructure3D->SetScale(glm::vec3(1, 5, 100));
@@ -453,7 +467,7 @@ bool CScene3D::Init(void)
 	cStructure3D_28->SetScale(glm::vec3(0.5, 5, 0.5));
 	cStructure3D_28->ActivateCollider(cSimpleShader);
 	cEntityManager->Add(cStructure3D_28);
-=======
+
 	CStructure2_3D* cStructure3D2 = new CStructure2_3D(glm::vec3(6, 0.5, 6));
 
 	AddPillar(cStructure3D2, glm::vec3(6, 0.5, 6), glm::vec3(0.5, 5, 0.5));
@@ -464,7 +478,11 @@ bool CScene3D::Init(void)
 	AddPillar(cStructure3D2, glm::vec3(6, 0.5, 0), glm::vec3(0.5, 5, 0.5));
 	AddPillar(cStructure3D2, glm::vec3(0, 0.5, -6), glm::vec3(0.5, 5, 0.5));
 	AddPillar(cStructure3D2, glm::vec3(0, 0.5, 6), glm::vec3(0.5, 5, 0.5));
->>>>>>> Stashed changes
+
+	CArmorPickup* cArmorPickup = new CArmorPickup();
+
+	AddArmorPickUp(cArmorPickup, glm::vec3(3.5f, 0.2f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+
 
 	// Load the SkyBox
 	cSkyBox = CSkyBox::GetInstance();
@@ -739,6 +757,7 @@ void CScene3D::Update(const double dElapsedTime)
 	if (cEntityManager->CollisionCheck(cPlayer3D) == true)
 	{
 		cCameraEffects->Activate_BloodScreen();
+		cPlayer3D->iArmor -= 5 * dElapsedTime;
 	}
 
 	// Clean up the deleted CEntity3D in the entity manager
@@ -755,6 +774,7 @@ void CScene3D::Update(const double dElapsedTime)
 	//	cArmorBar->Update(dElapsedTime);
 	//else
 		cHealthBar->Update(dElapsedTime);
+
 
 	cWeaponInfo = cPlayer3D->GetWeapon();
 }
