@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿  Settings.cpp
   JoystickController.cpp
   KeyboardController.cpp
@@ -11,4 +12,7 @@ D:\GitHub\SP3\DM2231_Base_Framework\Library\Source\RenderControl\TextRenderer.cp
   FPSCounter.cpp
   StopWatch.cpp
   Generating Code...
+=======
+﻿  Entity3D.cpp
+>>>>>>> origin/Caleb
   Library.vcxproj -> D:\GitHub\SP3\DM2231_Base_Framework\Debug\Library.lib

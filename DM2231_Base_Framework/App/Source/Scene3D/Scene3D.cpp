@@ -50,6 +50,18 @@ void CScene3D::AddPillar(CStructure2_3D* cStructure3D, glm::vec3 pos, glm::vec3 
 
 }
 
+void CScene3D::AddArmorPickUp(CArmorPickup* cArmorPickup, glm::vec3 pos, glm::vec3 scale)
+{
+	cArmorPickup = new CArmorPickup(pos);
+
+	cArmorPickup->SetShader(cShader);
+	cArmorPickup->Init();
+	cArmorPickup->SetScale(scale);
+	cArmorPickup->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cArmorPickup);
+
+}
+
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
@@ -77,6 +89,7 @@ CScene3D::CScene3D(void)
 	, cMinimap(NULL)
 	, cCrossHair(NULL)
 	, cWeaponInfo(NULL)
+	, cArmorPickup(NULL)
 	, renderBoss(false)
 	, printLoseScreen(false)
 	, printWinScreen(false)
@@ -237,6 +250,8 @@ CScene3D::~CScene3D(void)
 
 	// We won't delete this since it was created elsewhere
 	cSettings = NULL;
+
+	cArmorPickup = NULL;
 }
 
 /**
@@ -337,73 +352,28 @@ bool CScene3D::Init(void)
 	AddWall(cStructure3D, glm::vec3(0.0f, 0.5f, -10.f), glm::vec3(100, 5, 1));
 	AddWall(cStructure3D, glm::vec3(0.0f, 0.5f, 10.f), glm::vec3(100, 5, 1));
 
-	
-	CStructure2_3D* cStructure3D2 = new CStructure2_3D(glm::vec3(6, 0.5, 6));
+	CStructureTower* cTower = new CStructureTower(glm::vec3(-5, 0, 5));
 
-	AddPillar(cStructure3D2, glm::vec3(6, 0.5, 6), glm::vec3(0.5, 5, 0.5));
-	AddPillar(cStructure3D2, glm::vec3(6, 0.5, -6), glm::vec3(0.5, 5, 0.5));
-	AddPillar(cStructure3D2, glm::vec3(-6, 0.5, 6), glm::vec3(0.5, 5, 0.5));
-	AddPillar(cStructure3D2, glm::vec3(-6, 0.5, -6), glm::vec3(0.5, 5, 0.5));
-	AddPillar(cStructure3D2, glm::vec3(-6, 0.5, 0), glm::vec3(0.5, 5, 0.5));
-	AddPillar(cStructure3D2, glm::vec3(6, 0.5, 0), glm::vec3(0.5, 5, 0.5));
-	AddPillar(cStructure3D2, glm::vec3(0, 0.5, -6), glm::vec3(0.5, 5, 0.5));
-	AddPillar(cStructure3D2, glm::vec3(0, 0.5, 6), glm::vec3(0.5, 5, 0.5));
-	//CStructure2_3D* cStructure3D_22 = new CStructure2_3D(glm::vec3(6, 0.5, -6));
-	//CStructure2_3D* cStructure3D_23 = new CStructure2_3D(glm::vec3(-6, 0.5, 6));
-	//CStructure2_3D* cStructure3D_24 = new CStructure2_3D(glm::vec3(-6, 0.5, -6));
+	cTower->SetShader(cShader);
+	cTower->Init();
+	cTower->SetScale(glm::vec3(0.5, 0.5, 0.5));
+	cTower->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cTower);
 
-	//CStructure2_3D* cStructure3D_25 = new CStructure2_3D(glm::vec3(-6, 0.5, 0));
-	//CStructure2_3D* cStructure3D_26 = new CStructure2_3D(glm::vec3(6, 0.5, 0));
-	//CStructure2_3D* cStructure3D_27 = new CStructure2_3D(glm::vec3(0, 0.5, -6));
-	//CStructure2_3D* cStructure3D_28 = new CStructure2_3D(glm::vec3(0, 0.5, 6));
+	//CStructure2_3D* cStructure3D2 = new CStructure2_3D(glm::vec3(6, 0.5, 6));
 
-	//cStructure3D_2->SetShader(cShader);
-	//cStructure3D_2->Init();
-	//cStructure3D_2->SetScale(glm::vec3(0.5, 5, 0.5));
-	//cStructure3D_2->ActivateCollider(cSimpleShader);
-	//cEntityManager->Add(cStructure3D_2);
+	//AddPillar(cStructure3D2, glm::vec3(6, 0.5, 6), glm::vec3(0.5, 5, 0.5));
+	//AddPillar(cStructure3D2, glm::vec3(6, 0.5, -6), glm::vec3(0.5, 5, 0.5));
+	//AddPillar(cStructure3D2, glm::vec3(-6, 0.5, 6), glm::vec3(0.5, 5, 0.5));
+	//AddPillar(cStructure3D2, glm::vec3(-6, 0.5, -6), glm::vec3(0.5, 5, 0.5));
+	//AddPillar(cStructure3D2, glm::vec3(-6, 0.5, 0), glm::vec3(0.5, 5, 0.5));
+	//AddPillar(cStructure3D2, glm::vec3(6, 0.5, 0), glm::vec3(0.5, 5, 0.5));
+	//AddPillar(cStructure3D2, glm::vec3(0, 0.5, -6), glm::vec3(0.5, 5, 0.5));
+	//AddPillar(cStructure3D2, glm::vec3(0, 0.5, 6), glm::vec3(0.5, 5, 0.5));
 
-	//cStructure3D_22->SetShader(cShader);
-	//cStructure3D_22->Init();
-	//cStructure3D_22->SetScale(glm::vec3(0.5, 5, 0.5));
-	//cStructure3D_22->ActivateCollider(cSimpleShader);
-	//cEntityManager->Add(cStructure3D_22);
+	CArmorPickup* cArmorPickup = new CArmorPickup();
 
-	//cStructure3D_23->SetShader(cShader);
-	//cStructure3D_23->Init();
-	//cStructure3D_23->SetScale(glm::vec3(0.5, 5, 0.5));
-	//cStructure3D_23->ActivateCollider(cSimpleShader);
-	//cEntityManager->Add(cStructure3D_23);
-
-	//cStructure3D_24->SetShader(cShader);
-	//cStructure3D_24->Init();
-	//cStructure3D_24->SetScale(glm::vec3(0.5, 5, 0.5));
-	//cStructure3D_24->ActivateCollider(cSimpleShader);
-	//cEntityManager->Add(cStructure3D_24);
-
-	//cStructure3D_25->SetShader(cShader);
-	//cStructure3D_25->Init();
-	//cStructure3D_25->SetScale(glm::vec3(0.5, 5, 0.5));
-	//cStructure3D_25->ActivateCollider(cSimpleShader);
-	//cEntityManager->Add(cStructure3D_25);
-
-	//cStructure3D_26->SetShader(cShader);
-	//cStructure3D_26->Init();
-	//cStructure3D_26->SetScale(glm::vec3(0.5, 5, 0.5));
-	//cStructure3D_26->ActivateCollider(cSimpleShader);
-	//cEntityManager->Add(cStructure3D_26);
-
-	//cStructure3D_27->SetShader(cShader);
-	//cStructure3D_27->Init();
-	//cStructure3D_27->SetScale(glm::vec3(0.5, 5, 0.5));
-	//cStructure3D_27->ActivateCollider(cSimpleShader);
-	//cEntityManager->Add(cStructure3D_27);
-
-	//cStructure3D_28->SetShader(cShader);
-	//cStructure3D_28->Init();
-	//cStructure3D_28->SetScale(glm::vec3(0.5, 5, 0.5));
-	//cStructure3D_28->ActivateCollider(cSimpleShader);
-	//cEntityManager->Add(cStructure3D_28);
+	AddArmorPickUp(cArmorPickup, glm::vec3(3.5f, 0.2f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f));
 
 	// Load the SkyBox
 	cSkyBox = CSkyBox::GetInstance();
@@ -669,6 +639,7 @@ void CScene3D::Update(const double dElapsedTime)
 	if (cEntityManager->CollisionCheck(cPlayer3D) == true)
 	{
 		cCameraEffects->Activate_BloodScreen();
+		cPlayer3D->iArmor -= 5 * dElapsedTime;
 	}
 
 	// Clean up the deleted CEntity3D in the entity manager
@@ -681,10 +652,10 @@ void CScene3D::Update(const double dElapsedTime)
 	cCameraEffects->Update(dElapsedTime);
 
 	// Update progress bar
-	if(static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() >= 0)
+	//if(static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() >= 0)
 		cArmorBar->Update(dElapsedTime);
-	else
-		cHealthBar->Update(dElapsedTime);
+	//else
+		//cHealthBar->Update(dElapsedTime);
 
 	cWeaponInfo = cPlayer3D->GetWeapon();
 }
