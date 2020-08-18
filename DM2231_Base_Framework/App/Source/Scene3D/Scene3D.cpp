@@ -384,6 +384,9 @@ bool CScene3D::Init(void)
 	//AddEnemy2(cEnemy3D2, glm::vec3(1, 1.f, 6), glm::vec3(1, 1, 1));
 	//AddEnemy2(cEnemy3D2, glm::vec3(5, 1.f, 3), glm::vec3(1, 1, 1));
 	
+	AddEnemy(cEnemy3D, glm::vec3(2, 10.f, 2), glm::vec3(1,1,1));
+	AddEnemy(cEnemy3D, glm::vec3(4, 10.f, 2), glm::vec3(1,1,1));
+
 	// Initialise a CStructure3D
 	CStructure3D* cStructure3D = new CStructure3D();
 	
@@ -573,14 +576,6 @@ void CScene3D::Update(const double dElapsedTime)
 	}
 	if (CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_R))
 	{
-		if (cWeaponInfo->type == CWeaponInfo::WeaponType::PISTOL)
-		{
-			//cSoundController->PlaySoundByID(8);
-		}
-		else
-		{
-			//cSoundController->PlaySoundByID(9);
-		}
 
 		cPlayer3D->GetWeapon()->Reload();
 	}
@@ -591,22 +586,7 @@ void CScene3D::Update(const double dElapsedTime)
 	{
 		// Try to create a projectile using the primary weapon, 0
 		CProjectile* cProjectile = cPlayer3D->DischargeWeapon();
-		if (cWeaponInfo->type == CWeaponInfo::WeaponType::PISTOL)
-		{
-			if (cWeaponInfo->GetMagRound() > 0)
-			{
-				cCamera->fPitch = 90;
-				cCamera->fYaw = 90;
-				//cSoundController->PlaySoundByID(3);
-			}
-		}
-		else
-		{
-			if (cWeaponInfo->GetMagRound() > 0)
-			{
-				//cSoundController->PlaySoundByID(4);
-			}
-		}
+		
 		// If the projectile was successfully created then add to the EntityManager
 		if (cProjectile)
 			cEntityManager->Add(cProjectile);
