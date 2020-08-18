@@ -411,17 +411,6 @@ bool CScene3D::Init(void)
 	//AddPillar(cStructure3D2, glm::vec3(0, 0.5, -6), glm::vec3(0.5, 5, 0.5));
 	//AddPillar(cStructure3D2, glm::vec3(0, 0.5, 6), glm::vec3(0.5, 5, 0.5));
 
-	
-	CStructure2_3D* cStructure3D2 = new CStructure2_3D();
-	AddPillar(cStructure3D2, glm::vec3(6, 0.5, 6), glm::vec3(0.5, 5, 0.5));
-	AddPillar(cStructure3D2, glm::vec3(6, 0.5, -6), glm::vec3(0.5, 5, 0.5));
-	AddPillar(cStructure3D2, glm::vec3(-6, 0.5, 6), glm::vec3(0.5, 5, 0.5));
-	AddPillar(cStructure3D2, glm::vec3(-6, 0.5, -6), glm::vec3(0.5, 5, 0.5));
-	AddPillar(cStructure3D2, glm::vec3(-6, 0.5, 0), glm::vec3(0.5, 5, 0.5));
-	AddPillar(cStructure3D2, glm::vec3(6, 0.5, 0), glm::vec3(0.5, 5, 0.5));
-	AddPillar(cStructure3D2, glm::vec3(0, 0.5, -6), glm::vec3(0.5, 5, 0.5));
-	AddPillar(cStructure3D2, glm::vec3(0, 0.5, 6), glm::vec3(0.5, 5, 0.5));
-
 	CArmorPickup* cArmorPickup = new CArmorPickup();
 
 	AddArmorPickUp(cArmorPickup, glm::vec3(3.5f, 0.2f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f));
