@@ -33,7 +33,7 @@ bool CHealthBar::Init(glm::vec3 pos, glm::vec4 color)
 	// Check if the shader is ready
 	if (!cShader)
 	{
-		cout << "CProgressBar::Init(): The shader is not available for this class instance." << endl;
+		cout << "CInfectionBar::Init(): The shader is not available for this class instance." << endl;
 		return false;
 	}
 
@@ -120,6 +120,7 @@ void CHealthBar::Update(const double dElapsedTime)
 		vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime;
 		healthBar = !healthBar;
 	}
+	
 }
 
 /**
@@ -144,7 +145,7 @@ void CHealthBar::Render(void)
 	// If the shader is in this class, then do not render
 	if (!cShader)
 	{
-		cout << "CProgressBar::Render(): The shader is not available for this class instance." << endl;
+		cout << "CInfectionBar::Render(): The shader is not available for this class instance." << endl;
 		return;
 	}
 
@@ -155,7 +156,7 @@ void CHealthBar::Render(void)
 	// get matrix's uniform location and set matrix
 	transformLoc = glGetUniformLocation(cShader->ID, "transform");
 	// Reset the transform
-	transform = glm::mat4(1.0f);
+	transform = glm::mat4(0.01f);
 	// Translate to the position to render. Note that the centrepoint of the progressbar will be at this position
 	// So we need to offset to the right by the vec3Scale.x * fWidth
 	transform = glm::translate(transform, glm::vec3(vec3Position.x + vec3Scale.x * fWidth, vec3Position.y, vec3Position.z));
@@ -207,7 +208,7 @@ bool CHealthBar::GetHealthBarState()
 	return healthBar;
 }
 
-void CHealthBar::SetHealthBarState(bool state)
+void CHealthBar::SetHBarState(bool state)
 {
 	healthBar = state;
 }

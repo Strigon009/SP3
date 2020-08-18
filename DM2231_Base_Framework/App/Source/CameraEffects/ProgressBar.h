@@ -16,8 +16,10 @@ public:
 	// Destructor
 	virtual ~CProgressBar(void);
 
+	bool Init(glm::vec3 pos, glm::vec4 color);
+
 	// Initialise this class instance
-	bool Init(void);
+	
 
 	// Set model
 	virtual void SetModel(glm::mat4 model);
@@ -36,15 +38,15 @@ public:
 	// PostRender
 	virtual void PostRender(void);
 
-	bool get_healthBarState();
-	void set_healthBarState(bool state);
+	bool GetInfectionBarState();
+	void SetInfectionBarState(bool state);
 
-	float get_healthBarLength();
+	float GetInfectionBarLength();
 
 protected:
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
-	bool decrease_healthBar;
+	bool InfectionBar;
 
 
 	float fHeight, fWidth;

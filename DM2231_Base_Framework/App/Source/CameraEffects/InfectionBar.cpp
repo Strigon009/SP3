@@ -1,4 +1,4 @@
-#include "ProgressBar.h"
+#include "InfectionBar.h"
 #include "GL\glew.h"
 
 #include <iostream>
@@ -7,14 +7,14 @@ using namespace std;
 /**
  @brief Default Constructor
  */
-CProgressBar::CProgressBar(void)
+CInfectionBar::CInfectionBar(void)
 {
 }
 
 /**
  @brief Destructor
  */
-CProgressBar::~CProgressBar(void)
+CInfectionBar::~CInfectionBar(void)
 {
 	// Delete the rendering objects in the graphics card
 	glDeleteVertexArrays(1, &VAO);
@@ -28,12 +28,12 @@ CProgressBar::~CProgressBar(void)
  @brief Initialise this class instance
  @return true is successfully initialised this class instance, else false
  */
-bool CProgressBar::Init(void)
+bool CInfectionBar::Init(glm::vec3 pos, glm::vec4 color)
 {
 	// Check if the shader is ready
 	if (!cShader)
 	{
-		cout << "CProgressBar::Init(): The shader is not available for this class instance." << endl;
+		cout << "CInfectionBar::Init(): The shader is not available for this class instance." << endl;
 		return false;
 	}
 
@@ -47,8 +47,9 @@ bool CProgressBar::Init(void)
 
 	fHeight = 0.0333f * 1;
 	fWidth = 0.0333f * 10;
-	vec3Position = glm::vec3(-1.0f + 0.0333f, -1.0f + 0.0333f * 58, 0.0f);
-	vec4Colour = glm::vec4(1.0f, 0.0f, 0.0f, 0.5f);
+	vec3Position = pos;
+	vec4Colour = color;
+	vec3Scale.x = 0.f;
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	float vertices[] = {
@@ -84,7 +85,7 @@ bool CProgressBar::Init(void)
  @brief Set model
  @param model A glm::mat4 variable containing the model for this class instance
  */
-void CProgressBar::SetModel(glm::mat4 model)
+void CInfectionBar::SetModel(glm::mat4 model)
 {
 	this->model = model;
 }
@@ -93,7 +94,7 @@ void CProgressBar::SetModel(glm::mat4 model)
  @brief Set view
  @param view A glm::mat4 variable containing the model for this class instance
  */
-void CProgressBar::SetView(glm::mat4 view)
+void CInfectionBar::SetView(glm::mat4 view)
 {
 	this->view = glm::mat4(glm::mat3(view)); // remove translation from the view matrix
 }
@@ -102,7 +103,7 @@ void CProgressBar::SetView(glm::mat4 view)
  @brief Set projection
  @param projection A glm::mat4 variable containing the model for this class instance
  */
-void CProgressBar::SetProjection(glm::mat4 projection)
+void CInfectionBar::SetProjection(glm::mat4 projection)
 {
 	this->projection = projection;
 }
@@ -110,22 +111,22 @@ void CProgressBar::SetProjection(glm::mat4 projection)
 /**
  @brief PreRender Set up the OpenGL display environment before rendering
  */
-void CProgressBar::Update(const double dElapsedTime)
+void CInfectionBar::Update(const double dElapsedTime)
 {
 	//vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime;
 	//if (vec3Scale.x <= 0.01f)
 	//	vec3Scale.x = 1.0f;
-	if (decrease_healthBar == true)
+	if (InfectionBar == true)
 	{
-		vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime;
-		decrease_healthBar = false;
+		vec3Scale.x = vec3Scale.x + 0.1f * dElapsedTime;
+		InfectionBar = false;
 	}
 }
 
 /**
  @brief PreRender Set up the OpenGL display environment before rendering
  */
-void CProgressBar::PreRender(void)
+void CInfectionBar::PreRender(void)
 {
 	// bind textures on corresponding texture units
 	glActiveTexture(GL_TEXTURE0);
@@ -139,12 +140,12 @@ void CProgressBar::PreRender(void)
  @brief Render Render this instance
  @param cShader A Shader* variable which contains the Shader to use in this class instance
  */
-void CProgressBar::Render(void)
+void CInfectionBar::Render(void)
 {
 	// If the shader is in this class, then do not render
 	if (!cShader)
 	{
-		cout << "CProgressBar::Render(): The shader is not available for this class instance." << endl;
+		cout << "CInfectionBar::Render(): The shader is not available for this class instance." << endl;
 		return;
 	}
 
@@ -155,7 +156,7 @@ void CProgressBar::Render(void)
 	// get matrix's uniform location and set matrix
 	transformLoc = glGetUniformLocation(cShader->ID, "transform");
 	// Reset the transform
-	transform = glm::mat4(1.0f);
+	transform = glm::mat4(0.f);
 	// Translate to the position to render. Note that the centrepoint of the progressbar will be at this position
 	// So we need to offset to the right by the vec3Scale.x * fWidth
 	transform = glm::translate(transform, glm::vec3(vec3Position.x + vec3Scale.x * fWidth, vec3Position.y, vec3Position.z));
@@ -196,31 +197,23 @@ void CProgressBar::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void CProgressBar::PostRender(void)
+void CInfectionBar::PostRender(void)
 {
 	// Disable blending
 	glDisable(GL_BLEND);
 }
 
-bool CProgressBar::get_healthBarState()
+bool CInfectionBar::GetInfectionBarState()
 {
-	if (decrease_healthBar == true)
-	{
-		return true;
-	}
-	
-	else
-	{
-		return false;
-	}
+	return InfectionBar;
 }
 
-void CProgressBar::set_healthBarState(bool state)
+void CInfectionBar::SetIbarState(bool state)
 {
-	decrease_healthBar = state;
+	InfectionBar = state;
 }
 
-float CProgressBar::get_healthBarLength()
+float CInfectionBar::GetInfectionBarLength()
 {
 	return vec3Scale.x;
 }

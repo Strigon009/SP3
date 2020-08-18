@@ -20,6 +20,43 @@ using namespace std;
 #include "Structure3D_2.h"
 #include "WeaponInfo/Rifle.h"
 
+<<<<<<< Updated upstream
+=======
+void CScene3D::AddEnemy(CEnemy3D* cEnemy3D, glm::vec3 pos, glm::vec3 scale)
+{
+	cEnemy3D = new CEnemy3D(pos);
+	cEnemy3D->SetShader(cShader);
+	cEnemy3D->Init();
+	cEnemy3D->ActivateCollider(cSimpleShader);
+	cEnemy3D->SetColliderScale(scale);
+	cEnemy3D->SetScale(scale);
+	cEntityManager->Add(cEnemy3D);
+}
+
+void CScene3D::AddWall(CStructure3D* cStructure3D, glm::vec3 pos, glm::vec3 scale)
+{
+	cStructure3D = new CStructure3D(pos);
+	cStructure3D->SetShader(cShader);
+	cStructure3D->Init();
+	cStructure3D->SetScale(scale);
+	cStructure3D->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cStructure3D);
+
+}
+
+void CScene3D::AddPillar(CStructure2_3D* cStructure3D, glm::vec3 pos, glm::vec3 scale)
+{
+	cStructure3D = new CStructure2_3D(pos);
+
+	cStructure3D->SetShader(cShader);
+	cStructure3D->Init();
+	cStructure3D->SetScale(scale);
+	cStructure3D->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cStructure3D);
+
+}
+
+>>>>>>> Stashed changes
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
@@ -44,6 +81,7 @@ CScene3D::CScene3D(void)
 	, cCameraEffects(NULL)
 	, cHealthBar(NULL)
 	, cArmorBar(NULL)
+	, cInfectionBar(NULL)
 	, cMinimap(NULL)
 	, cCrossHair(NULL)
 	, cWeaponInfo(NULL)
@@ -84,6 +122,12 @@ CScene3D::~CScene3D(void)
 	{
 		delete cArmorBar;
 		cArmorBar = NULL;
+	}
+		// Destroy the cCameraEffects
+	if (cInfectionBar)
+	{
+		delete cInfectionBar;
+		cInfectionBar = NULL;
 	}
 
 	// Destroy the cCameraEffects
@@ -289,10 +333,6 @@ bool CScene3D::Init(void)
 	cPistol->SetShader(cSimpleShader);
 	cPlayer3D->SetWeapon(0, cPistol);
 
-	float randPos = rand() % 3 + 2;
-	float randPos2 = rand() % 6 + 4;
-	//float randPos3 = rand() % 8 + 7;
-
 	// Initialise the cEnemy3D
 	CEnemy3D* cEnemy3D = new CEnemy3D(glm::vec3(2, 10.f, 2));
 	CEnemy3D* cEnemy3D2 = new CEnemy3D(glm::vec3(2, 10.f, 4));
@@ -331,6 +371,7 @@ bool CScene3D::Init(void)
 	CStructure3D* cStructure3D3 = new CStructure3D(glm::vec3(0.0f, 0.5f, -10.f));
 	CStructure3D* cStructure3D4 = new CStructure3D(glm::vec3(0.0f, 0.5f, 10.f));
 
+<<<<<<< Updated upstream
 	cStructure3D->SetShader(cShader);
 	cStructure3D->Init();
 	cStructure3D->SetScale(glm::vec3(1, 5, 100));
@@ -412,6 +453,18 @@ bool CScene3D::Init(void)
 	cStructure3D_28->SetScale(glm::vec3(0.5, 5, 0.5));
 	cStructure3D_28->ActivateCollider(cSimpleShader);
 	cEntityManager->Add(cStructure3D_28);
+=======
+	CStructure2_3D* cStructure3D2 = new CStructure2_3D(glm::vec3(6, 0.5, 6));
+
+	AddPillar(cStructure3D2, glm::vec3(6, 0.5, 6), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(6, 0.5, -6), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(-6, 0.5, 6), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(-6, 0.5, -6), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(-6, 0.5, 0), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(6, 0.5, 0), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(0, 0.5, -6), glm::vec3(0.5, 5, 0.5));
+	AddPillar(cStructure3D2, glm::vec3(0, 0.5, 6), glm::vec3(0.5, 5, 0.5));
+>>>>>>> Stashed changes
 
 	// Load the SkyBox
 	cSkyBox = CSkyBox::GetInstance();
@@ -457,7 +510,16 @@ bool CScene3D::Init(void)
 	cArmorBar->SetShader(cGUISimpleShader);
 	cArmorBar->Init(glm::vec3(-1.0f + 0.0333f, -1.1f + 0.0333f * 58, 0.0f), glm::vec4(0.0f, 0.0f, 1.0f, 0.5f));
 
+
 	cEntityManager->SetArmorBar(cArmorBar);
+
+	// Load the ProgressBar
+	cInfectionBar = new CInfectionBar();
+	// Set a shader to this class instance of CameraEffects
+	cInfectionBar->SetShader(cGUISimpleShader);
+	cInfectionBar->Init(glm::vec3(-1.0f + 0.0333f, -1.2f + 0.0333f * 58, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 0.5f));
+
+	cEntityManager->SetInfectionBar(cInfectionBar);
 
 	// Load the Minimap
 	cMinimap = CMinimap::GetInstance();
@@ -689,9 +751,9 @@ void CScene3D::Update(const double dElapsedTime)
 	cCameraEffects->Update(dElapsedTime);
 
 	// Update progress bar
-	if(static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() >= 0)
-		cArmorBar->Update(dElapsedTime);
-	else
+	//if(static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() >= 0)
+	//	cArmorBar->Update(dElapsedTime);
+	//else
 		cHealthBar->Update(dElapsedTime);
 
 	cWeaponInfo = cPlayer3D->GetWeapon();
@@ -822,6 +884,10 @@ void CScene3D::Render(void)
 	cArmorBar->PreRender();
 	cArmorBar->Render();
 	cArmorBar->PostRender();
+
+	cInfectionBar->PreRender();
+	cInfectionBar->Render();
+	cInfectionBar->PostRender();
 
 	cCrossHair->PreRender();
 	cCrossHair->Render(cPlayer3D->GetWeapon());

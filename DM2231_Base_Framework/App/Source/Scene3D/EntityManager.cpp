@@ -31,6 +31,7 @@ CEntityManager::~CEntityManager(void)
 	}
 }
 
+
 /**
  @brief Initialise this class instance
  */
@@ -128,8 +129,9 @@ bool CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				
 				//cSoundController->PlaySoundByID(1);
 
-				static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(true);
-				static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
+				static_cast<CHealthBar*>(cHealthBar)->SetHBarState(true);
+				static_cast<CArmorBar*>(cArmorBar)->SetABarState(true);
+				static_cast<CInfectionBar*>(cInfectionBar)->SetIbarState(true);
 
 				// Quit this loop since a collision has been found
 				break;
@@ -319,4 +321,9 @@ void CEntityManager::SetHealthBar(CHealthBar* pBar)
 void CEntityManager::SetArmorBar(CArmorBar* pBar)
 {
 	cArmorBar = pBar;
+}
+
+void CEntityManager::SetInfectionBar(CInfectionBar* pBar)
+{
+	cInfectionBar = pBar;
 }

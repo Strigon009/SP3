@@ -53,6 +53,7 @@
 // Include ProgressBar
 #include "../CameraEffects/HealthBar.h"
 #include "../CameraEffects/ArmorBar.h"
+#include "../CameraEffects/InfectionBar.h"
 // Include Minimap
 #include "..\Minimap\Minimap.h"
 // Include CrossHair
@@ -148,6 +149,7 @@ protected:
 	// Handler to the ProgressBar
 	CHealthBar* cHealthBar;
 	CArmorBar* cArmorBar;
+	CInfectionBar* cInfectionBar;
 	// Handler to the CMinimap
 	CMinimap* cMinimap;
 	// Handler to the CCrossHair

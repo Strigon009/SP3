@@ -33,7 +33,7 @@ bool CArmorBar::Init(glm::vec3 pos, glm::vec4 color)
 	// Check if the shader is ready
 	if (!cShader)
 	{
-		cout << "CProgressBar::Init(): The shader is not available for this class instance." << endl;
+		cout << "CInfectionBar::Init(): The shader is not available for this class instance." << endl;
 		return false;
 	}
 
@@ -144,7 +144,7 @@ void CArmorBar::Render(void)
 	// If the shader is in this class, then do not render
 	if (!cShader)
 	{
-		cout << "CProgressBar::Render(): The shader is not available for this class instance." << endl;
+		cout << "CInfectionBar::Render(): The shader is not available for this class instance." << endl;
 		return;
 	}
 
@@ -207,7 +207,7 @@ bool CArmorBar::GetArmorBarState()
 	return armorBar;
 }
 
-void CArmorBar::SetArmorBarState(bool state)
+void CArmorBar::SetABarState(bool state)
 {
 	armorBar = state;
 }

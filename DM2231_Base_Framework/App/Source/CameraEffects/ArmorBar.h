@@ -37,8 +37,7 @@ public:
 	virtual void PostRender(void);
 
 	bool GetArmorBarState();
-
-	void SetArmorBarState(bool state);
+	void SetABarState(bool state);
 
 
 

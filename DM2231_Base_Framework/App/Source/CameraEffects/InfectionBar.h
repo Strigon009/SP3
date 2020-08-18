@@ -8,13 +8,15 @@
 #include <includes/gtc/matrix_transform.hpp>
 #include <includes/gtc/type_ptr.hpp>
 
-class CHealthBar : public CEntity3D
+class CInfectionBar : public CEntity3D
 {
 public:
 	// Constructor
-	CHealthBar(void);
+	CInfectionBar(void);
 	// Destructor
-	virtual ~CHealthBar(void);
+	virtual ~CInfectionBar(void);
+
+	
 
 	// Initialise this class instance
 	bool Init(glm::vec3 pos, glm::vec4 color);
@@ -36,19 +38,19 @@ public:
 	// PostRender
 	virtual void PostRender(void);
 
-	
-	bool GetHealthBarState();
-	void SetHBarState(bool state);
+	bool GetInfectionBarState();
 
-	float GetHealthBarLength();
+	void SetIbarState(bool state);
+
+	float GetInfectionBarLength();
+
 
 protected:
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
-	bool healthBar;
+	bool InfectionBar;
 
 
 	float fHeight, fWidth;
-
 
 };
