@@ -63,6 +63,9 @@
 
 #include "WeaponInfo/WeaponInfo.h"
 
+// Include Pickups
+#include "ArmorPickup.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -158,6 +161,8 @@ protected:
 
 	CWeaponInfo* cWeaponInfo;
 
+	CArmorPickup* cArmorPickup;
+
 	bool renderBoss;
 	bool bossDED;
 
@@ -168,6 +173,8 @@ protected:
 	void AddWall(CStructure3D* cStructure3D, glm::vec3 pos, glm::vec3 scale);
 
 	void AddPillar(CStructure2_3D* cStructure3D, glm::vec3 pos, glm::vec3 scale);
+
+	void AddArmorPickUp(CArmorPickup* cArmorPickup, glm::vec3 pos, glm::vec3 scale);
 	
 	// Constructor
 	CScene3D(void);

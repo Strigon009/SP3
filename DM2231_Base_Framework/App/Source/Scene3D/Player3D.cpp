@@ -27,6 +27,8 @@ CPlayer3D::CPlayer3D(void)
 	, fCameraSwayDeltaAngle(0.15f)
 	, bCameraSwayDirection(false)	// false = left, true = right
 	, bCameraSwayActive(true)
+	, iHealth(100)
+	, iArmor(100)
 {
 	// Set the default position so it is above the ground
 	vec3Position = glm::vec3(0.0f, 0.5f, 0.0f);

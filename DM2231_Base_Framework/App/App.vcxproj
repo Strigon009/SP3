@@ -20,6 +20,7 @@
     <ClCompile Include="Source\CSVWriter\CSVWriter.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Minimap\Minimap.cpp" />
+    <ClCompile Include="Source\Scene3D\ArmorPickup.cpp" />
     <ClCompile Include="Source\Scene3D\Camera.cpp" />
     <ClCompile Include="Source\Scene3D\CrossHair\CrossHair.cpp" />
     <ClCompile Include="Source\Scene3D\Enemy3D.cpp" />
@@ -27,8 +28,11 @@
     <ClCompile Include="Source\Scene3D\EntityManager.cpp" />
     <ClCompile Include="Source\Scene3D\GroundMap.cpp" />
     <ClCompile Include="Source\Scene3D\GroundTile.cpp" />
+    <ClCompile Include="Source\Scene3D\HealthPickup.cpp" />
+    <ClCompile Include="Source\Scene3D\PauseMenu.cpp" />
     <ClCompile Include="Source\Scene3D\Physics3D.cpp" />
     <ClCompile Include="Source\Scene3D\Player3D.cpp" />
+    <ClCompile Include="Source\Scene3D\PowerUp.cpp" />
     <ClCompile Include="Source\Scene3D\Scene3D.cpp" />
     <ClCompile Include="Source\Scene3D\SkyBox.cpp" />
     <ClCompile Include="Source\Scene3D\Structure3D.cpp" />
@@ -50,6 +54,7 @@
     <ClInclude Include="Source\CSVReader\CSVReader.h" />
     <ClInclude Include="Source\CSVWriter\CSVWriter.h" />
     <ClInclude Include="Source\Minimap\Minimap.h" />
+    <ClInclude Include="Source\Scene3D\ArmorPickup.h" />
     <ClInclude Include="Source\Scene3D\Camera.h" />
     <ClInclude Include="Source\Scene3D\CrossHair\CrossHair.h" />
     <ClInclude Include="Source\Scene3D\Enemy3D.h" />
@@ -57,8 +62,11 @@
     <ClInclude Include="Source\Scene3D\EntityManager.h" />
     <ClInclude Include="Source\Scene3D\GroundMap.h" />
     <ClInclude Include="Source\Scene3D\GroundTile.h" />
+    <ClInclude Include="Source\Scene3D\HealthPickup.h" />
+    <ClInclude Include="Source\Scene3D\PauseMenu.h" />
     <ClInclude Include="Source\Scene3D\Physics3D.h" />
     <ClInclude Include="Source\Scene3D\Player3D.h" />
+    <ClInclude Include="Source\Scene3D\PowerUp.h" />
     <ClInclude Include="Source\Scene3D\Scene3D.h" />
     <ClInclude Include="Source\Scene3D\SkyBox.h" />
     <ClInclude Include="Source\Scene3D\Structure3D.h" />
