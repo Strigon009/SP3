@@ -4,7 +4,6 @@
  Date: Apr 2020
  */
 #include "Enemy3D.h"
-#include "EntityManager.h"
 
 // Allowing loading of LoadOBJ.h
 #include "System/LoadOBJ.h"
@@ -29,10 +28,6 @@ CEnemy3D::CEnemy3D(void)
 {
 	// Set the default position to the origin
 	vec3Position = glm::vec3(0.0f, 0.0f, 0.0f);
-
-	cManager = CEntityManager::GetInstance();
-	cPlayer3D = CPlayer3D::GetInstance();
-	cTower = CStructureTower::GetInstance();
 
 	// Update the vectors for this enemy
 	UpdateEnemyVectors();
@@ -62,10 +57,6 @@ CEnemy3D::CEnemy3D(	const glm::vec3 vec3Position,
 {
 	// Set the default position to the origin
 	this->vec3Position = vec3Position;
-
-	cManager = CEntityManager::GetInstance();
-	cPlayer3D = CPlayer3D::GetInstance();
-	cTower = CStructureTower::GetInstance();
 
 	// Update the vectors for this enemy
 	UpdateEnemyVectors();
@@ -237,7 +228,7 @@ bool CEnemy3D::IsCameraAttached(void)
  */
 void CEnemy3D::ProcessMovement(const Enemy_Movement direction, const float deltaTime)
 {
-	float velocity = fMovementSpeed * deltaTime * 0.5;
+	float velocity = fMovementSpeed * deltaTime;
 	if (direction == FORWARD)
 		vec3Position += vec3Front * velocity;
 	if (direction == BACKWARD)
@@ -421,26 +412,9 @@ void CEnemy3D::UpdateEnemyVectors(void)
 	front = glm::normalize(front);
 
 	// Check if we are too far from the player
-	//if (cPlayer3D)
-	//{
-	//	// Update the direction of the enemy
-	//	front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
-
-	//	// Update the yaw and pitch
-	//	fYaw = glm::degrees(glm::atan(front.z, front.x));
-	//	fPitch = glm::degrees(glm::asin(front.y));
-	//}
-
-	if ((cManager)->get_moveTo() == true)
+	if (cPlayer3D)
 	{
-		front = glm::normalize(glm::vec3(cTower->GetPosition() - vec3Position));
-
-		// Update the yaw and pitch
-		fYaw = glm::degrees(glm::atan(front.z, front.x));
-		fPitch = glm::degrees(glm::asin(front.y));
-	}
-	else
-	{
+		// Update the direction of the enemy
 		front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
 
 		// Update the yaw and pitch
