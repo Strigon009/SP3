@@ -298,7 +298,7 @@ void CEntityManager::Update(const double dElapsedTime)
 					((*it_other)->GetType() == CEntity3D::TYPE::NPC))
 				{
 					(*it)->RollbackPosition();
-					(*it_other)->RollbackPosition();
+					//(*it_other)->RollbackPosition();
 					cout << "** Collision between 2 NPCs ***" << endl;
 				}
 				else if (((*it)->GetType() == CEntity3D::TYPE::NPC) &&
