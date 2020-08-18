@@ -29,7 +29,6 @@
     <ClCompile Include="Source\Scene3D\GroundMap.cpp" />
     <ClCompile Include="Source\Scene3D\GroundTile.cpp" />
     <ClCompile Include="Source\Scene3D\HealthPickup.cpp" />
-    <ClCompile Include="Source\Scene3D\PauseMenu.cpp" />
     <ClCompile Include="Source\Scene3D\Physics3D.cpp" />
     <ClCompile Include="Source\Scene3D\Player3D.cpp" />
     <ClCompile Include="Source\Scene3D\PowerUp.cpp" />
@@ -63,7 +62,6 @@
     <ClInclude Include="Source\Scene3D\GroundMap.h" />
     <ClInclude Include="Source\Scene3D\GroundTile.h" />
     <ClInclude Include="Source\Scene3D\HealthPickup.h" />
-    <ClInclude Include="Source\Scene3D\PauseMenu.h" />
     <ClInclude Include="Source\Scene3D\Physics3D.h" />
     <ClInclude Include="Source\Scene3D\Player3D.h" />
     <ClInclude Include="Source\Scene3D\PowerUp.h" />
