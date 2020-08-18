@@ -23,6 +23,7 @@ public:
 	{
 		PLAYER,
 		NPC,
+		TOWER,
 		PROJECTILE,
 		STRUCTURE,	// Buildings etc
 		HEALTH_PICKUP,
