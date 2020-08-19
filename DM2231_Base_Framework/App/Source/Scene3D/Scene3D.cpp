@@ -59,17 +59,7 @@ void CScene3D::AddArmorPickUp(CArmorPickup* cArmorPickup, glm::vec3 pos, glm::ve
 	cArmorPickup->SetScale(scale);
 	cArmorPickup->ActivateCollider(cSimpleShader);
 	cEntityManager->Add(cArmorPickup);
-}
 
-void CScene3D::AddHealthPickUp(CHealthPickup* cHealthPickup, glm::vec3 pos, glm::vec3 scale)
-{
-	cHealthPickup = new CHealthPickup(pos);
-
-	cHealthPickup->SetShader(cShader);
-	cHealthPickup->Init();
-	cHealthPickup->SetScale(scale);
-	cHealthPickup->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cHealthPickup);
 }
 
 /**
@@ -100,7 +90,6 @@ CScene3D::CScene3D(void)
 	, cCrossHair(NULL)
 	, cWeaponInfo(NULL)
 	, cArmorPickup(NULL)
-	, cHealthPickup(NULL)
 	, renderBoss(false)
 	, printLoseScreen(false)
 	, printWinScreen(false)
@@ -263,8 +252,6 @@ CScene3D::~CScene3D(void)
 	cSettings = NULL;
 
 	cArmorPickup = NULL;
-
-	cHealthPickup = NULL;
 }
 
 /**
@@ -380,10 +367,6 @@ bool CScene3D::Init(void)
 	CArmorPickup* cArmorPickup = new CArmorPickup();
 
 	AddArmorPickUp(cArmorPickup, glm::vec3(3.5f, 0.2f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f));
-
-	CHealthPickup* cHealthPickup = new CHealthPickup();
-
-	AddHealthPickUp(cHealthPickup, glm::vec3(3.5f, 0.2f, -3.0f), glm::vec3(0.5f, 0.5f, 0.5f));
 
 	// Load the SkyBox
 	cSkyBox = CSkyBox::GetInstance();
@@ -650,19 +633,7 @@ void CScene3D::Update(const double dElapsedTime)
 	{
 	case 1:
 		cCameraEffects->Activate_BloodScreen();
-
-		if (cPlayer3D->GetArmor() > 0)
-		{
-			cPlayer3D->SetArmor(cPlayer3D->GetArmor() - 5);
-		}
-		else
-		{
-			cPlayer3D->SetHealth(cPlayer3D->GetHealth() - 2);
-		}
-
-		break;
-	case 4:
-		cPlayer3D->SetHealth(cPlayer3D->GetHealth() + 30);
+		cPlayer3D->SetArmor(cPlayer3D->GetArmor() - 5);
 		break;
 	case 5:
 		cPlayer3D->SetArmor(cPlayer3D->GetArmor() + 30);
@@ -684,7 +655,7 @@ void CScene3D::Update(const double dElapsedTime)
 	//if(static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() >= 0)
 		cArmorBar->Update(dElapsedTime);
 	//else
-		cHealthBar->Update(dElapsedTime);
+		//cHealthBar->Update(dElapsedTime);
 
 	cWeaponInfo = cPlayer3D->GetWeapon();
 }

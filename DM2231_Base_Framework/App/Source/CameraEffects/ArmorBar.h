@@ -10,6 +10,8 @@
 
 #include "..\Scene3D\Player3D.h"
 
+#include "..\Scene3D\ArmorPickup.h"
+
 class CArmorBar : public CEntity3D
 {
 public:
@@ -54,4 +56,6 @@ protected:
 
 	// Handler to the Player3D class
 	CPlayer3D* cPlayer3D;
+
+	CArmorPickup* cArmorPickup;
 };

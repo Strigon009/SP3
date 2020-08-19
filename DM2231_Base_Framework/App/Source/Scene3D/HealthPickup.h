@@ -61,15 +61,9 @@ public:
 	// PostRender
 	virtual void PostRender(void);
 
-	void SetAddHealth(const int iAddHealth);
-
-	int GetAddHealth(void) const;
-
 protected:
 	// The handle to the CGroundMap class instance
 	CGroundMap* cGroundMap;
 
-	CPlayer3D* cPlayer3D;
-
-	int iAddHealth;
+	// Add more things
 };

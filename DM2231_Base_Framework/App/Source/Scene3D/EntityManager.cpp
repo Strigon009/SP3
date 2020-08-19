@@ -156,9 +156,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 			else if ((*it)->GetType() == CEntity3D::TYPE::HEALTH_PICKUP)
 			{
 				// Rollback the cEntity3D's position
-				(*it)->SetToDelete(true);
-
-				static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(true);
+				(*it)->RollbackPosition();
 
 				cout << "** Collision between Player and Health_PickUp ***" << endl;
 				bResult = 4;
@@ -174,6 +172,9 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
 
 				cout << "** Collision between Player and Armor_PickUp ***" << endl;
+
+				//static_cast<CArmorBar*>(*it)->SetArmourBarLength(static_cast<CArmorBar*>(*it)->GetArmorBarLength() + 10);
+
 				bResult = 5;
 				// Quit this loop since a collision has been found
 				

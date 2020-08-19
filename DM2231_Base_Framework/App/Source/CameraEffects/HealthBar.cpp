@@ -8,7 +8,6 @@ using namespace std;
  @brief Default Constructor
  */
 CHealthBar::CHealthBar(void)
-	: cPlayer3D(NULL)
 {
 }
 
@@ -23,8 +22,6 @@ CHealthBar::~CHealthBar(void)
 
 	// We set this to NULL, since it was created elsewhere so we don't delete it here
 	cShader = NULL;
-
-	cPlayer3D = NULL;
 }
 
 /**
@@ -42,9 +39,6 @@ bool CHealthBar::Init(glm::vec3 pos, glm::vec4 color)
 
 	// Call the parent's Init()
 	CEntity3D::Init();
-
-	// Initialise the cPlayer3D
-	cPlayer3D = CPlayer3D::GetInstance();
 
 	// Set the type
 	SetType(CEntity3D::TYPE::OTHERS);
@@ -123,8 +117,7 @@ void CHealthBar::Update(const double dElapsedTime)
 	//	vec3Scale.x = 1.0f;
 	if (healthBar)
 	{
-		//vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime;
-		vec3Scale.x = (float)cPlayer3D->GetHealth() / 100;
+		vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime;
 		healthBar = !healthBar;
 	}
 }

@@ -62,10 +62,8 @@
 
 #include "WeaponInfo/WeaponInfo.h"
 
-// Include Armor Pickup
+// Include Pickups
 #include "ArmorPickup.h"
-// Include Health Pickup
-#include "HealthPickup.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -163,7 +161,6 @@ protected:
 	CWeaponInfo* cWeaponInfo;
 
 	CArmorPickup* cArmorPickup;
-	CHealthPickup* cHealthPickup;
 
 	bool renderBoss;
 	bool bossDED;
@@ -176,7 +173,6 @@ protected:
 	void AddPillar(CStructure2_3D* cStructure3D, glm::vec3 pos, glm::vec3 scale);
 
 	void AddArmorPickUp(CArmorPickup* cArmorPickup, glm::vec3 pos, glm::vec3 scale);
-	void AddHealthPickUp(CHealthPickup* cHealthPickup, glm::vec3 pos, glm::vec3 scale);
 	
 	// Constructor
 	CScene3D(void);
