@@ -13,6 +13,8 @@ using namespace std;
  */
 CHealthPickup::CHealthPickup(void)
 	: cGroundMap(NULL)
+	, cPlayer3D(NULL)
+	, iAddHealth(30)
 {
 	// Set the default position to the origin
 	vec3Position = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -46,6 +48,8 @@ CHealthPickup::~CHealthPickup(void)
 		cGroundMap = NULL;
 	}
 
+	cPlayer3D = NULL;
+
 	// Delete the rendering objects in the graphics card
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
@@ -66,6 +70,9 @@ bool CHealthPickup::Init(void)
 
 	// Call the parent's Init()
 	CEntity3D::Init();
+
+	// Initialise the cPlayer3D
+	cPlayer3D = CPlayer3D::GetInstance();
 
 	// Set the type
 	SetType(CEntity3D::TYPE::HEALTH_PICKUP);
@@ -235,4 +242,14 @@ void CHealthPickup::Render(void)
 void CHealthPickup::PostRender(void)
 {
 	glDepthFunc(GL_LESS); // set depth function back to default
+}
+
+void CHealthPickup::SetAddHealth(const int iAddHealth)
+{
+	this->iAddHealth = iAddHealth;
+}
+
+int CHealthPickup::GetAddHealth(void) const
+{
+	return iAddHealth;
 }

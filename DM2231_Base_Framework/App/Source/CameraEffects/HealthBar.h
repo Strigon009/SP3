@@ -8,6 +8,8 @@
 #include <includes/gtc/matrix_transform.hpp>
 #include <includes/gtc/type_ptr.hpp>
 
+#include "..\Scene3D\Player3D.h"
+
 class CHealthBar : public CEntity3D
 {
 public:
@@ -50,5 +52,6 @@ protected:
 
 	float fHeight, fWidth;
 
-
+	// Handler to the Player3D class
+	CPlayer3D* cPlayer3D;
 };
