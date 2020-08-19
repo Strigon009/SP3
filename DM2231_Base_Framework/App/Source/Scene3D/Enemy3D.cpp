@@ -444,21 +444,13 @@ void CEnemy3D::UpdateEnemyVectors(void)
 	//}
 
 		if ((cManager)->get_moveTo() == true)
-		{
 			front = glm::normalize(glm::vec3(cTower->GetPosition() - vec3Position));
-
-			// Update the yaw and pitch
-			fYaw = glm::degrees(glm::atan(front.z, front.x));
-			fPitch = glm::degrees(glm::asin(front.y));
-		}
 		else
-		{
 			front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
 
-			// Update the yaw and pitch
-			fYaw = glm::degrees(glm::atan(front.z, front.x));
-			fPitch = glm::degrees(glm::asin(front.y));
-		}
+		// Update the yaw and pitch
+		fYaw = glm::degrees(glm::atan(front.z, front.x));
+		fPitch = glm::degrees(glm::asin(front.y));
 
 		vec3Front = front;
 		// Also re-calculate the Right and Up vector

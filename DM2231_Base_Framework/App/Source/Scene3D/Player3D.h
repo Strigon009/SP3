@@ -114,14 +114,30 @@ public:
 	void SetArmor(const int iArmor);
 	// Get the health of the player
 	int GetArmor(void) const;
+
+	//Player's level , Experience
+	void GainExp(const int exp);
+	int GetCurrentExp(void) const;
+	void ExpUpdate(void);
+
+	int GetCurrentPlayerLevel();
+
+	void SetToDodge(void);
 	
 	// Player's health
 	int iHealth;
 
 	// Player's Armor
 	int iArmor;
+	
+	int GetCurrentWeaponIndex(void) const;
 
 protected:
+
+	//Player's level , Experience
+	int pExp, pExpMax;
+	int pLevel, pLevelMax;
+
 	// The handle to the CCamera class instance
 	CCamera* cCamera;
 

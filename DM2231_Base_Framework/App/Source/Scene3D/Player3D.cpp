@@ -29,6 +29,10 @@ CPlayer3D::CPlayer3D(void)
 	, bCameraSwayActive(true)
 	, iHealth(100)
 	, iArmor(100)
+	, pLevel(1)
+	, pLevelMax(5)
+	, pExp(1.f)
+	, pExpMax(pLevel * pLevelMax * 10)
 {
 	// Set the default position so it is above the ground
 	vec3Position = glm::vec3(0.0f, 0.5f, 0.0f);
@@ -638,4 +642,46 @@ void CPlayer3D::SetArmor(const int iArmor)
 int CPlayer3D::GetArmor(void) const
 {
 	return iArmor;
+}
+
+void CPlayer3D::GainExp(const int exp)
+{
+	pExp += exp;
+}
+
+int CPlayer3D::GetCurrentExp(void) const
+{
+	return pExp;
+}
+
+int CPlayer3D::GetCurrentWeaponIndex(void) const
+{
+	return iCurrentWeapon;
+}
+
+void CPlayer3D::ExpUpdate()
+{
+	if (pExp >= pExpMax && pLevel < pLevelMax)
+	{
+		pLevel++;
+		pExp = 0.f;
+		pExpMax = pExpMax * 1.2f;
+	}
+	else
+	{
+
+	}
+}
+
+int CPlayer3D::GetCurrentPlayerLevel()
+{
+	return pLevel;
+}
+void CPlayer3D::SetToDodge(void)
+{
+	if (cPhysics3D.GetStatus() == CPhysics3D::STATUS::IDLE)
+	{
+		cPhysics3D.SetStatus(CPhysics3D::STATUS::JUMP);
+		cPhysics3D.SetInitialVelocity(glm::vec3(2.0f, 20.0f, 0.0f) - vec3Front * 5.0f);
+	}
 }

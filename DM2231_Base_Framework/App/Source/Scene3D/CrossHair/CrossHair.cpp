@@ -82,19 +82,12 @@ bool CCrossHair::Init(void)
 	}
 
 	// load and create a texture 
-	iTextureID = LoadTexture("Image/pistol.tga");
+	iTextureID = LoadTexture("Image/crosshair.tga");
 	if (iTextureID == 0)
 	{
 		cout << "Unable to load Image/Scene3D_CrossHair.tga" << endl;
 		return false;
 	}	
-
-	RifleID = LoadTexture("Image/ogcrosshair.tga");
-	if (RifleID == 0)
-	{
-		cout << "bruh no texture" << endl;
-		return false;
-	}
 
 	return true;
 }
@@ -168,7 +161,7 @@ void CCrossHair::PreRender(void)
  @brief Render Render this instance
  @param cShader A Shader* variable which contains the Shader to use in this class instance
  */
-void CCrossHair::Render(CWeaponInfo* info)
+void CCrossHair::Render()
 {
 	if (!bActive)
 		return;
@@ -181,6 +174,7 @@ void CCrossHair::Render(CWeaponInfo* info)
 	}
 
 	// Activate shader
+	// Activate shader
 	cShader->use();
 
 	unsigned int transformLoc;
@@ -190,16 +184,8 @@ void CCrossHair::Render(CWeaponInfo* info)
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
-	if (info->type == CWeaponInfo::WeaponType::PISTOL)
-	{
-		// Get the texture to be rendered
-		glBindTexture(GL_TEXTURE_2D, iTextureID);
-	}
-	else if (info->type == CWeaponInfo::WeaponType::RIFLE)
-	{
-		// Get the texture to be rendered
-		glBindTexture(GL_TEXTURE_2D, RifleID);
-	}
+	// Get the texture to be rendered
+	glBindTexture(GL_TEXTURE_2D, iTextureID);
 
 	// Render the quad
 	glBindVertexArray(VAO);

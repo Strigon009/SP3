@@ -51,8 +51,8 @@ bool CArmorBar::Init(glm::vec3 pos, glm::vec4 color)
 
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
-	fHeight = 0.0333f * 1;
-	fWidth = 0.0333f * 10;
+	fHeight = 0.0333f * 0.8;
+	fWidth = 0.0333f * 8;
 	vec3Position = pos;
 	vec4Colour = color;
 
@@ -121,7 +121,7 @@ void CArmorBar::Update(const double dElapsedTime)
 	if (armorBar)
 	{
 		//vec3Scale.x = vec3Scale.x - 0.5f * dElapsedTime;
-		vec3Scale.x = (float)cPlayer3D->GetArmor() / 100;
+		vec3Scale.x = (float)cPlayer3D->GetArmor() / 100 ;
 		armorBar = !armorBar;
 	}
 }

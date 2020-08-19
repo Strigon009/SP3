@@ -15,7 +15,7 @@
     <ClCompile Include="Source\CameraEffects\ArmorBar.cpp" />
     <ClCompile Include="Source\CameraEffects\CameraEffects.cpp" />
     <ClCompile Include="Source\CameraEffects\HealthBar.cpp" />
-    <ClCompile Include="Source\CameraEffects\ProgressBar.cpp" />
+    <ClCompile Include="Source\CameraEffects\ExperienceBar.cpp" />
     <ClCompile Include="Source\CSVReader\CSVReader.cpp" />
     <ClCompile Include="Source\CSVWriter\CSVWriter.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -51,7 +51,7 @@
     <ClInclude Include="Source\CameraEffects\ArmorBar.h" />
     <ClInclude Include="Source\CameraEffects\CameraEffects.h" />
     <ClInclude Include="Source\CameraEffects\HealthBar.h" />
-    <ClInclude Include="Source\CameraEffects\ProgressBar.h" />
+    <ClInclude Include="Source\CameraEffects\ExperienceBar.h" />
     <ClInclude Include="Source\CSVReader\CSVReader.h" />
     <ClInclude Include="Source\CSVWriter\CSVWriter.h" />
     <ClInclude Include="Source\Minimap\Minimap.h" />

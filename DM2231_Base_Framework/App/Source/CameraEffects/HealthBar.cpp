@@ -51,8 +51,8 @@ bool CHealthBar::Init(glm::vec3 pos, glm::vec4 color)
 
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
-	fHeight = 0.0333f * 1;
-	fWidth = 0.0333f * 10;
+	fHeight = 0.0333f * 0.8;
+	fWidth = 0.0333f * 8;
 	vec3Position = pos;
 	vec4Colour = color;
 
@@ -123,14 +123,19 @@ void CHealthBar::Update(const double dElapsedTime)
 	//	vec3Scale.x = 1.0f;
 	//if (GetType2() == CEntity3D::ENEMYTYPE::SCRAKE)
 	//{
-		if (healthBar)
-		{
-			//vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime * dmgmultiplier;
-			vec3Scale.x = (float)cPlayer3D->GetHealth() / 100;
-			healthBar = !healthBar;
-		}
+	if (healthBar)
+	{
+		//vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime * dmgmultiplier;
+		vec3Scale.x = (float)cPlayer3D->GetHealth() / 100;
+		healthBar = !healthBar;
+	}
 	//}
 
+	// if (healthBar)
+	// {
+	// 	vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime * dmgmultiplier;
+	// 	healthBar = !healthBar;
+	// }
 }
 
 /**

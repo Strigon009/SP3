@@ -131,6 +131,7 @@ CScene3D::CScene3D(void)
 	, cCameraEffects(NULL)
 	, cHealthBar(NULL)
 	, cArmorBar(NULL)
+	, cExpBar(NULL)
 	, cMinimap(NULL)
 	, cCrossHair(NULL)
 	, cWeaponInfo(NULL)
@@ -174,6 +175,12 @@ CScene3D::~CScene3D(void)
 	{
 		delete cArmorBar;
 		cArmorBar = NULL;
+	}
+	// Destroy the cCameraEffects
+	if (cExpBar)
+	{
+		delete cExpBar;
+		cExpBar = NULL;
 	}
 
 	// Destroy the cCameraEffects
@@ -500,6 +507,13 @@ bool CScene3D::Init(void)
 	cArmorBar->Init(glm::vec3(-1.0f + 0.0333f, -1.1f + 0.0333f * 58, 0.0f), glm::vec4(0.0f, 0.0f, 1.0f, 0.5f));
 
 	cEntityManager->SetArmorBar(cArmorBar);
+	// Load the ProgressBar
+	cExpBar = new CExperienceBar();
+	// Set a shader to this class instance of CameraEffects
+	cExpBar->SetShader(cGUISimpleShader);
+	cExpBar->Init(glm::vec3(-1.f + 0.0333f, -2.85f + 0.0333f * 58, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 0.5f));
+
+	cEntityManager->SetExpBar(cExpBar);
 
 	// Load the Minimap
 	cMinimap = CMinimap::GetInstance();
@@ -577,7 +591,8 @@ void CScene3D::Update(const double dElapsedTime)
 	if ((CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_SPACE))
 		|| (cJoystickController->IsButtonDown(0))) // Button 0 is the A button on the GamePad
 		cPlayer3D->SetToJump();
-
+	if ((CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_X))) // Button 0 is the A button on the GamePad
+		cPlayer3D->SetToDodge();
 	// Get keyboard updates for camera
 	if (!cPlayer3D->IsCameraAttached())
 	{
@@ -614,17 +629,15 @@ void CScene3D::Update(const double dElapsedTime)
 	}
 	if (CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_R))
 	{
-
 		cPlayer3D->GetWeapon()->Reload();
 	}
 
 	// Get mouse button updates
-	if ((cMouseController->IsButtonReleased(CMouseController::BUTTON_TYPE::LMB))
+	if ((cMouseController->IsButtonDown(CMouseController::BUTTON_TYPE::LMB))
 		|| (cJoystickController->IsButtonDown(2))) // Button 2 is the X button on the GamePad
 	{
 		// Try to create a projectile using the primary weapon, 0
 		CProjectile* cProjectile = cPlayer3D->DischargeWeapon();
-		
 		// If the projectile was successfully created then add to the EntityManager
 		if (cProjectile)
 			cEntityManager->Add(cProjectile);
@@ -705,6 +718,8 @@ void CScene3D::Update(const double dElapsedTime)
 		{
 			cPlayer3D->SetHealth(cPlayer3D->GetHealth() - 2);
 		}
+				//cCameraEffects->Activate_BloodScreen();
+		cPlayer3D->GainExp(5);
 		break;
 	case 4:
 		if (cPlayer3D->GetHealth() == 100)
@@ -715,6 +730,7 @@ void CScene3D::Update(const double dElapsedTime)
 		{
 			cPlayer3D->SetHealth(cPlayer3D->GetHealth() + 30);
 		}
+
 		break;
 	case 5:
 		if (cPlayer3D->GetArmor() == 100)
@@ -755,6 +771,8 @@ void CScene3D::Update(const double dElapsedTime)
 		cArmorBar->Update(dElapsedTime);
 	//else
 		cHealthBar->Update(dElapsedTime);
+
+		cExpBar->Update(dElapsedTime);
 
 	cWeaponInfo = cPlayer3D->GetWeapon();
 }
@@ -884,9 +902,13 @@ void CScene3D::Render(void)
 	cArmorBar->PreRender();
 	cArmorBar->Render();
 	cArmorBar->PostRender();
+	
+	cExpBar->PreRender();
+	cExpBar->Render();
+	cExpBar->PostRender();
 
 	cCrossHair->PreRender();
-	cCrossHair->Render(cPlayer3D->GetWeapon());
+	cCrossHair->Render();
 	cCrossHair->PostRender();
 
 	cMinimap->Render();
@@ -896,24 +918,40 @@ void CScene3D::Render(void)
 
 	// Call the CTextRenderer's Render()
 	textShader->use();
-	//cTextRenderer->Render("DM2231 GDEV 2D", 10.0f, 10.0f, 0.5f, glm::vec3(1.0f, 1.0f, 0.0f));
-	// Render FPS info
-	//	cTextRenderer->Render(cFPSCounter->GetFrameRateString(), 10.0f, 580.0f, 0.5f, glm::vec3(1.0f, 1.0f, 0.0f));
-	// Render Camera Position
-	cTextRenderer->Render(glm::to_string(cPlayer3D->GetPosition()), 10.0f, 30.0f, 0.5f, glm::vec3(1.0f, 1.0f, 0.0f));
-	// Render Camera Position
-	cTextRenderer->Render(glm::to_string(cCamera->vec3Position), 10.0f, 10.0f, 0.5f, glm::vec3(1.0f, 1.0f, 0.0f));
 
-	if (cWeaponInfo->type == CWeaponInfo::WeaponType::PISTOL)
+	if (cPlayer3D->GetWeapon())
 	{
-		cTextRenderer->Render("PISTOL", 70, 535, 1, glm::vec3(0, 0, 0));
-	}
-	else
-	{
-		cTextRenderer->Render("RIFLE", 70, 535, 1, glm::vec3(0, 0, 0));
-	}
-	cTextRenderer->Render(std::to_string(cWeaponInfo->GetMagRound()) + "/" + std::to_string(cWeaponInfo->GetMaxMagRound()), 100, 500, 1, glm::vec3(0, 0, 0));
+		string ammo;
+		ammo += "Mag ammo: ";
+		ammo += to_string(cPlayer3D->GetWeapon()->GetMagRound());
+		cTextRenderer->Render(ammo, 550.f, 10.0f, 0.5f, glm::vec3(0.0f, 0.0f, 0.0f));
 
+	}
+	if (cPlayer3D->GetWeapon())
+	{
+		string ammo;
+		ammo += "Total ammo: ";
+		ammo += to_string(cPlayer3D->GetWeapon()->GetTotalRound());
+		cTextRenderer->Render(ammo, 550.f, 40.0f, 0.5f, glm::vec3(0.0f, 0.0f, 0.0f));
+
+	}
+	string currentWeap;
+	currentWeap += "Current Weap: ";
+	if (cPlayer3D->GetCurrentWeaponIndex() == 0)
+	{
+
+		currentWeap += "Pistol";
+		cTextRenderer->Render(currentWeap, 550.f, 70.0f, 0.5f, glm::vec3(0.3f, 0.6f, 1.0f));
+	}
+	if (cPlayer3D->GetCurrentWeaponIndex() == 1)
+	{
+		currentWeap += "Minigun";
+		cTextRenderer->Render(currentWeap, 550.f, 70.0f, 0.5f, glm::vec3(1.f, 0.f, 0.f));
+	}
+	string level;
+	level += "Level: ";
+	level += to_string(cPlayer3D->GetCurrentPlayerLevel());
+	cTextRenderer->Render(level, 10.f, 40.0f, 0.5f, glm::vec3(0.0f, 0.0f, 0.0f));
 	// Call the cTextRenderer's PostRender()
 	cTextRenderer->PostRender();
 

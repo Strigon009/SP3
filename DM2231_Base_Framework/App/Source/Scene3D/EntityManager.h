@@ -18,7 +18,9 @@
 #include "EnemyBoss3D.h"
 #include "../CameraEffects/HealthBar.h"
 #include "../CameraEffects/ArmorBar.h"
-
+#include "../CameraEffects/ExperienceBar.h"
+//#include "../CameraEffects/InfectionBar.h"
+#include "WeaponInfo/WeaponInfo.h"
 #include "ArmorPickup.h"
 
 #include "../SoundController/SoundController.h"
@@ -63,6 +65,8 @@ public:
 
 	void SetArmorBar(CArmorBar* pBar);
 
+	void SetExpBar(CExperienceBar* pBar);
+
 	bool get_moveTo();
 	void set_moveTo(bool b);
 
@@ -86,12 +90,17 @@ protected:
 
 	CHealthBar* cHealthBar;
 	CArmorBar* cArmorBar;
+	CExperienceBar* cExpBar;
+	//CArmorBar* cArmorBar;
 
 	CArmorPickup* cArmorPickup;
 
 	CPlayer3D* cPlayer3D;
 
 	CSoundController* cSoundController;
+
+	CWeaponInfo* cPrimaryWeapon;
+	CWeaponInfo* cSecondaryWeapon;
 
 	int enemy_deathCount;
 

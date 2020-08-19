@@ -1,6 +1,6 @@
 #include "WeaponInfo.h"
 #include "Projectile.h"
-
+#include "../../SoundController/SoundController.h"
 #include <iostream>
 using namespace std;
 
@@ -16,6 +16,7 @@ CWeaponInfo::CWeaponInfo()
 	, dElapsedTime(0.0)
 	, bFire(true)
 	, type(RIFLE)
+	, IsReloading(false)
 {
 }
 
@@ -177,16 +178,40 @@ void CWeaponInfo::Init(void)
  */
 void CWeaponInfo::Update(const double dt)
 {
+
+	float currentTime = GetTickCount64() * 0.001f;
+
+
 	// If the weapon can fire, then don't check further
 	if (bFire)
 		return;
 
 	dElapsedTime += dt;
-	if (dElapsedTime > dTimeBetweenShots)
-	{
-		bFire = true;
-		dElapsedTime = 0.0;
+	if (IsReloading)
+	{	
+		if (dElapsedTime >= reloadTime)
+		{
+			dElapsedTime = 0.0f;
+			IsReloading = false;
+			bFire = true;
+			return;
+		}
 	}
+	else if(!IsReloading)
+	{
+		if (dElapsedTime > dTimeBetweenShots)
+		{
+			bFire = true;
+			dElapsedTime = 0.0f;
+		}
+	}
+
+	//dElapsedTime += dt;
+	//if (dElapsedTime > dTimeBetweenShots)
+	//{
+	//	bFire = true;
+	//	dElapsedTime = 0.0;
+	//}
 }
 
 /**
@@ -214,7 +239,7 @@ CProjectile* CWeaponInfo::Discharge(glm::vec3 vec3Position, glm::vec3 vec3Front,
 			bFire = false;
 			// Reduce the rounds by 1
 			iMagRounds--;
-
+			CSoundController::GetInstance()->PlaySoundByID(iAudioShoot);
 			return aProjectile;
 		}
 	}
@@ -226,6 +251,8 @@ CProjectile* CWeaponInfo::Discharge(glm::vec3 vec3Position, glm::vec3 vec3Front,
  */
 void CWeaponInfo::Reload(void)
 {
+	IsReloading = true;
+	bFire = false;
 	if (iMagRounds < iMaxMagRounds)
 	{
 		if (iMaxMagRounds - iMagRounds <= iTotalRounds)
@@ -238,8 +265,10 @@ void CWeaponInfo::Reload(void)
 			iMagRounds += iTotalRounds;
 			iTotalRounds = 0;
 		}
+		CSoundController::GetInstance()->PlaySoundByID(iAudioReload);
 	}
 }
+
 
 /**
  @brief Add rounds
@@ -250,6 +279,11 @@ void CWeaponInfo::AddRounds(const int newRounds)
 		iTotalRounds = iMaxTotalRounds;
 	else
 		iTotalRounds += newRounds;
+}
+
+float CWeaponInfo::GetWeaponDamage()
+{
+	return weaponDamage;
 }
 
 /**
