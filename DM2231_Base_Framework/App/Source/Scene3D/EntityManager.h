@@ -20,6 +20,8 @@
 #include "../CameraEffects/ArmorBar.h"
 #include "../CameraEffects/InfectionBar.h"
 
+#include "ArmorPickup.h"
+
 #include "../SoundController/SoundController.h"
 
 class CEntityManager : public CSingletonTemplate<CEntityManager>
@@ -43,7 +45,8 @@ public:
 	virtual bool Erase(CEntity3D* cEntity3D);
 
 	// Collision Check for a CEntity3D*
-	virtual bool CollisionCheck(CEntity3D* cEntity3D);
+	//virtual bool CollisionCheck(CEntity3D* cEntity3D);
+	virtual int CollisionCheck(CEntity3D* cEntity3D);
 
 	// Update this class instance
 	virtual void Update(const double dElapsedTime);
@@ -82,6 +85,10 @@ protected:
 	CHealthBar* cHealthBar;
 	CArmorBar* cArmorBar;
 	CInfectionBar* cInfectionBar;
+
+	CArmorPickup* cArmorPickup;
+
+	CPlayer3D* cPlayer3D;
 
 	CSoundController* cSoundController;
 

@@ -167,7 +167,6 @@ protected:
 
 	bool renderBoss;
 	bool bossDED;
-
 	bool printLoseScreen;
 	bool printWinScreen;
 

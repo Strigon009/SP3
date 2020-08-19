@@ -107,10 +107,10 @@ bool CEntityManager::Erase(CEntity3D* cEntity3D)
 /**
 @brief Collision Check for a CEntity3D*
 */
-bool CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
+int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 {
-	bool bResult = false;
-
+	int bResult = 0;
+		
 	std::list<CEntity3D*>::iterator it, end;
 	end = lEntity3D.end();
 	for (it = lEntity3D.begin(); it != end; ++it)
@@ -141,8 +141,9 @@ bool CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				// Mark the projectile for deletion
 				(*it)->SetToDelete(true);
 				cout << "** Collision between Player and Projectile ***" << endl;
-				bResult = true;
+				bResult = 2;
 				// Quit this loop since a collision has been found
+				
 				break;
 			}
 			else if ((*it)->GetType() == CEntity3D::TYPE::STRUCTURE)
@@ -153,8 +154,9 @@ bool CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				//cSoundController->PlaySoundByID(2);
 
 				cout << "** Collision between Player and Structure ***" << endl;
-				bResult = true;
+				bResult = 3;
 				// Quit this loop since a collision has been found
+				
 				break;
 			}
 			else if ((*it)->GetType() == CEntity3D::TYPE::HEALTH_PICKUP)
@@ -163,18 +165,25 @@ bool CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				(*it)->RollbackPosition();
 
 				cout << "** Collision between Player and Health_PickUp ***" << endl;
-				bResult = true;
+				bResult = 4;
 				// Quit this loop since a collision has been found
+				
 				break;
 			}
 			else if ((*it)->GetType() == CEntity3D::TYPE::ARMOR_PICKUP)
 			{
 				// Rollback the cEntity3D's position
-				(*it)->RollbackPosition();
+				(*it)->SetToDelete(true);
 
-				cout << "** Collision between Player and Health_PickUp ***" << endl;
-				bResult = true;
+				static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
+
+				cout << "** Collision between Player and Armor_PickUp ***" << endl;
+
+				//static_cast<CArmorBar*>(*it)->SetArmourBarLength(static_cast<CArmorBar*>(*it)->GetArmorBarLength() + 10);
+
+				bResult = 5;
 				// Quit this loop since a collision has been found
+				
 				break;
 			}
 			else if ((*it)->GetType() == CEntity3D::TYPE::POWERUP)
@@ -183,8 +192,9 @@ bool CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				(*it)->RollbackPosition();
 
 				cout << "** Collision between Player and Powerup ***" << endl;
-				bResult = true;
+				bResult = 6;
 				// Quit this loop since a collision has been found
+				
 				break;
 			}
 		}

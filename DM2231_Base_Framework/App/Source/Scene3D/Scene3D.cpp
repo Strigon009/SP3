@@ -626,10 +626,17 @@ void CScene3D::Update(const double dElapsedTime)
 	cEntityManager->Update(dElapsedTime);
 
 	// Check for Player3D colliding with Entities
-	if (cEntityManager->CollisionCheck(cPlayer3D) == true)
+	switch (cEntityManager->CollisionCheck(cPlayer3D))
 	{
+	case 1:
 		cCameraEffects->Activate_BloodScreen();
-		cPlayer3D->iArmor -= 5 * dElapsedTime;
+		cPlayer3D->SetArmor(cPlayer3D->GetArmor() - 5);
+		break;
+	case 5:
+		cPlayer3D->SetArmor(cPlayer3D->GetArmor() + 30);
+		break;
+	default:
+		break;
 	}
 
 	// Clean up the deleted CEntity3D in the entity manager
@@ -799,6 +806,7 @@ void CScene3D::Render(void)
 	cTextRenderer->Render(glm::to_string(cPlayer3D->GetPosition()), 10.0f, 30.0f, 0.5f, glm::vec3(1.0f, 1.0f, 0.0f));
 	// Render Camera Position
 	cTextRenderer->Render(glm::to_string(cCamera->vec3Position), 10.0f, 10.0f, 0.5f, glm::vec3(1.0f, 1.0f, 0.0f));
+
 	if (cWeaponInfo->type == CWeaponInfo::WeaponType::PISTOL)
 	{
 		cTextRenderer->Render("PISTOL", 70, 535, 1, glm::vec3(0, 0, 0));

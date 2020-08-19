@@ -63,7 +63,10 @@ public:
 	// PostRender
 	virtual void PostRender(void);
 
-	int iAddArmor;
+	// Set the health of the player
+	void SetAddArmor(const int iAddArmor);
+	// Get the health of the player
+	int GetAddArmor(void) const;
 
 protected:
 	// The handle to the CGroundMap class instance
@@ -73,4 +76,6 @@ protected:
 
 	// Handler to the Player3D class
 	CPlayer3D* cPlayer3D;
+
+	int iAddArmor;
 };
