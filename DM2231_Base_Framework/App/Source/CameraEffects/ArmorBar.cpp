@@ -118,14 +118,10 @@ void CArmorBar::SetProjection(glm::mat4 projection)
  */
 void CArmorBar::Update(const double dElapsedTime)
 {
-	//vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime;
-	//if (vec3Scale.x <= 0.01f)
-	//	vec3Scale.x = 1.0f;
 	if (armorBar)
 	{
-		//vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime;
-		vec3Scale.x = (float)cPlayer3D->iArmor / 100;
-
+		//vec3Scale.x = vec3Scale.x - 0.5f * dElapsedTime;
+		vec3Scale.x = (float)cPlayer3D->GetArmor() / 100;
 		armorBar = !armorBar;
 	}
 }
@@ -227,4 +223,8 @@ float CArmorBar::GetArmorBarLength()
 void CArmorBar::SetArmorDmgMultiplier(float dmg)
 {
 	armorDmgMultiplier = dmg;
+
+void CArmorBar::SetArmourBarLength(float length)
+{
+	vec3Scale.x = length;
 }

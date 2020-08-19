@@ -47,7 +47,7 @@ public:
 	void SetArmorDmgMultiplier(float dmg);
 
 	float GetArmorBarLength();
-
+	void SetArmourBarLength(float length);
 
 protected:
 	// A transformation matrix for controlling where to render the entities

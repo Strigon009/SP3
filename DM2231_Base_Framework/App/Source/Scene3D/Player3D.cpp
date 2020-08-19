@@ -607,3 +607,35 @@ void CPlayer3D::UpdateJumpFall(const double dElapsedTime)
 		}
 	}
 }
+
+/**
+ @brief Set the health of the player
+ */
+void CPlayer3D::SetHealth(const int iHealth)
+{
+	this->iHealth = iHealth;
+}
+
+/**
+ @brief Get the health of the player
+ */
+int CPlayer3D::GetHealth(void) const
+{
+	return iHealth;
+}
+
+/**
+ @brief Set the health of the player
+ */
+void CPlayer3D::SetArmor(const int iArmor)
+{
+	this->iArmor = iArmor;
+}
+
+/**
+ @brief Get the health of the player
+ */
+int CPlayer3D::GetArmor(void) const
+{
+	return iArmor;
+}
