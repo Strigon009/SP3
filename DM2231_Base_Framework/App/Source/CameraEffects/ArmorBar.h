@@ -44,10 +44,8 @@ public:
 
 	void SetArmorBarState(bool state);
 
-
-
 	float GetArmorBarLength();
-
+	void SetArmourBarLength(float length);
 
 protected:
 	// A transformation matrix for controlling where to render the entities
