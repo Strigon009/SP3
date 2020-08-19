@@ -25,9 +25,9 @@ void CRifle::Init(void)
 	type = CWeaponInfo::WeaponType::RIFLE;
 
 	// The number of ammunition in a magazine for this weapon
-	iMagRounds = 30;
+	iMagRounds = 99;
 	// The maximum number of ammunition for this magazine for this weapon
-	iMaxMagRounds = 30;
+	iMaxMagRounds = 99;
 	// The current total number of rounds currently carried by this player
 	iTotalRounds = 99;
 	// The max total number of rounds currently carried by this player

@@ -90,11 +90,18 @@ CScene3D::CScene3D(void)
 	, cCrossHair(NULL)
 	, cWeaponInfo(NULL)
 	, cArmorPickup(NULL)
-	, renderBoss(false)
 	, printLoseScreen(false)
 	, printWinScreen(false)
 	, bossDED(false)
 {
+	wave_count = 0;
+	zombieCount = crawlerCount = scrakeCount = 0;
+
+	wave2_start = wave3_start = wave4_start = boss_start = false;
+	
+	bossDED = false;
+
+	printLoseScreen, printWinScreen = false;
 }
 
 /**
@@ -334,6 +341,7 @@ bool CScene3D::Init(void)
 	cPistol->SetShader(cSimpleShader);
 	cPlayer3D->SetWeapon(0, cPistol);
 
+<<<<<<< Updated upstream
 	float randPos = rand() % 3 + 2;
 	float randPos2 = rand() % 6 + 4;
 	//float randPos3 = rand() % 8 + 7;
@@ -343,33 +351,65 @@ bool CScene3D::Init(void)
 	
 	AddEnemy(cEnemy3D, glm::vec3(2, 10.f, 2), glm::vec3(1,1,1));
 	AddEnemy(cEnemy3D, glm::vec3(4, 10.f, 2), glm::vec3(1,1,1));
+=======
+	CRifle* cRifle = new CRifle();
+	cRifle->Init();
+	cRifle->SetShader(cSimpleShader);
+	cPlayer3D->SetWeapon(1, cRifle);
 
-	// Initialise a CStructure3D
-	CStructure3D* cStructure3D = new CStructure3D();
-	
-	AddWall(cStructure3D, glm::vec3(10.f, 0.5f, 0.0f),glm::vec3(1, 5, 100));
-	AddWall(cStructure3D, glm::vec3(-10.f, 0.5f, 0.0f), glm::vec3(1, 5, 100));
-	AddWall(cStructure3D, glm::vec3(0.0f, 0.5f, -10.f), glm::vec3(100, 5, 1));
-	AddWall(cStructure3D, glm::vec3(0.0f, 0.5f, 10.f), glm::vec3(100, 5, 1));
+	// Initialise the cEnemy3D
+>>>>>>> Stashed changes
 
-	CStructureTower* cTower = new CStructureTower(glm::vec3(-5, 0, 5));
+	// CEnemy3D == Crawler zombie
+	// CEnemy3D2 == Basic zombie
+	// CEnemy3D3 == Scrake, big nigga
+
+	spawnTimer = 0;
+
+	srand(time(NULL));
+
+	++wave_count;
+	for (int i = 1; i <= 12; ++i)
+	{
+		int switchPos = rand() % 4 + 1;
+
+		glm::vec3 spawnPos;
+
+		switch (switchPos)
+		{
+			case 1:
+			{
+				spawnPos = glm::vec3(8, 2, 8);
+				break;
+			}
+			case 2:
+			{
+				spawnPos = glm::vec3(-8, 2, 8);
+				break;
+			}
+			case 3:
+			{
+				spawnPos = glm::vec3(8, 2, -8);
+				break;
+			}
+			case 4:
+			{
+				spawnPos = glm::vec3(-8, 2, -8);
+				break;
+			}
+		}
+
+		CEnemy3D2* cEnemy3D2 = new CEnemy3D2();
+		AddEnemy2(cEnemy3D2, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+	}
+
+	CStructureTower* cTower = new CStructureTower(glm::vec3(5, 0, 0));
 
 	cTower->SetShader(cShader);
 	cTower->Init();
 	cTower->SetScale(glm::vec3(0.5, 0.5, 0.5));
 	cTower->ActivateCollider(cSimpleShader);
 	cEntityManager->Add(cTower);
-
-	//CStructure2_3D* cStructure3D2 = new CStructure2_3D(glm::vec3(6, 0.5, 6));
-
-	//AddPillar(cStructure3D2, glm::vec3(6, 0.5, 6), glm::vec3(0.5, 5, 0.5));
-	//AddPillar(cStructure3D2, glm::vec3(6, 0.5, -6), glm::vec3(0.5, 5, 0.5));
-	//AddPillar(cStructure3D2, glm::vec3(-6, 0.5, 6), glm::vec3(0.5, 5, 0.5));
-	//AddPillar(cStructure3D2, glm::vec3(-6, 0.5, -6), glm::vec3(0.5, 5, 0.5));
-	//AddPillar(cStructure3D2, glm::vec3(-6, 0.5, 0), glm::vec3(0.5, 5, 0.5));
-	//AddPillar(cStructure3D2, glm::vec3(6, 0.5, 0), glm::vec3(0.5, 5, 0.5));
-	//AddPillar(cStructure3D2, glm::vec3(0, 0.5, -6), glm::vec3(0.5, 5, 0.5));
-	//AddPillar(cStructure3D2, glm::vec3(0, 0.5, 6), glm::vec3(0.5, 5, 0.5));
 
 	CArmorPickup* cArmorPickup = new CArmorPickup();
 
@@ -559,52 +599,364 @@ void CScene3D::Update(const double dElapsedTime)
 		cCamera->fZoom = 45.f;
 	}
 
-	if (cEntityManager->get_enemy_deathCount() > 4)
+	srand(time(NULL));
+
+	spawnTimer += dElapsedTime;
+	cout << spawnTimer << endl;
+	//cout << cEntityManager->get_enemy_deathCount() << endl;
+
+	//WAVE 2 LOGIC
+	if (wave_count == 1 && cEntityManager->get_enemy_deathCount() >= 12 && wave2_start == false)
 	{
-		renderBoss = true;
+		wave2_start = true;
+		cPlayer3D->SetPosition(glm::vec3(0, 0.5, 0));
+	}
+	if (wave2_start == true)
+	{
+		// basic zombie spawning
+		if (zombieCount != 14)
+		{
+			if (spawnTimer >= 1.4f)
+			{
+				int switchPos = rand() % 4 + 1;
+
+				glm::vec3 spawnPos;
+
+				switch (switchPos)
+				{
+				case 1:
+				{
+					spawnPos = glm::vec3(10, 2, 10);
+					break;
+				}
+				case 2:
+				{
+					spawnPos = glm::vec3(-10, 2, 10);
+					break;
+				}
+				case 3:
+				{
+					spawnPos = glm::vec3(10, 2, -10);
+					break;
+				}
+				case 4:
+				{
+					spawnPos = glm::vec3(-10, 2, -10);
+					break;
+				}
+				}
+
+				CEnemy3D2* cEnemy3D2 = new CEnemy3D2();
+				AddEnemy2(cEnemy3D2, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+
+				++zombieCount;
+			}
+		}
+
+		// crawler spawning
+		if (crawlerCount != 6)
+		{
+			if (spawnTimer >= 1.4f)
+			{
+				int switchPos = rand() % 4 + 1;
+
+				glm::vec3 spawnPos;
+
+				switch (switchPos)
+				{
+				case 1:
+				{
+					spawnPos = glm::vec3(10, 2, 10);
+					break;
+				}
+				case 2:
+				{
+					spawnPos = glm::vec3(-10, 2, 10);
+					break;
+				}
+				case 3:
+				{
+					spawnPos = glm::vec3(10, 2, -10);
+					break;
+				}
+				case 4:
+				{
+					spawnPos = glm::vec3(-10, 2, -10);
+					break;
+				}
+				}
+
+				CEnemy3D* cEnemy3D = new CEnemy3D();
+				AddEnemy(cEnemy3D, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+
+				++crawlerCount;
+			}
+		}
+
+		spawnTimer = 0.f;
+
+		if (zombieCount == 14)
+		{
+			wave2_start = false;
+			cEntityManager->set_enemy_deathCount(0);
+			++wave_count;
+		}
 	}
 
-	if (renderBoss == true)
-	{
-		//cSoundController->PlaySoundByID(7);
-		//cSoundController->VolumeDecrease(7);
+	//WAVE 3 LOGIC
+	//if (wave_count == 2 && cEntityManager->get_enemy_deathCount() > 19 && wave3_start == false)
+	//{
+	//	wave3_start = true;
+	//	cPlayer3D->SetPosition(glm::vec3(0, 0.5, 0));
+	//}
+	//if (wave3_start == true)
+	//{
+	//	// basic zombie spawning
+	//	for (int i = 1; i <= 12; ++i)
+	//	{
+	//		int switchPos = rand() % 4 + 1;
 
-		CEnemyBoss3D* cEnemyBoss3D = new CEnemyBoss3D(glm::vec3(4.f, 40.f, -4.f));
+	//		glm::vec3 spawnPos;
 
-		cEnemyBoss3D->SetShader(cShader);
-		cEnemyBoss3D->Init();
-		cEnemyBoss3D->ActivateCollider(cSimpleShader);
-		cEntityManager->Add(cEnemyBoss3D);
+	//		switch (switchPos)
+	//		{
+	//		case 1:
+	//		{
+	//			spawnPos = glm::vec3(8, 2, 8);
+	//			break;
+	//		}
+	//		case 2:
+	//		{
+	//			spawnPos = glm::vec3(-8, 2, 8);
+	//			break;
+	//		}
+	//		case 3:
+	//		{
+	//			spawnPos = glm::vec3(8, 2, -8);
+	//			break;
+	//		}
+	//		case 4:
+	//		{
+	//			spawnPos = glm::vec3(-8, 2, -8);
+	//			break;
+	//		}
+	//		}
 
-		CEnemyBoss3D* cEnemyBoss3D_2 = new CEnemyBoss3D(glm::vec3(-4.f, 40.f, 4.f));
+	//		cout << i << endl;
+	//		CEnemy3D2* cEnemy3D2 = new CEnemy3D2();
+	//		AddEnemy2(cEnemy3D2, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+	//	}
 
-		cEnemyBoss3D_2->SetShader(cShader);
-		cEnemyBoss3D_2->Init();
-		cEnemyBoss3D_2->ActivateCollider(cSimpleShader);
-		cEntityManager->Add(cEnemyBoss3D_2);
+	//	// crawler spawning
+	//	for (int i = 1; i <= 10; ++i)
+	//	{
+	//		int switchPos = rand() % 4 + 1;
 
-		CRifle* cRifle = new CRifle();
-		cRifle->Init();
-		cRifle->SetShader(cSimpleShader);
-		cPlayer3D->SetWeapon(1, cRifle);
+	//		glm::vec3 spawnPos;
 
-		cEntityManager->set_enemy_deathCount(0);
-		renderBoss = false;
-		bossDED = true;
-	}
+	//		switch (switchPos)
+	//		{
+	//		case 1:
+	//		{
+	//			spawnPos = glm::vec3(8, 2, 8);
+	//			break;
+	//		}
+	//		case 2:
+	//		{
+	//			spawnPos = glm::vec3(-8, 2, 8);
+	//			break;
+	//		}
+	//		case 3:
+	//		{
+	//			spawnPos = glm::vec3(8, 2, -8);
+	//			break;
+	//		}
+	//		case 4:
+	//		{
+	//			spawnPos = glm::vec3(-8, 2, -8);
+	//			break;
+	//		}
+	//		}
+
+	//		cout << i << endl;
+	//		CEnemy3D* cEnemy3D = new CEnemy3D();
+	//		AddEnemy(cEnemy3D, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+	//	}
+	//	
+	//	// big nigga spawning
+	//	for (int i = 1; i <= 6; ++i)
+	//	{
+	//		int switchPos = rand() % 4 + 1;
+
+	//		glm::vec3 spawnPos;
+
+	//		switch (switchPos)
+	//		{
+	//		case 1:
+	//		{
+	//			spawnPos = glm::vec3(8, 2, 8);
+	//			break;
+	//		}
+	//		case 2:
+	//		{
+	//			spawnPos = glm::vec3(-8, 2, 8);
+	//			break;
+	//		}
+	//		case 3:
+	//		{
+	//			spawnPos = glm::vec3(8, 2, -8);
+	//			break;
+	//		}
+	//		case 4:
+	//		{
+	//			spawnPos = glm::vec3(-8, 2, -8);
+	//			break;
+	//		}
+	//		}
+
+	//		cout << i << endl;
+	//		CEnemy3D3* cEnemy3D3 = new CEnemy3D3();
+	//		AddEnemy3(cEnemy3D3, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+	//	}
+
+	//	wave3_start = false;
+	//	cEntityManager->set_enemy_deathCount(0);
+	//	++wave_count;
+	//}
+
+	//// WAVE 4 LOGIC
+	//if (wave_count == 3 && cEntityManager->get_enemy_deathCount() > 28)
+	//{
+	//	wave4_start = true;
+	//}
+	//if (wave4_start == true)
+	//{
+	//	// basic zombie spawning
+	//	for (int i = 1; i <= 12; ++i)
+	//	{
+	//		int switchPos = rand() % 4 + 1;
+
+	//		glm::vec3 spawnPos;
+
+	//		switch (switchPos)
+	//		{
+	//		case 1:
+	//		{
+	//			spawnPos = glm::vec3(8, 2, 8);
+	//			break;
+	//		}
+	//		case 2:
+	//		{
+	//			spawnPos = glm::vec3(-8, 2, 8);
+	//			break;
+	//		}
+	//		case 3:
+	//		{
+	//			spawnPos = glm::vec3(8, 2, -8);
+	//			break;
+	//		}
+	//		case 4:
+	//		{
+	//			spawnPos = glm::vec3(-8, 2, -8);
+	//			break;
+	//		}
+	//		}
+
+	//		cout << i << endl;
+
+	//		CEnemy3D2* cEnemy3D2 = new CEnemy3D2();
+	//		AddEnemy2(cEnemy3D2, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+	//	}
+
+	//	// crawler spawning
+	//	for (int i = 1; i <= 10; ++i)
+	//	{
+	//		int switchPos = rand() % 4 + 1;
+
+	//		glm::vec3 spawnPos;
+
+	//		switch (switchPos)
+	//		{
+	//		case 1:
+	//		{
+	//			spawnPos = glm::vec3(8, 2, 8);
+	//			break;
+	//		}
+	//		case 2:
+	//		{
+	//			spawnPos = glm::vec3(-8, 2, 8);
+	//			break;
+	//		}
+	//		case 3:
+	//		{
+	//			spawnPos = glm::vec3(8, 2, -8);
+	//			break;
+	//		}
+	//		case 4:
+	//		{
+	//			spawnPos = glm::vec3(-8, 2, -8);
+	//			break;
+	//		}
+	//		}
+
+	//		cout << i << endl;
+	//		CEnemy3D* cEnemy3D = new CEnemy3D();
+	//		AddEnemy(cEnemy3D, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+	//	}
+
+	//	// big nigga spawning
+	//	for (int i = 1; i <= 6; ++i)
+	//	{
+	//		int switchPos = rand() % 4 + 1;
+
+	//		glm::vec3 spawnPos;
+
+	//		switch (switchPos)
+	//		{
+	//		case 1:
+	//		{
+	//			spawnPos = glm::vec3(8, 2, 8);
+	//			break;
+	//		}
+	//		case 2:
+	//		{
+	//			spawnPos = glm::vec3(-8, 2, 8);
+	//			break;
+	//		}
+	//		case 3:
+	//		{
+	//			spawnPos = glm::vec3(8, 2, -8);
+	//			break;
+	//		}
+	//		case 4:
+	//		{
+	//			spawnPos = glm::vec3(-8, 2, -8);
+	//			break;
+	//		}
+	//		}
+
+	//		cout << i << endl;
+	//		CEnemy3D3* cEnemy3D3 = new CEnemy3D3();
+	//		AddEnemy3(cEnemy3D3, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+	//	}
+
+	//	wave3_start = false;
+	//	cEntityManager->set_enemy_deathCount(0);
+	//	++wave_count;
+	//}
 
 	// WIN LOSE CONDITIONS
-	if (cEntityManager->get_enemy_deathCount() > 1 && bossDED == true && printWinScreen == false)
-	{
-		//cSoundController->PlaySoundByID(6);
-		printWinScreen = true;
-	}
+	//if (cEntityManager->get_enemy_deathCount() > 1 && bossDED == true && printWinScreen == false)
+	//{
+	//	//cSoundController->PlaySoundByID(6);
+	//	printWinScreen = true;
+	//}
 
-	if (static_cast<CHealthBar*>(cHealthBar)->GetHealthBarLength() <= 0 && printLoseScreen == false)
-	{
-		//cSoundController->PlaySoundByID(5);
-		printLoseScreen = true;
-	}
+	//if (static_cast<CHealthBar*>(cHealthBar)->GetHealthBarLength() <= 0 && printLoseScreen == false)
+	//{
+	//	//cSoundController->PlaySoundByID(5);
+	//	printLoseScreen = true;
+	//}
 
 	// Post Update the mouse controller
 	cMouseController->PostUpdate();
