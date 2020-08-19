@@ -22,6 +22,8 @@
 // Include GroundMap
 #include "GroundMap.h"
 
+#include "..\Scene3D\Player3D.h"
+
 // An abstract camera class that processes input and calculates the corresponding Euler Angles, Vectors and Matrices for use in OpenGL
 class CHealthPickup : public CEntity3D
 {
@@ -61,9 +63,16 @@ public:
 	// PostRender
 	virtual void PostRender(void);
 
+	void SetAddHealth(const int iAddHealth);
+
+	int GetAddHealth(void) const;
+
 protected:
 	// The handle to the CGroundMap class instance
 	CGroundMap* cGroundMap;
 
-	// Add more things
+	// Handler to the Player3D class
+	CPlayer3D* cPlayer3D;
+
+	int iAddHealth;
 };

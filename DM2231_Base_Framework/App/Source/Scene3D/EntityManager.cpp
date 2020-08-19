@@ -139,8 +139,17 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				(*it)->RollbackPosition();
 				cout << "** Collision between Player and NPC ***" << endl;
 				bResult = 1;
-				static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(true);
-				static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
+
+				if (bInvincibility == true)
+				{
+					static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(false);
+					static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(false);
+				}
+				else
+				{
+					static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(true);
+					static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
+				}
 				
 				break;
 			}
@@ -170,7 +179,9 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 			else if ((*it)->GetType() == CEntity3D::TYPE::HEALTH_PICKUP)
 			{
 				// Rollback the cEntity3D's position
-				(*it)->RollbackPosition();
+				(*it)->SetToDelete(true);
+
+				static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(true);
 
 				cout << "** Collision between Player and Health_PickUp ***" << endl;
 				bResult = 4;
@@ -180,24 +191,22 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 			}
 			else if ((*it)->GetType() == CEntity3D::TYPE::ARMOR_PICKUP)
 			{
-				// Rollback the cEntity3D's position
 				(*it)->SetToDelete(true);
 
 				static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
 
 				cout << "** Collision between Player and Armor_PickUp ***" << endl;
-
-				//static_cast<CArmorBar*>(*it)->SetArmourBarLength(static_cast<CArmorBar*>(*it)->GetArmorBarLength() + 10);
-
 				bResult = 5;
 				// Quit this loop since a collision has been found
-				
+
 				break;
 			}
 			else if ((*it)->GetType() == CEntity3D::TYPE::POWERUP)
 			{
 				// Rollback the cEntity3D's position
-				(*it)->RollbackPosition();
+				(*it)->SetToDelete(true);
+
+				bInvincibility = true;
 
 				cout << "** Collision between Player and Powerup ***" << endl;
 				bResult = 6;
@@ -428,4 +437,14 @@ bool CEntityManager::get_moveTo()
 void CEntityManager::set_moveTo(bool b)
 {
 	moveTo_Tower = b;
+}
+
+bool CEntityManager::GetInvincibility()
+{
+	return bInvincibility;
+}
+
+void CEntityManager::SetInvincibility(bool bInvincibility)
+{
+	this->bInvincibility = bInvincibility;
 }

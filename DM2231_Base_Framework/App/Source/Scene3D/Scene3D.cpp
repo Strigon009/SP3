@@ -85,6 +85,28 @@ void CScene3D::AddArmorPickUp(CArmorPickup* cArmorPickup, glm::vec3 pos, glm::ve
 
 }
 
+void CScene3D::AddHealthPickUp(CHealthPickup* cHealthPickup, glm::vec3 pos, glm::vec3 scale)
+{
+	cHealthPickup = new CHealthPickup(pos);
+
+	cHealthPickup->SetShader(cShader);
+	cHealthPickup->Init();
+	cHealthPickup->SetScale(scale);
+	cHealthPickup->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cHealthPickup);
+}
+
+void CScene3D::AddPowerUp(CPowerUp* cPowerUp, glm::vec3 pos, glm::vec3 scale)
+{
+	cPowerUp = new CPowerUp(pos);
+
+	cPowerUp->SetShader(cShader);
+	cPowerUp->Init();
+	cPowerUp->SetScale(scale);
+	cPowerUp->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cPowerUp);
+}
+
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
@@ -113,6 +135,8 @@ CScene3D::CScene3D(void)
 	, cCrossHair(NULL)
 	, cWeaponInfo(NULL)
 	, cArmorPickup(NULL)
+	, cHealthPickup(NULL)
+	, cPowerUp(NULL)
 	, renderBoss(false)
 	, printLoseScreen(false)
 	, printWinScreen(false)
@@ -273,7 +297,12 @@ CScene3D::~CScene3D(void)
 
 	// We won't delete this since it was created elsewhere
 	cSettings = NULL;
+
 	cArmorPickup = NULL;
+
+	cHealthPickup = NULL;
+
+	cPowerUp = NULL;
 }
 
 /**
@@ -369,8 +398,8 @@ bool CScene3D::Init(void)
 	CEnemy3D2* cEnemy3D2 = new CEnemy3D2();
 	CEnemy3D3* cEnemy3D3 = new CEnemy3D3();
 	
-	AddEnemy(cEnemy3D, glm::vec3(2, 1.f, 4), glm::vec3(1, 0.3f, 1));
-	AddEnemy(cEnemy3D, glm::vec3(6, 1.f, 2), glm::vec3(1, 0.3f, 1));
+	//AddEnemy(cEnemy3D, glm::vec3(2, 1.f, 4), glm::vec3(1, 0.3f, 1));
+	//AddEnemy(cEnemy3D, glm::vec3(6, 1.f, 2), glm::vec3(1, 0.3f, 1));
 	//AddEnemy(cEnemy3D, glm::vec3(2, 1.f, 2), glm::vec3(1, 0.3f, 1));
 	//AddEnemy(cEnemy3D, glm::vec3(4, 1.f, 2), glm::vec3(1, 0.3f, 1));
 
@@ -379,13 +408,13 @@ bool CScene3D::Init(void)
 	//AddEnemy2(cEnemy3D2, glm::vec3(1, 1.f, 6), glm::vec3(1, 1, 1));
 	//AddEnemy2(cEnemy3D2, glm::vec3(5, 1.f, 3), glm::vec3(1, 1, 1));
 
-	AddEnemy3(cEnemy3D3, glm::vec3(8, 1, 4), glm::vec3(2,2,2));
+	//AddEnemy3(cEnemy3D3, glm::vec3(8, 1, 4), glm::vec3(2,2,2));
 	//AddEnemy2(cEnemy3D2, glm::vec3(6, 1.f, 6), glm::vec3(1, 1, 1));
 	//AddEnemy2(cEnemy3D2, glm::vec3(1, 1.f, 6), glm::vec3(1, 1, 1));
 	//AddEnemy2(cEnemy3D2, glm::vec3(5, 1.f, 3), glm::vec3(1, 1, 1));
 	
 	AddEnemy(cEnemy3D, glm::vec3(2, 10.f, 2), glm::vec3(1,1,1));
-	AddEnemy(cEnemy3D, glm::vec3(4, 10.f, 2), glm::vec3(1,1,1));
+	//AddEnemy(cEnemy3D, glm::vec3(4, 10.f, 2), glm::vec3(1,1,1));
 
 	// Initialise a CStructure3D
 	CStructure3D* cStructure3D = new CStructure3D();
@@ -416,7 +445,16 @@ bool CScene3D::Init(void)
 
 	CArmorPickup* cArmorPickup = new CArmorPickup();
 
-	AddArmorPickUp(cArmorPickup, glm::vec3(3.5f, 0.2f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+	AddArmorPickUp(cArmorPickup, glm::vec3(3.5f, 0.25f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+
+	CHealthPickup* cHealthPickup = new CHealthPickup();
+
+	AddHealthPickUp(cHealthPickup, glm::vec3(3.5f, 0.25f, -3.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+
+	CPowerUp* cPowerUp = new CPowerUp();
+
+	AddPowerUp(cPowerUp, glm::vec3(-3.5f, 0.25f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+
 	// Load the SkyBox
 	cSkyBox = CSkyBox::GetInstance();
 	// Set a shader to this class instance of CSkyBox
@@ -659,10 +697,45 @@ void CScene3D::Update(const double dElapsedTime)
 	{
 	case 1:
 		cCameraEffects->Activate_BloodScreen();
-		cPlayer3D->SetArmor(cPlayer3D->GetArmor() - 5);
+		if (cPlayer3D->GetArmor() > 0)
+		{
+			cPlayer3D->SetArmor(cPlayer3D->GetArmor() - 5);
+		}
+		else if (cPlayer3D->GetHealth() > 0)
+		{
+			cPlayer3D->SetHealth(cPlayer3D->GetHealth() - 2);
+		}
+		break;
+	case 4:
+		if (cPlayer3D->GetHealth() == 100)
+		{
+			// Do nothing
+		}
+		else
+		{
+			cPlayer3D->SetHealth(cPlayer3D->GetHealth() + 30);
+		}
 		break;
 	case 5:
-		cPlayer3D->SetArmor(cPlayer3D->GetArmor() + 30);
+		if (cPlayer3D->GetArmor() == 100)
+		{
+			// Do nothing
+		}
+		else
+		{
+			cPlayer3D->SetArmor(cPlayer3D->GetArmor() + 30);
+		}
+		break;
+	case 6:
+		/*if (cPlayer3D->GetArmor() > 0)
+		{
+			cPlayer3D->SetArmor(cPlayer3D->GetArmor() - 0);
+			cout << "You got yeeted" << endl;
+		}
+		else if (cPlayer3D->GetHealth() > 0)
+		{
+			cPlayer3D->SetHealth(cPlayer3D->GetHealth() - 0);
+		}*/
 		break;
 	default:
 		break;
@@ -681,7 +754,7 @@ void CScene3D::Update(const double dElapsedTime)
 	//if(static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() >= 0)
 		cArmorBar->Update(dElapsedTime);
 	//else
-		//cHealthBar->Update(dElapsedTime);
+		cHealthBar->Update(dElapsedTime);
 
 	cWeaponInfo = cPlayer3D->GetWeapon();
 }

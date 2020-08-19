@@ -8,6 +8,10 @@
 #include <includes/gtc/matrix_transform.hpp>
 #include <includes/gtc/type_ptr.hpp>
 
+#include "..\Scene3D\Player3D.h"
+
+#include "..\Scene3D\HealthPickup.h"
+
 class CHealthBar : public CEntity3D
 {
 public:
@@ -36,22 +40,24 @@ public:
 	// PostRender
 	virtual void PostRender(void);
 
-	
 	bool GetHealthBarState();
 	void SetHealthBarState(bool state);
 
-	float GetHealthBarLength();
 	void SetDmgMultiplier(float dmg);
-
+	
+	float GetHealthBarLength();
+	void SetHealthBarLength(float length);
 
 protected:
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
 	bool healthBar;
 
-
 	float fHeight, fWidth;
 	float dmgmultiplier;
 
+	// Handler to the Player3D class
+	CPlayer3D* cPlayer3D;
 
+	CHealthPickup* cHealthPickup;
 };

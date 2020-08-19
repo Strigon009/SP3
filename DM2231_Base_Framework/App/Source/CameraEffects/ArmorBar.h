@@ -41,7 +41,6 @@ public:
 	virtual void PostRender(void);
 
 	bool GetArmorBarState();
-
 	void SetArmorBarState(bool state);
 
 	void SetArmorDmgMultiplier(float dmg);

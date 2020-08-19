@@ -77,7 +77,7 @@ bool CPowerUp::Init(void)
 	vec3Scale = glm::vec3(1, 1, 1);
 	vec3ColliderScale = glm::vec3(1, 1, 1);
 
-	std::string file_path = "OBJ/box2.obj";
+	std::string file_path = "OBJ/Shield.obj";
 	bool success = LoadOBJ(file_path.c_str(), vertices, uvs, normals);
 	if (!success)
 		return NULL;
@@ -97,7 +97,7 @@ bool CPowerUp::Init(void)
 	index_buffer_size = index_buffer_data.size();
 
 	// load and create a texture 
-	iTextureID = LoadTexture("Image/structure2.tga");
+	iTextureID = LoadTexture("Image/pillar.tga");
 	if (iTextureID == 0)
 	{
 		cout << "Unable to load Image/Scene3D_Structure_01.tga" << endl;
