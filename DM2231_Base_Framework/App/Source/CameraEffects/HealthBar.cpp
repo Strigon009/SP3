@@ -112,17 +112,12 @@ void CHealthBar::SetProjection(glm::mat4 projection)
  */
 void CHealthBar::Update(const double dElapsedTime)
 {
-	//vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime;
-	//if (vec3Scale.x <= 0.01f)
-	//	vec3Scale.x = 1.0f;
-	//if (GetType2() == CEntity3D::ENEMYTYPE::SCRAKE)
-	{
 		if (healthBar)
 		{
 			vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime * dmgmultiplier;
 			healthBar = !healthBar;
 		}
-	}
+	
 
 }
 

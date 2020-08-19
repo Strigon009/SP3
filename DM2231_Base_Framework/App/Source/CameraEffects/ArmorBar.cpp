@@ -120,7 +120,7 @@ void CArmorBar::Update(const double dElapsedTime)
 {
 	if (armorBar)
 	{
-		//vec3Scale.x = vec3Scale.x - 0.5f * dElapsedTime;
+		//vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime * armorDmgMultiplier;
 		vec3Scale.x = (float)cPlayer3D->GetArmor() / 100;
 		armorBar = !armorBar;
 	}

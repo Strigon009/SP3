@@ -50,6 +50,18 @@ void CScene3D::AddEnemy3(CEnemy3D3* cEnemy3D3, glm::vec3 pos, glm::vec3 scale)
 	cEnemy3D3->ActivateCollider(cSimpleShader);
 	cEntityManager->Add(cEnemy3D3);
 }
+
+void CScene3D::AddBoss1(CEnemyBoss3D* cEnemyBoss3D, glm::vec3 pos, glm::vec3 scale)
+{
+	cEnemyBoss3D = new CEnemyBoss3D(pos);
+	cEnemyBoss3D->SetShader(cShader);
+	cEnemyBoss3D->SetScale(scale);
+	cEnemyBoss3D->SetColliderScale(scale);
+	cEnemyBoss3D->Init();
+	cEnemyBoss3D->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cEnemyBoss3D);
+}
+
 void CScene3D::AddWall(CStructure3D* cStructure3D, glm::vec3 pos, glm::vec3 scale)
 {
 	cStructure3D = new CStructure3D(pos);
@@ -368,9 +380,12 @@ bool CScene3D::Init(void)
 	CEnemy3D* cEnemy3D = new CEnemy3D();
 	CEnemy3D2* cEnemy3D2 = new CEnemy3D2();
 	CEnemy3D3* cEnemy3D3 = new CEnemy3D3();
+	CEnemyBoss3D* cEnemyBoss3D = new CEnemyBoss3D();
+
+	AddBoss1(cEnemyBoss3D, glm::vec3(2, 1.f, 4), glm::vec3(0.1, 0.1, 0.1));
 	
 	AddEnemy(cEnemy3D, glm::vec3(2, 1.f, 4), glm::vec3(1, 0.3f, 1));
-	AddEnemy(cEnemy3D, glm::vec3(6, 1.f, 2), glm::vec3(1, 0.3f, 1));
+	//AddEnemy(cEnemy3D, glm::vec3(6, 1.f, 2), glm::vec3(1, 0.3f, 1));
 	//AddEnemy(cEnemy3D, glm::vec3(2, 1.f, 2), glm::vec3(1, 0.3f, 1));
 	//AddEnemy(cEnemy3D, glm::vec3(4, 1.f, 2), glm::vec3(1, 0.3f, 1));
 
@@ -384,8 +399,8 @@ bool CScene3D::Init(void)
 	//AddEnemy2(cEnemy3D2, glm::vec3(1, 1.f, 6), glm::vec3(1, 1, 1));
 	//AddEnemy2(cEnemy3D2, glm::vec3(5, 1.f, 3), glm::vec3(1, 1, 1));
 	
-	AddEnemy(cEnemy3D, glm::vec3(2, 10.f, 2), glm::vec3(1,1,1));
-	AddEnemy(cEnemy3D, glm::vec3(4, 10.f, 2), glm::vec3(1,1,1));
+	//AddEnemy(cEnemy3D, glm::vec3(2, 10.f, 2), glm::vec3(1,1,1));
+	//AddEnemy(cEnemy3D, glm::vec3(4, 10.f, 2), glm::vec3(1,1,1));
 
 	// Initialise a CStructure3D
 	CStructure3D* cStructure3D = new CStructure3D();
@@ -659,7 +674,7 @@ void CScene3D::Update(const double dElapsedTime)
 	{
 	case 1:
 		cCameraEffects->Activate_BloodScreen();
-		cPlayer3D->SetArmor(cPlayer3D->GetArmor() - 5);
+		cPlayer3D->SetArmor(cPlayer3D->GetArmor() - 1);
 		break;
 	case 5:
 		cPlayer3D->SetArmor(cPlayer3D->GetArmor() + 30);
@@ -678,10 +693,10 @@ void CScene3D::Update(const double dElapsedTime)
 	cCameraEffects->Update(dElapsedTime);
 
 	// Update progress bar
-	//if(static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() >= 0)
+	if(static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() >= 0)
 		cArmorBar->Update(dElapsedTime);
-	//else
-		//cHealthBar->Update(dElapsedTime);
+	else
+		cHealthBar->Update(dElapsedTime);
 
 	cWeaponInfo = cPlayer3D->GetWeapon();
 }

@@ -46,6 +46,7 @@ public:
 
 	void SetArmorDmgMultiplier(float dmg);
 
+
 	float GetArmorBarLength();
 	void SetArmourBarLength(float length);
 

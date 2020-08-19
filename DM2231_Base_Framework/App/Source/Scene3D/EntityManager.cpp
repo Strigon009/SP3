@@ -182,7 +182,6 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 			{
 				// Rollback the cEntity3D's position
 				(*it)->SetToDelete(true);
-
 				static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
 
 				cout << "** Collision between Player and Armor_PickUp ***" << endl;
