@@ -10,7 +10,6 @@
     <ClCompile Include="Source\CSVWriter\CSVWriter.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Minimap\Minimap.cpp" />
-    <ClCompile Include="Source\Scene3D\ArmorPickup.cpp" />
     <ClCompile Include="Source\Scene3D\Camera.cpp" />
     <ClCompile Include="Source\Scene3D\CrossHair\CrossHair.cpp" />
     <ClCompile Include="Source\Scene3D\Enemy3D.cpp" />
@@ -33,6 +32,9 @@
     <ClCompile Include="Source\Scene3D\WeaponInfo\WeaponInfo.cpp" />
     <ClCompile Include="Source\SoundController\SoundController.cpp" />
     <ClCompile Include="Source\SoundController\SoundInfo.cpp" />
+    <ClCompile Include="Source\Scene3D\Enemy3D2.cpp" />
+    <ClCompile Include="Source\Scene3D\Enemy3D3.cpp" />
+    <ClCompile Include="Source\Scene3D\ArmorPickup.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
@@ -66,5 +68,7 @@
     <ClInclude Include="Source\Scene3D\WeaponInfo\WeaponInfo.h" />
     <ClInclude Include="Source\SoundController\SoundController.h" />
     <ClInclude Include="Source\SoundController\SoundInfo.h" />
+    <ClInclude Include="Source\Scene3D\Enemy3D2.h" />
+    <ClInclude Include="Source\Scene3D\Enemy3D3.h" />
   </ItemGroup>
 </Project>
