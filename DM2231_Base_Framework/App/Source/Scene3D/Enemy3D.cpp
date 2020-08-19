@@ -436,7 +436,6 @@ void CEnemy3D::UpdateEnemyVectors(void)
 	if (cPlayer3D)
 	{
 		// Update the direction of the enemy
-=======
 	//	front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
 
 	//	// Update the yaw and pitch
@@ -444,36 +443,37 @@ void CEnemy3D::UpdateEnemyVectors(void)
 	//	fPitch = glm::degrees(glm::asin(front.y));
 	//}
 
-	if ((cManager)->get_moveTo() == true)
-	{
-		front = glm::normalize(glm::vec3(cTower->GetPosition() - vec3Position));
+		if ((cManager)->get_moveTo() == true)
+		{
+			front = glm::normalize(glm::vec3(cTower->GetPosition() - vec3Position));
 
-		// Update the yaw and pitch
-		fYaw = glm::degrees(glm::atan(front.z, front.x));
-		fPitch = glm::degrees(glm::asin(front.y));
-	}
-	else
-	{
-		front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
+			// Update the yaw and pitch
+			fYaw = glm::degrees(glm::atan(front.z, front.x));
+			fPitch = glm::degrees(glm::asin(front.y));
+		}
+		else
+		{
+			front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
 
-		// Update the yaw and pitch
-		fYaw = glm::degrees(glm::atan(front.z, front.x));
-		fPitch = glm::degrees(glm::asin(front.y));
-	}
-	
-	vec3Front = front;
-	// Also re-calculate the Right and Up vector
-	// Normalize the vectors, because their length gets closer to 0 the more 
-	// you look up or down which results in slower movement.
-	vec3Right = glm::normalize(glm::cross(vec3Front, vec3WorldUp));  
-	vec3Up = glm::normalize(glm::cross(vec3Right, vec3Front));
+			// Update the yaw and pitch
+			fYaw = glm::degrees(glm::atan(front.z, front.x));
+			fPitch = glm::degrees(glm::asin(front.y));
+		}
 
-	// If the camera is attached to this player, then update the camera
-	if (cCamera)
-	{
-		cCamera->vec3Front = vec3Front;
-		cCamera->vec3Right = vec3Right;
-		cCamera->vec3Up = vec3Up;
+		vec3Front = front;
+		// Also re-calculate the Right and Up vector
+		// Normalize the vectors, because their length gets closer to 0 the more 
+		// you look up or down which results in slower movement.
+		vec3Right = glm::normalize(glm::cross(vec3Front, vec3WorldUp));
+		vec3Up = glm::normalize(glm::cross(vec3Right, vec3Front));
+
+		// If the camera is attached to this player, then update the camera
+		if (cCamera)
+		{
+			cCamera->vec3Front = vec3Front;
+			cCamera->vec3Right = vec3Right;
+			cCamera->vec3Up = vec3Up;
+		}
 	}
 }
 
