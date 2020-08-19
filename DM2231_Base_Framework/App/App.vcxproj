@@ -29,7 +29,6 @@
     <ClCompile Include="Source\Scene3D\GroundMap.cpp" />
     <ClCompile Include="Source\Scene3D\GroundTile.cpp" />
     <ClCompile Include="Source\Scene3D\HealthPickup.cpp" />
-    <ClCompile Include="Source\Scene3D\PauseMenu.cpp" />
     <ClCompile Include="Source\Scene3D\Physics3D.cpp" />
     <ClCompile Include="Source\Scene3D\Player3D.cpp" />
     <ClCompile Include="Source\Scene3D\PowerUp.cpp" />
@@ -37,6 +36,7 @@
     <ClCompile Include="Source\Scene3D\SkyBox.cpp" />
     <ClCompile Include="Source\Scene3D\Structure3D.cpp" />
     <ClCompile Include="Source\Scene3D\Structure3D_2.cpp" />
+    <ClCompile Include="Source\Scene3D\Structure3D_Tower.cpp" />
     <ClCompile Include="Source\Scene3D\WeaponInfo\Pistol.cpp" />
     <ClCompile Include="Source\Scene3D\WeaponInfo\Projectile.cpp" />
     <ClCompile Include="Source\Scene3D\WeaponInfo\Rifle.cpp" />
@@ -62,7 +62,6 @@
     <ClInclude Include="Source\Scene3D\GroundMap.h" />
     <ClInclude Include="Source\Scene3D\GroundTile.h" />
     <ClInclude Include="Source\Scene3D\HealthPickup.h" />
-    <ClInclude Include="Source\Scene3D\PauseMenu.h" />
     <ClInclude Include="Source\Scene3D\Physics3D.h" />
     <ClInclude Include="Source\Scene3D\Player3D.h" />
     <ClInclude Include="Source\Scene3D\PowerUp.h" />
@@ -70,6 +69,7 @@
     <ClInclude Include="Source\Scene3D\SkyBox.h" />
     <ClInclude Include="Source\Scene3D\Structure3D.h" />
     <ClInclude Include="Source\Scene3D\Structure3D_2.h" />
+    <ClInclude Include="Source\Scene3D\Structure3D_Tower.h" />
     <ClInclude Include="Source\Scene3D\WeaponInfo\Pistol.h" />
     <ClInclude Include="Source\Scene3D\WeaponInfo\Projectile.h" />
     <ClInclude Include="Source\Scene3D\WeaponInfo\Rifle.h" />

@@ -18,9 +18,12 @@
 
 // Include Player3D
 #include "Player3D.h"
+#include "Structure3D_Tower.h"
 
 // Include GroundMap
 #include "GroundMap.h"
+
+class CEntityManager;
 
 // An abstract camera class that processes input and calculates the corresponding Euler Angles, Vectors and Matrices for use in OpenGL
 class CEnemy3D : public CEntity3D
@@ -111,6 +114,10 @@ protected:
 
 	// The handle to the CGroundMap class instance
 	CGroundMap* cGroundMap;
+
+	CStructureTower* cTower;
+
+	CEntityManager* cManager;
 
     // Calculates the front vector from the Enemy's (updated) Euler Angles
 	void UpdateEnemyVectors(void);
