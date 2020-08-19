@@ -41,6 +41,8 @@
 #include "Player3D.h"
 // Include Enemy3D
 #include "Enemy3D.h"
+#include "Enemy3D2.h"
+#include "Enemy3D3.h"
 #include "EnemyBoss3D.h"
 // Include Camera
 #include "Camera.h"
@@ -61,10 +63,8 @@
 #include "CrossHair\CrossHair.h"
 
 #include "WeaponInfo/WeaponInfo.h"
-
 // Include Pickups
 #include "ArmorPickup.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -159,7 +159,6 @@ protected:
 	CCrossHair* cCrossHair;
 
 	CWeaponInfo* cWeaponInfo;
-
 	CArmorPickup* cArmorPickup;
 
 	bool renderBoss;
@@ -168,10 +167,10 @@ protected:
 	bool printWinScreen;
 
 	void AddEnemy(CEnemy3D* cEnemy3D, glm::vec3 pos, glm::vec3 scale);
+	void AddEnemy2(CEnemy3D2* cEnemy3D2, glm::vec3 pos, glm::vec3 scale);
+	void AddEnemy3(CEnemy3D3* cEnemy3D3, glm::vec3 pos, glm::vec3 scale);
 	void AddWall(CStructure3D* cStructure3D, glm::vec3 pos, glm::vec3 scale);
-
 	void AddPillar(CStructure2_3D* cStructure3D, glm::vec3 pos, glm::vec3 scale);
-
 	void AddArmorPickUp(CArmorPickup* cArmorPickup, glm::vec3 pos, glm::vec3 scale);
 	
 	// Constructor

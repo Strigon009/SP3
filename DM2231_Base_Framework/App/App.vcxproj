@@ -24,6 +24,8 @@
     <ClCompile Include="Source\Scene3D\Camera.cpp" />
     <ClCompile Include="Source\Scene3D\CrossHair\CrossHair.cpp" />
     <ClCompile Include="Source\Scene3D\Enemy3D.cpp" />
+    <ClCompile Include="Source\Scene3D\Enemy3D2.cpp" />
+    <ClCompile Include="Source\Scene3D\Enemy3D3.cpp" />
     <ClCompile Include="Source\Scene3D\EnemyBoss3D.cpp" />
     <ClCompile Include="Source\Scene3D\EntityManager.cpp" />
     <ClCompile Include="Source\Scene3D\GroundMap.cpp" />
@@ -53,10 +55,12 @@
     <ClInclude Include="Source\CSVReader\CSVReader.h" />
     <ClInclude Include="Source\CSVWriter\CSVWriter.h" />
     <ClInclude Include="Source\Minimap\Minimap.h" />
-    <ClInclude Include="Source\Scene3D\ArmorPickup.h" />
     <ClInclude Include="Source\Scene3D\Camera.h" />
     <ClInclude Include="Source\Scene3D\CrossHair\CrossHair.h" />
     <ClInclude Include="Source\Scene3D\Enemy3D.h" />
+    <ClInclude Include="Source\Scene3D\Enemy3D2.h" />
+    <ClInclude Include="Source\Scene3D\Enemy3D3.h" />
+    <ClInclude Include="Source\Scene3D\ArmorPickup.h" />
     <ClInclude Include="Source\Scene3D\EnemyBoss3D.h" />
     <ClInclude Include="Source\Scene3D\EntityManager.h" />
     <ClInclude Include="Source\Scene3D\GroundMap.h" />
@@ -123,6 +127,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)/Library/Source;$(SolutionDir)/glfw/include;$(SolutionDir)/glew/include;$(SolutionDir)/glm;$(SolutionDir)/irrKlang;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

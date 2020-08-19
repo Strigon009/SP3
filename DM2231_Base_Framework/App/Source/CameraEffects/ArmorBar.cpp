@@ -220,7 +220,10 @@ float CArmorBar::GetArmorBarLength()
 {
 	return vec3Scale.x;
 }
-
+void CArmorBar::SetArmorDmgMultiplier(float dmg)
+{
+	armorDmgMultiplier = dmg;
+}
 void CArmorBar::SetArmourBarLength(float length)
 {
 	vec3Scale.x = length;

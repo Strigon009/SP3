@@ -3,7 +3,7 @@
  By: Toh Da Jun
  Date: Apr 2020
  */
-#include "Enemy3D.h"
+#include "Enemy3D2.h"
 
 // Allowing loading of LoadOBJ.h
 #include "System/LoadOBJ.h"
@@ -14,7 +14,7 @@ using namespace std;
 /**
  @brief Default Constructor
  */
-CEnemy3D::CEnemy3D(void)
+CEnemy3D2::CEnemy3D2(void)
 	: vec3Up(glm::vec3(0.0f, 1.0f, 0.0f))
 	, vec3Right(glm::vec3(1.0f, 1.0f, 0.0f))
 	, vec3WorldUp(glm::vec3(0.0f, 1.0f, 0.0f))
@@ -24,8 +24,8 @@ CEnemy3D::CEnemy3D(void)
 	, cCamera(NULL)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
-	, enemyDamage(2)
-	, enemyHealth(3)
+	, enemyHealth(7)
+	
 {
 	// Set the default position to the origin
 	vec3Position = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -41,7 +41,7 @@ CEnemy3D::CEnemy3D(void)
  @param yaw A const float variable which contains the yaw of the camera
  @param pitch A const float variable which contains the pitch of the camera
  */
-CEnemy3D::CEnemy3D(	const glm::vec3 vec3Position,
+CEnemy3D2::CEnemy3D2(	const glm::vec3 vec3Position,
 					const glm::vec3 vec3Front,
 					const float fYaw,
 					const float fPitch)
@@ -54,8 +54,7 @@ CEnemy3D::CEnemy3D(	const glm::vec3 vec3Position,
 	, cCamera(NULL)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
-	, enemyHealth(2)
-	, enemyDamage(2)
+	, enemyHealth(5)
 {
 	// Set the default position to the origin
 	this->vec3Position = vec3Position;
@@ -67,7 +66,7 @@ CEnemy3D::CEnemy3D(	const glm::vec3 vec3Position,
 /**
  @brief Destructor
  */
-CEnemy3D::~CEnemy3D(void)
+CEnemy3D2::~CEnemy3D2(void)
 {
 	if (cGroundMap)
 	{
@@ -96,7 +95,7 @@ CEnemy3D::~CEnemy3D(void)
  @brief Initialise this class instance
  @return true is successfully initialised this class instance, else false
  */
-bool CEnemy3D::Init(void)
+bool CEnemy3D2::Init(void)
 {
 	// Check if the shader is ready
 	if (!cShader)
@@ -118,8 +117,6 @@ bool CEnemy3D::Init(void)
 	std:: vector <glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
 
-	vec3Scale = glm::vec3(1,1,1);
-	vec3ColliderScale = glm::vec3(1.25, 2, 0.5);
 
 	std::string file_path = "OBJ//enemy2.obj";
 	bool success = LoadOBJ(file_path.c_str(), vertices, uvs, normals);
@@ -172,7 +169,7 @@ bool CEnemy3D::Init(void)
  @brief Set model
  @param model A glm::mat4 variable containing the model for this class instance
  */
-void CEnemy3D::SetModel(glm::mat4 model)
+void CEnemy3D2::SetModel(glm::mat4 model)
 {
 	this->model = model;
 }
@@ -181,7 +178,7 @@ void CEnemy3D::SetModel(glm::mat4 model)
  @brief Set view
  @param view A glm::mat4 variable containing the model for this class instance
  */
-void CEnemy3D::SetView(glm::mat4 view)
+void CEnemy3D2::SetView(glm::mat4 view)
 {
 	this->view = view;
 }
@@ -190,7 +187,7 @@ void CEnemy3D::SetView(glm::mat4 view)
  @brief Set projection
  @param projection A glm::mat4 variable containing the model for this class instance
  */
-void CEnemy3D::SetProjection(glm::mat4 projection)
+void CEnemy3D2::SetProjection(glm::mat4 projection)
 {
 	this->projection = projection;
 }
@@ -199,7 +196,7 @@ void CEnemy3D::SetProjection(glm::mat4 projection)
  @brief Attach a camera to this class instance
  @param cCamera A CCamera* variable which contains the camera
  */
-void CEnemy3D::AttachCamera(CCamera* cCamera)
+void CEnemy3D2::AttachCamera(CCamera* cCamera)
 {
 	// Set the camera to the player
 	this->cCamera = cCamera;
@@ -216,7 +213,7 @@ void CEnemy3D::AttachCamera(CCamera* cCamera)
  @brief Check if a camera ia attached to this class instance
  @return true if a camera is attached, else false
  */
-bool CEnemy3D::IsCameraAttached(void)
+bool CEnemy3D2::IsCameraAttached(void)
 {
 	if (cCamera)
 		return true;
@@ -228,9 +225,9 @@ bool CEnemy3D::IsCameraAttached(void)
  @param direction A const Player_Movement variable which contains the movement direction of the camera
  @param deltaTime A const float variable which contains the delta time for the realtime loop
  */
-void CEnemy3D::ProcessMovement(const Enemy_Movement direction, const float deltaTime)
+void CEnemy3D2::ProcessMovement(const Enemy_Movement direction, const float deltaTime)
 {
-	float velocity = fMovementSpeed * deltaTime * 2;
+	float velocity = fMovementSpeed * deltaTime * 0.7f;
 	if (direction == FORWARD)
 		vec3Position += vec3Front * velocity;
 	if (direction == BACKWARD)
@@ -256,7 +253,7 @@ void CEnemy3D::ProcessMovement(const Enemy_Movement direction, const float delta
  @param yoffset A const float variable which contains the y axis of the mouse movement
  @param constrainPitch A const bool variable which indicates if the pitch will be constrained at upright positions
  */
-void CEnemy3D::ProcessRotate(const float fXOffset)
+void CEnemy3D2::ProcessRotate(const float fXOffset)
 {
 	// Update the yaw
 	fYaw += fXOffset;// *fRotationSensitivity;
@@ -268,7 +265,7 @@ void CEnemy3D::ProcessRotate(const float fXOffset)
 /**
 @brief Update this class instance
 */
-void CEnemy3D::Update(const double dElapsedTime)
+void CEnemy3D2::Update(const double dElapsedTime)
 {
 	// Store the enemy's current position, if rollback is needed.
 	StorePositionForRollback();
@@ -295,7 +292,7 @@ void CEnemy3D::Update(const double dElapsedTime)
 @brief Activate the CCollider for this class instance
 @param cLineShader A Shader* variable which stores a shader which renders lines
 */
-void CEnemy3D::ActivateCollider(Shader* cLineShader)
+void CEnemy3D2::ActivateCollider(Shader* cLineShader)
 {
 	// Since we are changing the colour, we don't call the parent's ActivateCollider() method.
 	// Instead we create it here and insert our colour changing codes
@@ -314,7 +311,7 @@ void CEnemy3D::ActivateCollider(Shader* cLineShader)
 /**
 @brief PreRender Set up the OpenGL display environment before rendering
 */
-void CEnemy3D::PreRender(void)
+void CEnemy3D2::PreRender(void)
 {
 	// Draw this as last
 	glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
@@ -324,7 +321,7 @@ void CEnemy3D::PreRender(void)
 @brief Render Render this instance
 @param cShader A Shader* variable which contains the Shader to use in this class instance
 */
-void CEnemy3D::Render(void)
+void CEnemy3D2::Render(void)
 {
 	// If the shader is in this class, then do not render
 	if (!cShader)
@@ -386,35 +383,25 @@ void CEnemy3D::Render(void)
 /**
 @brief PostRender Set up the OpenGL display environment after rendering.
 */
-void CEnemy3D::PostRender(void)
+void CEnemy3D2::PostRender(void)
 {
 	glDepthFunc(GL_LESS); // set depth function back to default
 }
 
-int CEnemy3D::get_enemyHealth()
+int CEnemy3D2::get_enemyHealth()
 {
 	return enemyHealth;
 }
 
-void CEnemy3D::set_enemyHealth(int x)
+void CEnemy3D2::set_enemyHealth(int x)
 {
 	enemyHealth = x;
-}
-
-int CEnemy3D::get_enemyDamage()
-{
-	return 0;
-}
-
-void CEnemy3D::set_enemyDamage(int t)
-{
-	enemyDamage = t;
 }
 
 /**
  @brief Calculates the front vector from the Camera's (updated) Euler Angles
  */
-void CEnemy3D::UpdateEnemyVectors(void)
+void CEnemy3D2::UpdateEnemyVectors(void)
 {
 	// Calculate the new vec3Front vector
 	glm::vec3 front;
@@ -427,51 +414,33 @@ void CEnemy3D::UpdateEnemyVectors(void)
 	if (cPlayer3D)
 	{
 		// Update the direction of the enemy
-	//	front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
+		front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
 
-	//	// Update the yaw and pitch
-	//	fYaw = glm::degrees(glm::atan(front.z, front.x));
-	//	fPitch = glm::degrees(glm::asin(front.y));
-	//}
+		// Update the yaw and pitch
+		fYaw = glm::degrees(glm::atan(front.z, front.x));
+		fPitch = glm::degrees(glm::asin(front.y));
+	}
+	
+	vec3Front = front;
+	// Also re-calculate the Right and Up vector
+	// Normalize the vectors, because their length gets closer to 0 the more 
+	// you look up or down which results in slower movement.
+	vec3Right = glm::normalize(glm::cross(vec3Front, vec3WorldUp));  
+	vec3Up = glm::normalize(glm::cross(vec3Right, vec3Front));
 
-		if ((cManager)->get_moveTo() == true)
-		{
-			front = glm::normalize(glm::vec3(cTower->GetPosition() - vec3Position));
-
-			// Update the yaw and pitch
-			fYaw = glm::degrees(glm::atan(front.z, front.x));
-			fPitch = glm::degrees(glm::asin(front.y));
-		}
-		else
-		{
-			front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
-
-			// Update the yaw and pitch
-			fYaw = glm::degrees(glm::atan(front.z, front.x));
-			fPitch = glm::degrees(glm::asin(front.y));
-		}
-
-		vec3Front = front;
-		// Also re-calculate the Right and Up vector
-		// Normalize the vectors, because their length gets closer to 0 the more 
-		// you look up or down which results in slower movement.
-		vec3Right = glm::normalize(glm::cross(vec3Front, vec3WorldUp));
-		vec3Up = glm::normalize(glm::cross(vec3Right, vec3Front));
-
-		// If the camera is attached to this player, then update the camera
-		if (cCamera)
-		{
-			cCamera->vec3Front = vec3Front;
-			cCamera->vec3Right = vec3Right;
-			cCamera->vec3Up = vec3Up;
-		}
+	// If the camera is attached to this player, then update the camera
+	if (cCamera)
+	{
+		cCamera->vec3Front = vec3Front;
+		cCamera->vec3Right = vec3Right;
+		cCamera->vec3Up = vec3Up;
 	}
 }
 
 /**
  @brief Constraint the player's position
  */
-void CEnemy3D::Constraint(void)
+void CEnemy3D2::Constraint(void)
 {
 	vec3Position = cGroundMap->GetExactPosition(vec3Position);
 }
