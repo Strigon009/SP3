@@ -10,7 +10,6 @@
 // Include CStructure3D
 #include "Structure3D.h"
 #include "Structure3D_2.h"
-#include "Structure3D_Tower.h"
 // Include shader
 #include "RenderControl\shader.h"
 
