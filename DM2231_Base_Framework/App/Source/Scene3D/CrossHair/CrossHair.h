@@ -37,13 +37,10 @@ public:
 	virtual void Update(const double dElapsedTime);
 
 	// Render
-	virtual void Render()
-	{
 
-	}
 
 	// Render
-	virtual void Render(CWeaponInfo* info);
+	virtual void Render(void);
 
 	// PreRender
 	virtual void PreRender(void);

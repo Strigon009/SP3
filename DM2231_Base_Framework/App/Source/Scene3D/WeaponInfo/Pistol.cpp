@@ -24,18 +24,21 @@ void CPistol::Init(void)
 
 
 	type = CWeaponInfo::WeaponType::PISTOL;
-
+	iAudioReload = 12;
+	iAudioShoot = 22;
 	// The number of ammunition in a magazine for this weapon
 	iMagRounds = 8;
 	// The maximum number of ammunition for this magazine for this weapon
 	iMaxMagRounds = 8;
 	// The current total number of rounds currently carried by this player
-	iTotalRounds = 40;
+	iTotalRounds = INT_MAX;
 	// The max total number of rounds currently carried by this player
-	iMaxTotalRounds = 40;
-
-	// The time between shots
+	iMaxTotalRounds = INT_MAX;
+	// Weapon Stats
+	reloadTime = 1.2f;
+	weaponDamage = 1.f;
 	dTimeBetweenShots = 0.3333;
+	autoFire = false;
 	// The elapsed time (between shots)
 	dElapsedTime = 0.0;
 	// Boolean flag to indicate if weapon can fire now

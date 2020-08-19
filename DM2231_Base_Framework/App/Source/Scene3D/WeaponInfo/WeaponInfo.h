@@ -5,6 +5,8 @@
 #include <includes/gtc/matrix_transform.hpp>
 #include <includes/gtc/type_ptr.hpp>
 
+#include "DesignPatterns\SingletonTemplate.h"
+
 // Include Entity3D
 #include <Primitives/Entity3D.h>
 
@@ -68,6 +70,8 @@ public:
 	// Add rounds
 	virtual void AddRounds(const int iNewRounds);
 
+	float GetWeaponDamage();
+
 	// Print Self
 	virtual void PrintSelf(void);
 
@@ -91,11 +95,18 @@ protected:
 	int iTotalRounds;
 	// The max total number of rounds currently carried by this player
 	int iMaxTotalRounds;
-
+	int iAudioReload;
+	int iAudioShoot;
 	// The time between shots in milliseconds
 	double dTimeBetweenShots;
 	// The elapsed time (between shots) in milliseconds
 	double dElapsedTime;
 	// Boolean flag to indicate if weapon can fire now
 	bool bFire;
+	float lastTime;
+	bool IsReloading;
+	// Weapon Stats
+	float reloadTime;
+	float weaponDamage;
+	bool autoFire;
 };

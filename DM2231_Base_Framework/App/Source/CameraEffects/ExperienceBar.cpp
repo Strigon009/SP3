@@ -1,4 +1,4 @@
-#include "ProgressBar.h"
+#include "ExperienceBar.h"
 #include "GL\glew.h"
 
 #include <iostream>
@@ -7,14 +7,15 @@ using namespace std;
 /**
  @brief Default Constructor
  */
-CProgressBar::CProgressBar(void)
+CExperienceBar::CExperienceBar(void)
+	:cPlayer3D(NULL)
 {
 }
 
 /**
  @brief Destructor
  */
-CProgressBar::~CProgressBar(void)
+CExperienceBar::~CExperienceBar(void)
 {
 	// Delete the rendering objects in the graphics card
 	glDeleteVertexArrays(1, &VAO);
@@ -22,13 +23,15 @@ CProgressBar::~CProgressBar(void)
 
 	// We set this to NULL, since it was created elsewhere so we don't delete it here
 	cShader = NULL;
+
+	cPlayer3D = NULL;
 }
 
 /**
  @brief Initialise this class instance
  @return true is successfully initialised this class instance, else false
  */
-bool CProgressBar::Init(void)
+bool CExperienceBar::Init(glm::vec3 pos, glm::vec4 color)
 {
 	// Check if the shader is ready
 	if (!cShader)
@@ -40,15 +43,19 @@ bool CProgressBar::Init(void)
 	// Call the parent's Init()
 	CEntity3D::Init();
 
+	// Initialise the cPlayer3D
+	cPlayer3D = CPlayer3D::GetInstance();
+
 	// Set the type
 	SetType(CEntity3D::TYPE::OTHERS);
 
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
-	fHeight = 0.0333f * 1;
-	fWidth = 0.0333f * 10;
-	vec3Position = glm::vec3(-1.0f + 0.0333f, -1.0f + 0.0333f * 58, 0.0f);
-	vec4Colour = glm::vec4(1.0f, 0.0f, 0.0f, 0.5f);
+	fHeight = 0.0333f * 0.8;
+	fWidth = 0.0333f * 8;
+	vec3Position = pos;
+	vec4Colour = color;
+	vec3Scale.x = 0;
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	float vertices[] = {
@@ -84,7 +91,7 @@ bool CProgressBar::Init(void)
  @brief Set model
  @param model A glm::mat4 variable containing the model for this class instance
  */
-void CProgressBar::SetModel(glm::mat4 model)
+void CExperienceBar::SetModel(glm::mat4 model)
 {
 	this->model = model;
 }
@@ -93,7 +100,7 @@ void CProgressBar::SetModel(glm::mat4 model)
  @brief Set view
  @param view A glm::mat4 variable containing the model for this class instance
  */
-void CProgressBar::SetView(glm::mat4 view)
+void CExperienceBar::SetView(glm::mat4 view)
 {
 	this->view = glm::mat4(glm::mat3(view)); // remove translation from the view matrix
 }
@@ -102,7 +109,7 @@ void CProgressBar::SetView(glm::mat4 view)
  @brief Set projection
  @param projection A glm::mat4 variable containing the model for this class instance
  */
-void CProgressBar::SetProjection(glm::mat4 projection)
+void CExperienceBar::SetProjection(glm::mat4 projection)
 {
 	this->projection = projection;
 }
@@ -110,22 +117,17 @@ void CProgressBar::SetProjection(glm::mat4 projection)
 /**
  @brief PreRender Set up the OpenGL display environment before rendering
  */
-void CProgressBar::Update(const double dElapsedTime)
+void CExperienceBar::Update(const double dElapsedTime)
 {
-	//vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime;
-	//if (vec3Scale.x <= 0.01f)
-	//	vec3Scale.x = 1.0f;
-	if (decrease_healthBar == true)
-	{
-		vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime;
-		decrease_healthBar = false;
-	}
+	if (vec3Scale.x >= 1.f)
+		cPlayer3D->ExpUpdate();
+	vec3Scale.x = cPlayer3D->GetCurrentExp() / 100;
 }
 
 /**
  @brief PreRender Set up the OpenGL display environment before rendering
  */
-void CProgressBar::PreRender(void)
+void CExperienceBar::PreRender(void)
 {
 	// bind textures on corresponding texture units
 	glActiveTexture(GL_TEXTURE0);
@@ -139,7 +141,7 @@ void CProgressBar::PreRender(void)
  @brief Render Render this instance
  @param cShader A Shader* variable which contains the Shader to use in this class instance
  */
-void CProgressBar::Render(void)
+void CExperienceBar::Render(void)
 {
 	// If the shader is in this class, then do not render
 	if (!cShader)
@@ -196,31 +198,9 @@ void CProgressBar::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void CProgressBar::PostRender(void)
+void CExperienceBar::PostRender(void)
 {
 	// Disable blending
 	glDisable(GL_BLEND);
 }
 
-bool CProgressBar::get_healthBarState()
-{
-	if (decrease_healthBar == true)
-	{
-		return true;
-	}
-	
-	else
-	{
-		return false;
-	}
-}
-
-void CProgressBar::set_healthBarState(bool state)
-{
-	decrease_healthBar = state;
-}
-
-float CProgressBar::get_healthBarLength()
-{
-	return vec3Scale.x;
-}

@@ -3,21 +3,24 @@
 // Include Entity3D
 #include <Primitives/Entity3D.h>
 
+#include "..\Scene3D\Player3D.h"
 // Include GLM
 #include <includes/glm.hpp>
 #include <includes/gtc/matrix_transform.hpp>
 #include <includes/gtc/type_ptr.hpp>
 
-class CProgressBar : public CEntity3D
+class CExperienceBar : public CEntity3D
 {
 public:
 	// Constructor
-	CProgressBar(void);
+	CExperienceBar(void);
 	// Destructor
-	virtual ~CProgressBar(void);
+	virtual ~CExperienceBar(void);
+
+	
 
 	// Initialise this class instance
-	bool Init(void);
+	bool Init(glm::vec3 pos, glm::vec4 color);
 
 	// Set model
 	virtual void SetModel(glm::mat4 model);
@@ -36,16 +39,11 @@ public:
 	// PostRender
 	virtual void PostRender(void);
 
-	bool get_healthBarState();
-	void set_healthBarState(bool state);
-
-	float get_healthBarLength();
-
 protected:
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
-	bool decrease_healthBar;
 
+	CPlayer3D* cPlayer3D;
 
 	float fHeight, fWidth;
 

@@ -13,6 +13,7 @@ CEntityManager::CEntityManager(void)
 	, view(glm::mat4(1.0f))
 	, projection(glm::mat4(1.0f))
 	, enemy_deathCount(0)
+	, moveTo_Tower(false)
 {
 }
 
@@ -270,6 +271,8 @@ void CEntityManager::Update(const double dElapsedTime)
 				if (((*it)->GetType() == CEntity3D::TYPE::NPC) &&
 					((*it_other)->GetType() == CEntity3D::TYPE::PROJECTILE))
 				{
+					static_cast<CEnemy3D*>(*it)->set_enemyHealth(static_cast<CEnemy3D*>(*it)->get_enemyHealth() - 1 );
+
 					if (static_cast<CEnemy3D*>(*it)->get_enemyHealth() != 0)
 					{
 						(*it)->RollbackPosition();
@@ -282,11 +285,9 @@ void CEntityManager::Update(const double dElapsedTime)
 
 					(*it_other)->SetToDelete(true);
 					cout << "** Collision between NPC and Projectile ***" << endl;
-
-					static_cast<CEnemy3D*>(*it)->set_enemyHealth(static_cast<CEnemy3D*>(*it)->get_enemyHealth() - 1);
+					
 				}
-				else if (((*it)->GetType() == CEntity3D::TYPE::PROJECTILE) &&
-					((*it_other)->GetType() == CEntity3D::TYPE::NPC))
+				else if (((*it)->GetType() == CEntity3D::TYPE::PROJECTILE) &&((*it_other)->GetType() == CEntity3D::TYPE::NPC))
 				{
 					(*it)->SetToDelete(true);
 
@@ -418,6 +419,11 @@ void CEntityManager::SetHealthBar(CHealthBar* pBar)
 void CEntityManager::SetArmorBar(CArmorBar* pBar)
 {
 	cArmorBar = pBar;
+}
+
+void CEntityManager::SetExpBar(CExperienceBar* pBar)
+{
+	cExpBar = pBar;
 }
 
 bool CEntityManager::get_moveTo()
