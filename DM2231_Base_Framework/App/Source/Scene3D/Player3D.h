@@ -105,6 +105,16 @@ public:
 	// PostRender
 	virtual void PostRender(void);
 
+	// Set the health of the player
+	void SetHealth(const int iHealth);
+	// Get the health of the player
+	int GetHealth(void) const;
+
+	// Set the health of the player
+	void SetArmor(const int iArmor);
+	// Get the health of the player
+	int GetArmor(void) const;
+	
 	// Player's health
 	int iHealth;
 
