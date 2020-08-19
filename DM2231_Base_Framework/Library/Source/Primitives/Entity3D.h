@@ -32,6 +32,12 @@ public:
 		OTHERS,		// Default value: Other entities such as ground and skybox
 		NUM_TYPES
 	};
+	enum ENEMYTYPE
+	{
+		SCRAKE = 0,
+		CRAWLER,
+		NUM_ENEMY_TYPES
+	};
 
 	// The handle to the CCollider class instance
 	CCollider* cCollider;
@@ -59,10 +65,12 @@ public:
 	// Set Methods
 	virtual void SetTextureID(const GLuint iTextureID);
 	virtual void SetType(const TYPE eType);
+	virtual void SetType2(const ENEMYTYPE eType2);
 	virtual void SetPosition(const glm::vec3 vec3Position);
 	virtual void SetPreviousPosition(const glm::vec3 vec3PreviousPosition);
 	virtual void SetFront(const glm::vec3 vec3Front);
 	virtual void SetScale(const glm::vec3 vec3Scale);
+	void SetColliderScale(const glm::vec3 vec3ColliderScale);
 	virtual void SetRotation(const float fRotationAngle, const glm::vec3 vec3RotationAxis);
 	virtual void SetColour(const glm::vec4 vec4Colour);
 	virtual void SetMovementSpeed(const float fMovementSpeed);
@@ -70,6 +78,7 @@ public:
 	// Get Methods
 	virtual const GLuint GetTextureID(void) const;
 	virtual const CEntity3D::TYPE GetType(void) const;
+	virtual const CEntity3D::ENEMYTYPE GetType2(void) const;
 	virtual const glm::vec3 GetPosition(void) const;
 	virtual const glm::vec3 GetPreviousPosition(void) const;
 	virtual const glm::vec3 GetFront(void) const;
@@ -127,6 +136,7 @@ protected:
 
 	// Entity Type
 	TYPE eType;
+	ENEMYTYPE eType2;
 
 	// Position
 	glm::vec3 vec3Position;

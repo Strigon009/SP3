@@ -44,6 +44,8 @@ public:
 
 	void SetArmorBarState(bool state);
 
+	void SetArmorDmgMultiplier(float dmg);
+
 	float GetArmorBarLength();
 	void SetArmourBarLength(float length);
 
@@ -54,8 +56,11 @@ protected:
 
 	float fHeight, fWidth;
 
+	float armorDmgMultiplier;
+
 	// Handler to the Player3D class
 	CPlayer3D* cPlayer3D;
 
 	CArmorPickup* cArmorPickup;
+
 };

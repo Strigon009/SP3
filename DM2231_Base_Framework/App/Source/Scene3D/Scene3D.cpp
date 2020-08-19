@@ -22,11 +22,34 @@ void CScene3D::AddEnemy(CEnemy3D* cEnemy3D, glm::vec3 pos, glm::vec3 scale)
 {
 	cEnemy3D = new CEnemy3D(pos);
 	cEnemy3D->SetShader(cShader);
+	cEnemy3D->SetScale(scale);
+	cEnemy3D->SetColliderScale(scale);
 	cEnemy3D->Init();
 	cEnemy3D->ActivateCollider(cSimpleShader);
 	cEntityManager->Add(cEnemy3D);
 }
 
+void CScene3D::AddEnemy2(CEnemy3D2* cEnemy3D2, glm::vec3 pos, glm::vec3 scale)
+{
+	cEnemy3D2 = new CEnemy3D2(pos);
+	cEnemy3D2->SetShader(cShader);
+	cEnemy3D2->SetScale(scale);
+	cEnemy3D2->SetColliderScale(scale);
+	cEnemy3D2->Init();
+	cEnemy3D2->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cEnemy3D2);
+}
+
+void CScene3D::AddEnemy3(CEnemy3D3* cEnemy3D3, glm::vec3 pos, glm::vec3 scale)
+{
+	cEnemy3D3 = new CEnemy3D3(pos);
+	cEnemy3D3->SetShader(cShader);
+	cEnemy3D3->SetScale(scale);
+	cEnemy3D3->SetColliderScale(scale);
+	cEnemy3D3->Init();
+	cEnemy3D3->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cEnemy3D3);
+}
 void CScene3D::AddWall(CStructure3D* cStructure3D, glm::vec3 pos, glm::vec3 scale)
 {
 	cStructure3D = new CStructure3D(pos);
@@ -250,7 +273,6 @@ CScene3D::~CScene3D(void)
 
 	// We won't delete this since it was created elsewhere
 	cSettings = NULL;
-
 	cArmorPickup = NULL;
 }
 
@@ -334,12 +356,33 @@ bool CScene3D::Init(void)
 	cPistol->SetShader(cSimpleShader);
 	cPlayer3D->SetWeapon(0, cPistol);
 
+	CRifle* cRifle = new CRifle();
+	cRifle->Init();
+	cRifle->SetShader(cSimpleShader);
+	cPlayer3D->SetWeapon(1, cRifle);
 	float randPos = rand() % 3 + 2;
 	float randPos2 = rand() % 6 + 4;
 	//float randPos3 = rand() % 8 + 7;
 
 	// Initialise the cEnemy3D
 	CEnemy3D* cEnemy3D = new CEnemy3D();
+	CEnemy3D2* cEnemy3D2 = new CEnemy3D2();
+	CEnemy3D3* cEnemy3D3 = new CEnemy3D3();
+	
+	AddEnemy(cEnemy3D, glm::vec3(2, 1.f, 4), glm::vec3(1, 0.3f, 1));
+	AddEnemy(cEnemy3D, glm::vec3(6, 1.f, 2), glm::vec3(1, 0.3f, 1));
+	//AddEnemy(cEnemy3D, glm::vec3(2, 1.f, 2), glm::vec3(1, 0.3f, 1));
+	//AddEnemy(cEnemy3D, glm::vec3(4, 1.f, 2), glm::vec3(1, 0.3f, 1));
+
+	//AddEnemy2(cEnemy3D2, glm::vec3(1, 1.f, 4), glm::vec3(1, 1, 1));
+	//AddEnemy2(cEnemy3D2, glm::vec3(6, 1.f, 6), glm::vec3(1, 1, 1));
+	//AddEnemy2(cEnemy3D2, glm::vec3(1, 1.f, 6), glm::vec3(1, 1, 1));
+	//AddEnemy2(cEnemy3D2, glm::vec3(5, 1.f, 3), glm::vec3(1, 1, 1));
+
+	AddEnemy3(cEnemy3D3, glm::vec3(8, 1, 4), glm::vec3(2,2,2));
+	//AddEnemy2(cEnemy3D2, glm::vec3(6, 1.f, 6), glm::vec3(1, 1, 1));
+	//AddEnemy2(cEnemy3D2, glm::vec3(1, 1.f, 6), glm::vec3(1, 1, 1));
+	//AddEnemy2(cEnemy3D2, glm::vec3(5, 1.f, 3), glm::vec3(1, 1, 1));
 	
 	AddEnemy(cEnemy3D, glm::vec3(2, 10.f, 2), glm::vec3(1,1,1));
 	AddEnemy(cEnemy3D, glm::vec3(4, 10.f, 2), glm::vec3(1,1,1));
@@ -374,7 +417,6 @@ bool CScene3D::Init(void)
 	CArmorPickup* cArmorPickup = new CArmorPickup();
 
 	AddArmorPickUp(cArmorPickup, glm::vec3(3.5f, 0.2f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f));
-
 	// Load the SkyBox
 	cSkyBox = CSkyBox::GetInstance();
 	// Set a shader to this class instance of CSkyBox

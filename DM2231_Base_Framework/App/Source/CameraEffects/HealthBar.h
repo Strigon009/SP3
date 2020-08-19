@@ -41,6 +41,8 @@ public:
 	void SetHealthBarState(bool state);
 
 	float GetHealthBarLength();
+	void SetDmgMultiplier(float dmg);
+
 
 protected:
 	// A transformation matrix for controlling where to render the entities
@@ -49,6 +51,7 @@ protected:
 
 
 	float fHeight, fWidth;
+	float dmgmultiplier;
 
 
 };

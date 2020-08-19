@@ -33,6 +33,7 @@ CEntity3D::CEntity3D()
 	, bToDelete(false)
 	, vec3ColliderScale(1.0f)
 	, RifleID(0)
+	, eType2(CRAWLER)
 {
 }
 
@@ -83,6 +84,10 @@ void CEntity3D::SetType(const TYPE eType)
 {
 	this->eType = eType;
 }
+void CEntity3D::SetType2(const ENEMYTYPE eType2)
+{
+	this->eType2 = eType2;
+}
 void CEntity3D::SetPosition(const glm::vec3 vec3Position)
 {
 	this->vec3Position = vec3Position;
@@ -98,6 +103,10 @@ void CEntity3D::SetFront(const glm::vec3 vec3Front)
 void CEntity3D::SetScale(const glm::vec3 vec3Scale)
 {
 	this->vec3Scale = vec3Scale;
+}
+void CEntity3D::SetColliderScale(const glm::vec3 vec3ColliderScale)
+{
+	this->vec3ColliderScale = vec3ColliderScale;
 }
 void CEntity3D::SetRotation(const float fRotationAngle, const glm::vec3 vec3RotationAxis)
 {
@@ -121,6 +130,10 @@ const GLuint CEntity3D::GetTextureID(void) const
 const CEntity3D::TYPE CEntity3D::GetType(void) const
 {
 	return eType;
+}
+const CEntity3D::ENEMYTYPE CEntity3D::GetType2(void) const
+{
+	return eType2;
 }
 const glm::vec3 CEntity3D::GetPosition(void) const
 {

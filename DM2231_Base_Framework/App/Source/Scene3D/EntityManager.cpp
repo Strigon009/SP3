@@ -108,6 +108,8 @@ bool CEntityManager::Erase(CEntity3D* cEntity3D)
 */
 int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 {
+	static_cast<CHealthBar*>(cHealthBar)->SetDmgMultiplier(0.1f);
+	static_cast<CArmorBar*>(cArmorBar)->SetArmorDmgMultiplier(0.1f);
 	int bResult = 0;
 		
 	std::list<CEntity3D*>::iterator it, end;
@@ -117,6 +119,18 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 		// Check for collisions between the 2 entities
 		if (cEntity3D->CheckForCollision(*it) == true)
 		{
+			if ((*it)->GetType2() == CEntity3D::ENEMYTYPE::SCRAKE)
+			{
+				
+				cout << "** Collision between Player and NPC2 ***" << endl;
+
+				static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(true);
+				static_cast<CHealthBar*>(cHealthBar)->SetDmgMultiplier(0.3f);
+				static_cast<CArmorBar*>(cArmorBar)->SetArmorDmgMultiplier(0.3f);
+				static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
+
+				// Quit this loop since a collision has been found
+			}
 			if ((*it)->GetType() == CEntity3D::TYPE::NPC)
 			{
 				// Rollback the cEntity3D's position
@@ -250,7 +264,6 @@ void CEntityManager::Update(const double dElapsedTime)
 					moveTo_Tower = false;
 				}
 			}
-
 			// Check for collisions between the 2 entities
 			if ((*it)->CheckForCollision(*it_other) == true)
 			{
