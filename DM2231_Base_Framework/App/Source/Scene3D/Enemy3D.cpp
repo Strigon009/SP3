@@ -4,6 +4,7 @@
  Date: Apr 2020
  */
 #include "Enemy3D.h"
+#include "EntityManager.h"
 
 // Allowing loading of LoadOBJ.h
 #include "System/LoadOBJ.h"
@@ -24,10 +25,15 @@ CEnemy3D::CEnemy3D(void)
 	, cCamera(NULL)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
+	, enemyDamage(2)
 	, enemyHealth(3)
 {
 	// Set the default position to the origin
 	vec3Position = glm::vec3(0.0f, 0.0f, 0.0f);
+
+	cManager = CEntityManager::GetInstance();
+	cPlayer3D = CPlayer3D::GetInstance();
+	cTower = CStructureTower::GetInstance();
 
 	// Update the vectors for this enemy
 	UpdateEnemyVectors();
@@ -53,10 +59,15 @@ CEnemy3D::CEnemy3D(	const glm::vec3 vec3Position,
 	, cCamera(NULL)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
-	, enemyHealth(3)
+	, enemyHealth(2)
+	, enemyDamage(2)
 {
 	// Set the default position to the origin
 	this->vec3Position = vec3Position;
+
+	cManager = CEntityManager::GetInstance();
+	cPlayer3D = CPlayer3D::GetInstance();
+	cTower = CStructureTower::GetInstance();
 
 	// Update the vectors for this enemy
 	UpdateEnemyVectors();
@@ -228,7 +239,7 @@ bool CEnemy3D::IsCameraAttached(void)
  */
 void CEnemy3D::ProcessMovement(const Enemy_Movement direction, const float deltaTime)
 {
-	float velocity = fMovementSpeed * deltaTime;
+	float velocity = fMovementSpeed * deltaTime * 2;
 	if (direction == FORWARD)
 		vec3Position += vec3Front * velocity;
 	if (direction == BACKWARD)
@@ -399,6 +410,16 @@ void CEnemy3D::set_enemyHealth(int x)
 	enemyHealth = x;
 }
 
+int CEnemy3D::get_enemyDamage()
+{
+	return 0;
+}
+
+void CEnemy3D::set_enemyDamage(int t)
+{
+	enemyDamage = t;
+}
+
 /**
  @brief Calculates the front vector from the Camera's (updated) Euler Angles
  */
@@ -414,29 +435,6 @@ void CEnemy3D::UpdateEnemyVectors(void)
 	// Check if we are too far from the player
 	if (cPlayer3D)
 	{
-<<<<<<< Updated upstream
-		// Update the direction of the enemy
-		front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
-
-		// Update the yaw and pitch
-		fYaw = glm::degrees(glm::atan(front.z, front.x));
-		fPitch = glm::degrees(glm::asin(front.y));
-	}
-	
-	vec3Front = front;
-	// Also re-calculate the Right and Up vector
-	// Normalize the vectors, because their length gets closer to 0 the more 
-	// you look up or down which results in slower movement.
-	vec3Right = glm::normalize(glm::cross(vec3Front, vec3WorldUp));  
-	vec3Up = glm::normalize(glm::cross(vec3Right, vec3Front));
-
-	// If the camera is attached to this player, then update the camera
-	if (cCamera)
-	{
-		cCamera->vec3Front = vec3Front;
-		cCamera->vec3Right = vec3Right;
-		cCamera->vec3Up = vec3Up;
-=======
 		if ((cManager)->get_moveTo() == true)
 		{
 			front = glm::normalize(glm::vec3(cTower->GetPosition() - vec3Position));
@@ -468,7 +466,6 @@ void CEnemy3D::UpdateEnemyVectors(void)
 			cCamera->vec3Right = vec3Right;
 			cCamera->vec3Up = vec3Up;
 		}
->>>>>>> Stashed changes
 	}
 }
 
