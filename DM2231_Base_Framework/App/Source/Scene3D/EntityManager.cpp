@@ -14,6 +14,7 @@ CEntityManager::CEntityManager(void)
 	, projection(glm::mat4(1.0f))
 	, enemy_deathCount(0)
 	, moveTo_Tower(false)
+	, bInvincibility(false)
 {
 }
 
@@ -208,7 +209,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				(*it)->SetToDelete(true);
 
 				bInvincibility = true;
-
+				lastTime = currentTime;
 				cout << "** Collision between Player and Powerup ***" << endl;
 				bResult = 6;
 				// Quit this loop since a collision has been found
@@ -227,7 +228,7 @@ void CEntityManager::Update(const double dElapsedTime)
 {
 	std::list<CEntity3D*>::iterator it, end;
 	std::list<CEntity3D*>::iterator it_other;
-
+	currentTime = GetTickCount64() * 0.001f;
 	// Update all CEntity3D
 	end = lEntity3D.end();
 	for (it = lEntity3D.begin(); it != end; ++it)
@@ -235,6 +236,12 @@ void CEntityManager::Update(const double dElapsedTime)
 		(*it)->Update(dElapsedTime);
 	}
 
+	if (bInvincibility)
+	{
+		if (currentTime - lastTime > 2)
+			bInvincibility = false;
+			//cout << "yeet" << endl;
+	}
 	// Check for collisions among them
 	end = lEntity3D.end();
 	for (it = lEntity3D.begin(); it != end; ++it)

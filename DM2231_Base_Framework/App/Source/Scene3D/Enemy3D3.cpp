@@ -119,7 +119,7 @@ bool CEnemy3D3::Init(void)
 	std::vector<glm::vec3> normals;
 
 
-	std::string file_path = "OBJ//enemy2.obj";
+	std::string file_path = "OBJ//enemy3.obj";
 	bool success = LoadOBJ(file_path.c_str(), vertices, uvs, normals);
 	if (!success)
 		return NULL;

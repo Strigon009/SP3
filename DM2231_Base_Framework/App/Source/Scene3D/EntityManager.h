@@ -108,9 +108,8 @@ protected:
 
 	bool bInvincibility;
 
-	int iLastTime;
-	int iCurrentTime;
-
+	int lastTime;
+	float currentTime;
 	// Default Constructor
 	CEntityManager(void);
 	// Destructor

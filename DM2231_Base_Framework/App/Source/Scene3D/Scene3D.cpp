@@ -497,7 +497,7 @@ bool CScene3D::Init(void)
 	// Set a shader to this class instance of CameraEffects
 	cCameraEffects->SetShader(cGUIShader);
 	cCameraEffects->Init();
-
+	
 	// Load the ProgressBar
 	cHealthBar = new CHealthBar();
 	// Set a shader to this class instance of CameraEffects
@@ -908,7 +908,7 @@ void CScene3D::Update(const double dElapsedTime)
 			++wave_count;
 		}
 	}
-
+	
 	// WAVE 4 LOGIC
 	if (wave_count == 3 && cEntityManager->get_enemy_deathCount() > 28)
 	{

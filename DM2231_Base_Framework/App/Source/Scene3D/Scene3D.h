@@ -184,7 +184,7 @@ protected:
 	bool wave4_start;
 	bool boss_start;
 	bool bossDED;
-
+	bool renderBoss;
 	float spawnZTimer;
 	float spawnCTimer;
 	float spawnSTimer;
