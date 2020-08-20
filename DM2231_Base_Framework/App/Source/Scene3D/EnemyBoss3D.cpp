@@ -25,6 +25,8 @@ CEnemyBoss3D::CEnemyBoss3D(void)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
 	, enemyHealth(3)
+	, elapsedtime(0)
+	, chargeSpeed(1)
 {
 	// Set the default position to the origin
 	vec3Position = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -54,6 +56,10 @@ CEnemyBoss3D::CEnemyBoss3D(	const glm::vec3 vec3Position,
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
 	, enemyHealth(30)
+	, elapsedtime(0)
+	, charge(false)
+	, remainingHP(0)
+	, changeMovement(false)
 {
 	// Set the default position to the origin
 	this->vec3Position = vec3Position;
@@ -228,7 +234,7 @@ bool CEnemyBoss3D::IsCameraAttached(void)
  */
 void CEnemyBoss3D::ProcessMovement(const Enemy_Movement direction, const float deltaTime)
 {
-	float velocity = fMovementSpeed * deltaTime * 2.5;
+	float velocity = fMovementSpeed * deltaTime * chargeSpeed;
 	if (direction == FORWARD)
 		vec3Position += vec3Front * velocity;
 	if (direction == BACKWARD)
@@ -274,7 +280,7 @@ void CEnemyBoss3D::Update(const double dElapsedTime)
 	if (iCurrentNumMovement < iMaxNumMovement)
 	{
 		// Process the movement
-		ProcessMovement(FORWARD, (float)dElapsedTime);
+		ProcessMovement(RIGHT, (float)dElapsedTime);
 
 		// Update the counter
 		iCurrentNumMovement++;
@@ -282,11 +288,51 @@ void CEnemyBoss3D::Update(const double dElapsedTime)
 	else
 	{
 		// Randomly choose a new direction up to +30 or -30 degrees to the current direction 
-		ProcessRotate(rand() % 60 - 45.0f);
-		
+		//ProcessMovement(LEFT, (float)dElapsedTime);
+		ProcessRotate(180);
 		// Reset the counter to 0
 		iCurrentNumMovement = 0;
 	}
+	cout << iCurrentNumMovement << endl;
+
+	CProjectile* aProjectile = new CProjectile();
+	aProjectile->SetShader(cShader);
+	aProjectile->Init(vec3Position + vec3Front * 0.75f, vec3Front, 2.0f, 20.0f);
+	aProjectile->ActivateCollider(cShader);
+	aProjectile->SetStatus(true);
+
+	if (enemyHealth > 9)
+	{
+		changeMovement = false;
+	}
+	if (enemyHealth <= 9)
+	{
+		changeMovement = true;
+	}
+
+	if (elapsedtime <= 0.f)
+	{
+		charge = true;
+	}
+	else if (elapsedtime >= 20.f)
+	{
+		charge = false;
+	}
+
+	if (charge == true)
+	{
+		elapsedtime += dElapsedTime;
+		chargeSpeed = 2.5;
+	}
+	else if (charge == false)
+	{
+		elapsedtime -= dElapsedTime;
+		chargeSpeed = 1;
+		if (elapsedtime <= 10.f)
+			elapsedtime = 0;
+	}
+
+	cout << elapsedtime << endl;
 }
 
 /**
@@ -343,7 +389,7 @@ void CEnemyBoss3D::Render(void)
 	//model = glm::rotate(model, (float)glfwGetTime()/10.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::translate(model, vec3Position);
 	model = glm::scale(model, vec3Scale);
-
+	model = glm::rotate(model, glm::radians(180.f) + (atan2((cPlayer3D->GetPosition().x) - vec3Position.x, (cPlayer3D->GetPosition().z) - vec3Position.z)), glm::vec3(0, 1, 0));
 	// note: currently we set the projection matrix each frame, but since the projection 
 	// matrix rarely changes it's often best practice to set it outside the main loop only once.
 	cShader->setMat4("projection", projection);

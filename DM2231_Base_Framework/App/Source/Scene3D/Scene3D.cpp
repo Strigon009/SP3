@@ -50,6 +50,18 @@ void CScene3D::AddEnemy3(CEnemy3D3* cEnemy3D3, glm::vec3 pos, glm::vec3 scale)
 	cEnemy3D3->ActivateCollider(cSimpleShader);
 	cEntityManager->Add(cEnemy3D3);
 }
+
+void CScene3D::AddBoss1(CEnemyBoss3D* cEnemyBoss3D, glm::vec3 pos, glm::vec3 scale)
+{
+	cEnemyBoss3D = new CEnemyBoss3D(pos);
+	cEnemyBoss3D->SetShader(cShader);
+	cEnemyBoss3D->SetScale(scale);
+	cEnemyBoss3D->SetColliderScale(scale);
+	cEnemyBoss3D->Init();
+	cEnemyBoss3D->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cEnemyBoss3D);
+}
+
 void CScene3D::AddWall(CStructure3D* cStructure3D, glm::vec3 pos, glm::vec3 scale)
 {
 	cStructure3D = new CStructure3D(pos);
@@ -1133,7 +1145,7 @@ void CScene3D::Update(const double dElapsedTime)
 	cCameraEffects->Update(dElapsedTime);
 
 	// Update progress bar
-	//if(static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() >= 0)
+	if(static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() >= 0)
 		cArmorBar->Update(dElapsedTime);
 	//else
 		cHealthBar->Update(dElapsedTime);

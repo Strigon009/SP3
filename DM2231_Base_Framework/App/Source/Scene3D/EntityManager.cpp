@@ -194,7 +194,6 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 			else if ((*it)->GetType() == CEntity3D::TYPE::ARMOR_PICKUP)
 			{
 				(*it)->SetToDelete(true);
-
 				static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
 
 				cout << "** Collision between Player and Armor_PickUp ***" << endl;

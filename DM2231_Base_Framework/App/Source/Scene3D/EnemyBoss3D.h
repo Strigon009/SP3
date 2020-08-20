@@ -103,6 +103,15 @@ protected:
 
 	int enemyHealth;
 
+	float chargeSpeed;
+
+	float elapsedtime;
+
+	bool charge;
+
+	float remainingHP;
+
+	bool changeMovement;
 	// The handle to the CCamera class instance
 	CCamera* cCamera;
 
