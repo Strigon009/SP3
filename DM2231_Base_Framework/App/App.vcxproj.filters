@@ -20,7 +20,6 @@
     <ClCompile Include="Source\Scene3D\HealthPickup.cpp" />
     <ClCompile Include="Source\Scene3D\Physics3D.cpp" />
     <ClCompile Include="Source\Scene3D\Player3D.cpp" />
-    <ClCompile Include="Source\Scene3D\PowerUp.cpp" />
     <ClCompile Include="Source\Scene3D\Scene3D.cpp" />
     <ClCompile Include="Source\Scene3D\SkyBox.cpp" />
     <ClCompile Include="Source\Scene3D\Structure3D.cpp" />
@@ -35,6 +34,8 @@
     <ClCompile Include="Source\Scene3D\Enemy3D2.cpp" />
     <ClCompile Include="Source\Scene3D\Enemy3D3.cpp" />
     <ClCompile Include="Source\Scene3D\ArmorPickup.cpp" />
+    <ClCompile Include="Source\Scene3D\Invincibility.cpp" />
+    <ClCompile Include="Source\Scene3D\FreezeMovement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
@@ -56,7 +57,6 @@
     <ClInclude Include="Source\Scene3D\HealthPickup.h" />
     <ClInclude Include="Source\Scene3D\Physics3D.h" />
     <ClInclude Include="Source\Scene3D\Player3D.h" />
-    <ClInclude Include="Source\Scene3D\PowerUp.h" />
     <ClInclude Include="Source\Scene3D\Scene3D.h" />
     <ClInclude Include="Source\Scene3D\SkyBox.h" />
     <ClInclude Include="Source\Scene3D\Structure3D.h" />
@@ -70,5 +70,7 @@
     <ClInclude Include="Source\SoundController\SoundInfo.h" />
     <ClInclude Include="Source\Scene3D\Enemy3D2.h" />
     <ClInclude Include="Source\Scene3D\Enemy3D3.h" />
+    <ClInclude Include="Source\Scene3D\Invincibility.h" />
+    <ClInclude Include="Source\Scene3D\FreezeMovement.h" />
   </ItemGroup>
 </Project>

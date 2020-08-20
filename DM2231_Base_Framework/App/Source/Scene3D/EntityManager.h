@@ -19,8 +19,6 @@
 #include "../CameraEffects/HealthBar.h"
 #include "../CameraEffects/ArmorBar.h"
 
-#include "ArmorPickup.h"
-
 #include "../SoundController/SoundController.h"
 
 class CEntityManager : public CSingletonTemplate<CEntityManager>
@@ -68,6 +66,9 @@ public:
 
 	virtual bool GetInvincibility();
 	virtual void SetInvincibility(bool bInvincibility);
+
+	virtual bool GetFreezeMovement();
+	virtual void SetFreezeMovement(bool bFreezeMovement);
 	
 	//int enemyHealth;
 
@@ -87,8 +88,6 @@ protected:
 	CHealthBar* cHealthBar;
 	CArmorBar* cArmorBar;
 
-	CArmorPickup* cArmorPickup;
-
 	CPlayer3D* cPlayer3D;
 
 	CSoundController* cSoundController;
@@ -98,9 +97,11 @@ protected:
 	bool moveTo_Tower;
 
 	bool bInvincibility;
+	bool bFreezeMovement;
+	bool bFrames;
 
-	int iLastTime;
-	int iCurrentTime;
+	float fLastTime, fLastTime2;
+	float fCurrentTime;
 
 	// Default Constructor
 	CEntityManager(void);

@@ -96,15 +96,26 @@ void CScene3D::AddHealthPickUp(CHealthPickup* cHealthPickup, glm::vec3 pos, glm:
 	cEntityManager->Add(cHealthPickup);
 }
 
-void CScene3D::AddPowerUp(CPowerUp* cPowerUp, glm::vec3 pos, glm::vec3 scale)
+void CScene3D::AddInvincibility(CInvincibility* cInvincibility, glm::vec3 pos, glm::vec3 scale)
 {
-	cPowerUp = new CPowerUp(pos);
+	cInvincibility = new CInvincibility(pos);
 
-	cPowerUp->SetShader(cShader);
-	cPowerUp->Init();
-	cPowerUp->SetScale(scale);
-	cPowerUp->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cPowerUp);
+	cInvincibility->SetShader(cShader);
+	cInvincibility->Init();
+	cInvincibility->SetScale(scale);
+	cInvincibility->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cInvincibility);
+}
+
+void CScene3D::AddFreezeMovement(CFreezeMovement* cFreezeMovement, glm::vec3 pos, glm::vec3 scale)
+{
+	cFreezeMovement = new CFreezeMovement(pos);
+
+	cFreezeMovement->SetShader(cShader);
+	cFreezeMovement->Init();
+	cFreezeMovement->SetScale(scale);
+	cFreezeMovement->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cFreezeMovement);
 }
 
 /**
@@ -136,7 +147,8 @@ CScene3D::CScene3D(void)
 	, cWeaponInfo(NULL)
 	, cArmorPickup(NULL)
 	, cHealthPickup(NULL)
-	, cPowerUp(NULL)
+	, cInvincibility(NULL)
+	, cFreezeMovement(NULL)
 	, renderBoss(false)
 	, printLoseScreen(false)
 	, printWinScreen(false)
@@ -302,7 +314,9 @@ CScene3D::~CScene3D(void)
 
 	cHealthPickup = NULL;
 
-	cPowerUp = NULL;
+	cInvincibility = NULL;
+
+	cFreezeMovement = NULL;
 }
 
 /**
@@ -451,9 +465,13 @@ bool CScene3D::Init(void)
 
 	AddHealthPickUp(cHealthPickup, glm::vec3(3.5f, 0.25f, -3.0f), glm::vec3(0.5f, 0.5f, 0.5f));
 
-	CPowerUp* cPowerUp = new CPowerUp();
+	CInvincibility* cInvincibility = new CInvincibility();
 
-	AddPowerUp(cPowerUp, glm::vec3(-3.5f, 0.25f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+	AddInvincibility(cInvincibility, glm::vec3(-3.5f, 0.25f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+
+	CFreezeMovement* cFreezeMovement = new CFreezeMovement();
+
+	AddFreezeMovement(cFreezeMovement, glm::vec3(-3.5f, 0.25f, 3.0f), glm::vec3(0.5f, 0.5f, 0.5f));
 
 	// Load the SkyBox
 	cSkyBox = CSkyBox::GetInstance();
@@ -726,17 +744,6 @@ void CScene3D::Update(const double dElapsedTime)
 			cPlayer3D->SetArmor(cPlayer3D->GetArmor() + 30);
 		}
 		break;
-	case 6:
-		/*if (cPlayer3D->GetArmor() > 0)
-		{
-			cPlayer3D->SetArmor(cPlayer3D->GetArmor() - 0);
-			cout << "You got yeeted" << endl;
-		}
-		else if (cPlayer3D->GetHealth() > 0)
-		{
-			cPlayer3D->SetHealth(cPlayer3D->GetHealth() - 0);
-		}*/
-		break;
 	default:
 		break;
 	}
@@ -751,7 +758,7 @@ void CScene3D::Update(const double dElapsedTime)
 	cCameraEffects->Update(dElapsedTime);
 
 	// Update progress bar
-	//if(static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() >= 0)
+	if(static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() >= 0)
 		cArmorBar->Update(dElapsedTime);
 	//else
 		cHealthBar->Update(dElapsedTime);

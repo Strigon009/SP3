@@ -13,6 +13,12 @@ CEntityManager::CEntityManager(void)
 	, view(glm::mat4(1.0f))
 	, projection(glm::mat4(1.0f))
 	, enemy_deathCount(0)
+	, bInvincibility(false)
+	, bFreezeMovement(false)
+	, bFrames(false)
+	, fLastTime(0)
+	, fLastTime2(0)
+	, fCurrentTime(0)
 {
 }
 
@@ -134,13 +140,32 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 			if ((*it)->GetType() == CEntity3D::TYPE::NPC)
 			{
 				// Rollback the cEntity3D's position
-				cEntity3D->RollbackPosition();
+				//cEntity3D->RollbackPosition();
 				// Rollback the NPC's position
-				(*it)->RollbackPosition();
+				//(*it)->RollbackPosition();
 				cout << "** Collision between Player and NPC ***" << endl;
-				bResult = 1;
+				//bResult = 1;
 
-				if (bInvincibility == true)
+				if (bInvincibility || bFreezeMovement || bFrames)
+				{
+					static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(false);
+					static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(false);
+				}
+				else if (!bInvincibility || !bFreezeMovement ||!bFrames)
+				{
+					if (static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() * 100 != 0)
+						static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
+					else
+						static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(true);
+
+					(*it)->RollbackPosition();
+					fLastTime2 = fCurrentTime;
+
+					bFrames = true;
+				}
+				bResult = 1;
+				
+				/*if (bInvincibility == true)
 				{
 					static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(false);
 					static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(false);
@@ -149,7 +174,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				{
 					static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(true);
 					static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
-				}
+				}*/
 				
 				break;
 			}
@@ -201,17 +226,30 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 
 				break;
 			}
-			else if ((*it)->GetType() == CEntity3D::TYPE::POWERUP)
+			else if ((*it)->GetType() == CEntity3D::TYPE::INVINCIBILITY)
 			{
 				// Rollback the cEntity3D's position
 				(*it)->SetToDelete(true);
 
 				bInvincibility = true;
-
-				cout << "** Collision between Player and Powerup ***" << endl;
+				fLastTime = fCurrentTime;
+				cout << "** Collision between Player and Invincibility ***" << endl;
 				bResult = 6;
 				// Quit this loop since a collision has been found
 				
+				break;
+			}
+			else if ((*it)->GetType() == CEntity3D::TYPE::FREEZE_MOVEMENT)
+			{
+				// Rollback the cEntity3D's position
+				(*it)->SetToDelete(true);
+
+				bFreezeMovement = true;
+				fLastTime = fCurrentTime;
+				cout << "** Collision between Player and FreezeMovement ***" << endl;
+				bResult = 7;
+				// Quit this loop since a collision has been found
+
 				break;
 			}
 		}
@@ -226,12 +264,31 @@ void CEntityManager::Update(const double dElapsedTime)
 {
 	std::list<CEntity3D*>::iterator it, end;
 	std::list<CEntity3D*>::iterator it_other;
+	fCurrentTime = GetTickCount64() * 0.001f;
 
 	// Update all CEntity3D
 	end = lEntity3D.end();
 	for (it = lEntity3D.begin(); it != end; ++it)
 	{
 		(*it)->Update(dElapsedTime);
+	}
+
+	if (bInvincibility)
+	{
+		if (fCurrentTime - fLastTime > 5)
+			bInvincibility = false;
+	}
+
+	if (bFreezeMovement)
+	{
+		if (fCurrentTime - fLastTime > 5)
+			bFreezeMovement = false;
+	}
+
+	if (bFrames)
+	{
+		if (fCurrentTime - fLastTime > 0.75f)
+			bFrames = false;
 	}
 
 	// Check for collisions among them
@@ -273,6 +330,19 @@ void CEntityManager::Update(const double dElapsedTime)
 					moveTo_Tower = false;
 				}
 			}
+
+			if (((*it)->GetType() == CEntity3D::TYPE::NPC))
+			{
+				if (bFreezeMovement == true)
+				{
+					static_cast<CEntity3D*>(*it)->SetMovementSpeed(0.0f);
+				}
+				else
+				{
+					static_cast<CEntity3D*>(*it)->SetMovementSpeed(2.5f);
+				}
+			}
+
 			// Check for collisions between the 2 entities
 			if ((*it)->CheckForCollision(*it_other) == true)
 			{
@@ -447,4 +517,14 @@ bool CEntityManager::GetInvincibility()
 void CEntityManager::SetInvincibility(bool bInvincibility)
 {
 	this->bInvincibility = bInvincibility;
+}
+
+bool CEntityManager::GetFreezeMovement()
+{
+	return bFreezeMovement;
+}
+
+void CEntityManager::SetFreezeMovement(bool bFreezeMovement)
+{
+	this->bFreezeMovement = bFreezeMovement;
 }
