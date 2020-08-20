@@ -165,14 +165,30 @@ protected:
 	CMinimap* cMinimap;
 	// Handler to the CCrossHair
 	CCrossHair* cCrossHair;
-
 	CWeaponInfo* cWeaponInfo;
 	CArmorPickup* cArmorPickup;
 	CHealthPickup* cHealthPickup;
 	CPowerUp* cPowerUp;
 
-	bool renderBoss;
+	//CPhysics3D cPhysics3D;
+
+	int wave_count;
+	int zombieCount;
+	int crawlerCount;
+	int scrakeCount;
+
+	int wave1_count;
+
+	bool wave2_start;
+	bool wave3_start;
+	bool wave4_start;
+	bool boss_start;
 	bool bossDED;
+
+	float spawnZTimer;
+	float spawnCTimer;
+	float spawnSTimer;
+
 	bool printLoseScreen;
 	bool printWinScreen;
 

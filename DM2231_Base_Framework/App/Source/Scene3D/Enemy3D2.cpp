@@ -116,8 +116,6 @@ bool CEnemy3D2::Init(void)
 	std::vector<glm::vec3> vertices;
 	std:: vector <glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
-
-
 	std::string file_path = "OBJ//enemy2.obj";
 	bool success = LoadOBJ(file_path.c_str(), vertices, uvs, normals);
 	if (!success)

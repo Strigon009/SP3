@@ -148,7 +148,7 @@ bool CEnemy3D3::Init(void)
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(glm::vec3) + sizeof(glm::vec3)));
 
 	// load and create a texture 
-	iTextureID = LoadTexture("Image/enemy2.tga");
+	iTextureID = LoadTexture("Image/enemy3.tga");
 	if (iTextureID == 0)
 	{
 		cout << "Unable to load Image/Scene3D_Enemy_01.tga" << endl;
