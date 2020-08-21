@@ -19,10 +19,7 @@ CEntityManager::CEntityManager(void)
 	, lastTime2(0)
 	, bInvincibility(false)
 	, bFreezeMovement(false)
-	, bFrames(false)
-	, fLastTime(0)
-	, fLastTime2(0)
-	, fCurrentTime(0)
+	, lastTime3(0)
 {
 }
 
@@ -220,7 +217,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 			{
 
 				cout << "** Collision between Player and NPC2 ***" << endl;
-				
+
 				static_cast<CHealthBar*>(cHealthBar)->SetDmgMultiplier(3.f);
 				static_cast<CArmorBar*>(cArmorBar)->SetArmorDmgMultiplier(3.f);
 				if (bInvincibility || iFrames)
@@ -241,14 +238,14 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 
 				bResult = 7;
 				break;
-				// Quit this loop since a collision has been found
+			}// Quit this loop since a collision has been found
 			else if ((*it)->GetType() == CEntity3D::TYPE::FREEZE_MOVEMENT)
 			{
 				// Rollback the cEntity3D's position
 				(*it)->SetToDelete(true);
 
 				bFreezeMovement = true;
-				fLastTime = currentTime;
+				lastTime3 = currentTime;
 				cout << "** Collision between Player and FreezeMovement ***" << endl;
 				bResult = 8;
 				// Quit this loop since a collision has been found
@@ -289,7 +286,7 @@ void CEntityManager::Update(const double dElapsedTime)
 	}
 	if (bFreezeMovement)
 	{
-		if (fCurrentTime - fLastTime > 5)
+		if (currentTime - lastTime3 > 5)
 			bFreezeMovement = false;
 	}
 	// Check for collisions among them

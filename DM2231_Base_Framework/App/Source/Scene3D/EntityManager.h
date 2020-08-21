@@ -76,7 +76,7 @@ public:
 
 	virtual bool GetFreezeMovement();
 	virtual void SetFreezeMovement(bool bFreezeMovement);
-	
+
 	//int enemyHealth;
 
 protected:
@@ -111,11 +111,11 @@ protected:
 	bool bInvincibility;
 	bool iFrames;
 
-	float lastTime, lastTime2;
+	float lastTime, lastTime2, lastTime3;
 	float currentTime;
 	bool bFreezeMovement;
-	float fLastTime,
-	// Default Constructor
+
+		// Default Constructor
 	CEntityManager(void);
 	// Destructor
 	virtual ~CEntityManager(void);

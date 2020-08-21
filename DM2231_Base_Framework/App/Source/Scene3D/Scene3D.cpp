@@ -439,40 +439,40 @@ bool CScene3D::Init(void)
 	
 	srand(time(NULL));
 
-	//++wave_count;
-	//for (int i = 1; i <= 12; ++i)
-	//{
-	//	int switchPos = rand() % 4 + 1;
+	++wave_count;
+	for (int i = 1; i <= 12; ++i)
+	{
+		int switchPos = rand() % 4 + 1;
 
-	//	glm::vec3 spawnPos;
+		glm::vec3 spawnPos;
 
-	//	switch (switchPos)
-	//	{
-	//		case 1:
-	//		{
-	//			spawnPos = glm::vec3(8, 2, 8);
-	//			break;
-	//		}
-	//		case 2:
-	//		{
-	//			spawnPos = glm::vec3(-8, 2, 8);
-	//			break;
-	//		}
-	//		case 3:
-	//		{
-	//			spawnPos = glm::vec3(8, 2, -8);
-	//			break;
-	//		}
-	//		case 4:
-	//		{
-	//			spawnPos = glm::vec3(-8, 2, -8);
-	//			break;
-	//		}
-	//	}
+		switch (switchPos)
+		{
+			case 1:
+			{
+				spawnPos = glm::vec3(8, 2, 8);
+				break;
+			}
+			case 2:
+			{
+				spawnPos = glm::vec3(-8, 2, 8);
+				break;
+			}
+			case 3:
+			{
+				spawnPos = glm::vec3(8, 2, -8);
+				break;
+			}
+			case 4:
+			{
+				spawnPos = glm::vec3(-8, 2, -8);
+				break;
+			}
+		}
 
-	//	CEnemy3D2* cEnemy3D2 = new CEnemy3D2();
-	//	AddEnemy2(cEnemy3D2, spawnPos, glm::vec3(0.5, 0.5, 0.5));
-	//}
+		CEnemy3D2* cEnemy3D2 = new CEnemy3D2();
+		AddEnemy2(cEnemy3D2, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+	}
 
 	CEnemy3D2* cEnemy3D2 = new CEnemy3D2();
 	AddEnemy2(cEnemy3D2, glm::vec3(10, 0.5, 10), glm::vec3(0.5, 0.5, 0.5));
