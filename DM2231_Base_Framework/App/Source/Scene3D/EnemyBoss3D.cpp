@@ -24,7 +24,17 @@ CEnemyBoss3D::CEnemyBoss3D(void)
 	, cCamera(NULL)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
+<<<<<<< Updated upstream
 	, enemyHealth(3)
+=======
+	, enemyHealth(30)
+	, enemyExp(20.f)
+
+	, iMovementCharge(0)
+	, elapsedTime(0)
+	, chargeOrNot(false)
+	, movementChange(false)
+>>>>>>> Stashed changes
 {
 	// Set the default position to the origin
 	vec3Position = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -54,6 +64,15 @@ CEnemyBoss3D::CEnemyBoss3D(	const glm::vec3 vec3Position,
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
 	, enemyHealth(30)
+<<<<<<< Updated upstream
+=======
+	, enemyExp(20.f)
+
+	, iMovementCharge(0)
+	, elapsedTime(0)
+	, chargeOrNot(false)
+	, movementChange(false)
+>>>>>>> Stashed changes
 {
 	// Set the default position to the origin
 	this->vec3Position = vec3Position;
@@ -108,6 +127,7 @@ bool CEnemyBoss3D::Init(void)
 
 	// Set the type
 	SetType(CEntity3D::TYPE::NPC);
+	SetType2(CEntity3D::ENEMYTYPE::BOSS);
 
 	// Initialise the cPlayer3D
 	cPlayer3D = CPlayer3D::GetInstance();
@@ -160,7 +180,8 @@ bool CEnemyBoss3D::Init(void)
 
 	// Movement Control
 	iCurrentNumMovement = 0;
-	iMaxNumMovement = 50;
+	iMaxNumMovement = 200;
+	iMovementCharge = 0;
 
 	return true;
 }
@@ -228,7 +249,55 @@ bool CEnemyBoss3D::IsCameraAttached(void)
  */
 void CEnemyBoss3D::ProcessMovement(const Enemy_Movement direction, const float deltaTime)
 {
+<<<<<<< Updated upstream
 	float velocity = fMovementSpeed * deltaTime * 2.5;
+=======
+	float velocity;
+
+	if (enemyHealth <= 9)
+	{
+		movementChange = true;
+	}
+
+	if (movementChange != true)
+	{
+		if (chargeOrNot)
+		{
+			velocity = fMovementSpeed * deltaTime * 5;
+		}
+		else
+		{
+			velocity = fMovementSpeed * deltaTime * 1.35;
+		}
+
+		if (iMovementCharge >= 600)
+		{
+			elapsedTime += deltaTime;
+			cout << elapsedTime << endl;
+
+			// ENEMY FREESE/RECALCULATING
+			if (elapsedTime <= 3.5f)
+			{
+				velocity = 0;
+				iCurrentNumMovement = 0;
+			}
+			// AFTER ENEMY RECALCULATING
+			else
+			{
+				chargeOrNot = true;
+
+				iMovementCharge = 0;
+				elapsedTime = 0;
+			}
+		}
+	}
+	else
+	{
+		iMaxNumMovement = 50;
+		velocity = fMovementSpeed * deltaTime * 1.85;
+	}
+
+>>>>>>> Stashed changes
 	if (direction == FORWARD)
 		vec3Position += vec3Front * velocity;
 	if (direction == BACKWARD)
@@ -278,15 +347,27 @@ void CEnemyBoss3D::Update(const double dElapsedTime)
 
 		// Update the counter
 		iCurrentNumMovement++;
+		iMovementCharge++;
 	}
 	else
 	{
 		// Randomly choose a new direction up to +30 or -30 degrees to the current direction 
+<<<<<<< Updated upstream
 		ProcessRotate(rand() % 60 - 45.0f);
 		
 		// Reset the counter to 0
 		iCurrentNumMovement = 0;
 	}
+=======
+		//ProcessMovement(LEFT, (float)dElapsedTime);
+		ProcessRotate(rand() % 60 - 45.0f);
+		// Reset the counter to 0
+		iCurrentNumMovement = 0;
+	}
+
+	cout << iCurrentNumMovement << endl;
+	cout << "Health: " << enemyHealth << endl;
+>>>>>>> Stashed changes
 }
 
 /**
@@ -413,16 +494,12 @@ void CEnemyBoss3D::UpdateEnemyVectors(void)
 	// Check if we are too far from the player
 	if (cPlayer3D)
 	{
-	float fDistanceToPlayer = glm::length(cPlayer3D->GetPosition() - vec3Position);
-		if (fDistanceToPlayer > 15.0f)
-		{
-			// Update the direction of the enemy
-			front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
+		// Update the direction of the enemy
+		front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
 			
-			// Update the yaw and pitch
-			fYaw = glm::degrees(glm::atan(front.z, front.x));
-			fPitch = glm::degrees(glm::asin(front.y));
-		}
+		// Update the yaw and pitch
+		fYaw = glm::degrees(glm::atan(front.z, front.x));
+		fPitch = glm::degrees(glm::asin(front.y));
 	}
 	
 	vec3Front = front;

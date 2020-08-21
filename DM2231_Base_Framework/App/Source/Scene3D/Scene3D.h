@@ -168,18 +168,24 @@ protected:
 	int zombieCount;
 	int crawlerCount;
 	int scrakeCount;
+	int bossCount;
 
-	int wave1_count;
+	int bossStageLimit;
 
 	bool wave2_start;
 	bool wave3_start;
 	bool wave4_start;
 	bool boss_start;
 	bool bossDED;
+<<<<<<< Updated upstream
+=======
+	bool renderBoss;
+>>>>>>> Stashed changes
 
 	float spawnZTimer;
 	float spawnCTimer;
 	float spawnSTimer;
+	float bufferTime;
 
 	bool printLoseScreen;
 	bool printWinScreen;
@@ -191,6 +197,8 @@ protected:
 	void AddPillar(CStructure2_3D* cStructure3D, glm::vec3 pos, glm::vec3 scale);
 	void AddArmorPickUp(CArmorPickup* cArmorPickup, glm::vec3 pos, glm::vec3 scale);
 	
+	glm::vec3 set_enemySpawnPos();
+
 	// Constructor
 	CScene3D(void);
 	// Destructor

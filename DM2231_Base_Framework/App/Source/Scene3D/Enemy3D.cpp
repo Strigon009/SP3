@@ -25,7 +25,6 @@ CEnemy3D::CEnemy3D(void)
 	, cCamera(NULL)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
-	, enemyDamage(2)
 	, enemyHealth(3)
 {
 	// Set the default position to the origin
@@ -60,7 +59,6 @@ CEnemy3D::CEnemy3D(	const glm::vec3 vec3Position,
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
 	, enemyHealth(2)
-	, enemyDamage(2)
 {
 	// Set the default position to the origin
 	this->vec3Position = vec3Position;
@@ -119,6 +117,7 @@ bool CEnemy3D::Init(void)
 
 	// Set the type
 	SetType(CEntity3D::TYPE::NPC);
+	SetType2(CEntity3D::ENEMYTYPE::CRAWLER);
 
 	// Initialise the cPlayer3D
 	cPlayer3D = CPlayer3D::GetInstance();
@@ -410,6 +409,7 @@ void CEnemy3D::set_enemyHealth(int x)
 	enemyHealth = x;
 }
 
+<<<<<<< Updated upstream
 int CEnemy3D::get_enemyDamage()
 {
 	return 0;
@@ -418,6 +418,16 @@ int CEnemy3D::get_enemyDamage()
 void CEnemy3D::set_enemyDamage(int t)
 {
 	enemyDamage = t;
+=======
+void CEnemy3D::SetEnemyExp(float exp)
+{
+	enemyExp = exp;
+}
+
+float CEnemy3D::GetEnemyExp()
+{
+	return enemyExp;
+>>>>>>> Stashed changes
 }
 
 /**
@@ -435,6 +445,7 @@ void CEnemy3D::UpdateEnemyVectors(void)
 	// Check if we are too far from the player
 	if (cPlayer3D)
 	{
+<<<<<<< Updated upstream
 		if ((cManager)->get_moveTo() == true)
 		{
 			front = glm::normalize(glm::vec3(cTower->GetPosition() - vec3Position));
@@ -445,27 +456,45 @@ void CEnemy3D::UpdateEnemyVectors(void)
 		}
 		else
 		{
+=======
+		// Update the direction of the enemy
+		if ((cManager)->get_moveTo() == true)
+		{
+			cout << "move to tower" << endl;
+			front = glm::normalize(glm::vec3(cTower->GetPosition() - vec3Position));
+		}
+		else
+		{
+			cout << "move to player" << endl;
+>>>>>>> Stashed changes
 			front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
+		}
 
+<<<<<<< Updated upstream
 			// Update the yaw and pitch
 			fYaw = glm::degrees(glm::atan(front.z, front.x));
 			fPitch = glm::degrees(glm::asin(front.y));
 		}
+=======
+		// Update the yaw and pitch
+		fYaw = glm::degrees(glm::atan(front.z, front.x));
+		fPitch = glm::degrees(glm::asin(front.y));
+	}
+>>>>>>> Stashed changes
 
-		vec3Front = front;
-		// Also re-calculate the Right and Up vector
-		// Normalize the vectors, because their length gets closer to 0 the more 
-		// you look up or down which results in slower movement.
-		vec3Right = glm::normalize(glm::cross(vec3Front, vec3WorldUp));
-		vec3Up = glm::normalize(glm::cross(vec3Right, vec3Front));
+	vec3Front = front;
+	// Also re-calculate the Right and Up vector
+	// Normalize the vectors, because their length gets closer to 0 the more 
+	// you look up or down which results in slower movement.
+	vec3Right = glm::normalize(glm::cross(vec3Front, vec3WorldUp));
+	vec3Up = glm::normalize(glm::cross(vec3Right, vec3Front));
 
-		// If the camera is attached to this player, then update the camera
-		if (cCamera)
-		{
-			cCamera->vec3Front = vec3Front;
-			cCamera->vec3Right = vec3Right;
-			cCamera->vec3Up = vec3Up;
-		}
+	// If the camera is attached to this player, then update the camera
+	if (cCamera)
+	{
+		cCamera->vec3Front = vec3Front;
+		cCamera->vec3Right = vec3Right;
+		cCamera->vec3Up = vec3Up;
 	}
 }
 

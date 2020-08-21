@@ -32,6 +32,17 @@ public:
 		OTHERS,		// Default value: Other entities such as ground and skybox
 		NUM_TYPES
 	};
+<<<<<<< Updated upstream
+=======
+	enum ENEMYTYPE
+	{
+		SCRAKE = 0,
+		CRAWLER,
+		BASIC,
+		BOSS,
+		NUM_ENEMY_TYPES
+	};
+>>>>>>> Stashed changes
 
 	// The handle to the CCollider class instance
 	CCollider* cCollider;

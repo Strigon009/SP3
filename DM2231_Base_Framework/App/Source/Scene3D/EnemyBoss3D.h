@@ -101,8 +101,17 @@ protected:
 	int iCurrentNumMovement;
 	int iMaxNumMovement;
 
-	int enemyHealth;
+	int iMovementCharge;
+	float elapsedTime;
+	bool chargeOrNot;
+	bool movementChange;
 
+	int enemyHealth;
+<<<<<<< Updated upstream
+
+=======
+	float enemyExp;
+>>>>>>> Stashed changes
 	// The handle to the CCamera class instance
 	CCamera* cCamera;
 

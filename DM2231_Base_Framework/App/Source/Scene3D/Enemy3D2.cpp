@@ -117,6 +117,7 @@ bool CEnemy3D2::Init(void)
 
 	// Set the type
 	SetType(CEntity3D::TYPE::NPC);
+	SetType2(CEntity3D::ENEMYTYPE::BASIC);
 
 	// Initialise the cPlayer3D
 	cPlayer3D = CPlayer3D::GetInstance();

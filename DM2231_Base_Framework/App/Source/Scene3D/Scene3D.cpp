@@ -85,6 +85,71 @@ void CScene3D::AddArmorPickUp(CArmorPickup* cArmorPickup, glm::vec3 pos, glm::ve
 
 }
 
+<<<<<<< Updated upstream
+=======
+void CScene3D::AddHealthPickUp(CHealthPickup* cHealthPickup, glm::vec3 pos, glm::vec3 scale)
+{
+	cHealthPickup = new CHealthPickup(pos);
+
+	cHealthPickup->SetShader(cShader);
+	cHealthPickup->Init();
+	cHealthPickup->SetScale(scale);
+	cHealthPickup->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cHealthPickup);
+}
+
+void CScene3D::AddInvincibility(CInvincibility* cInvincibility, glm::vec3 pos, glm::vec3 scale)
+{
+	cInvincibility = new CInvincibility(pos);
+
+	cInvincibility->SetShader(cShader);
+	cInvincibility->Init();
+	cInvincibility->SetScale(scale);
+	cInvincibility->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cInvincibility);
+}
+
+void CScene3D::AddFreezeMovement(CFreezeMovement* cFreezeMovement, glm::vec3 pos, glm::vec3 scale)
+{
+	cFreezeMovement = new CFreezeMovement(pos);
+
+	cFreezeMovement->SetShader(cShader);
+	cFreezeMovement->Init();
+	cFreezeMovement->SetScale(scale);
+	cFreezeMovement->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cFreezeMovement);
+}
+
+glm::vec3 CScene3D::set_enemySpawnPos()
+{
+	int switchPos = rand() % 4 + 1;
+
+	switch (switchPos)
+	{
+	case 1:
+	{
+		return glm::vec3(10, 0.5, 10);
+		break;
+	}
+	case 2:
+	{
+		return glm::vec3(-10, 0.5, 10);
+		break;
+	}
+	case 3:
+	{
+		return glm::vec3(10, 0.5, -10);
+		break;
+	}
+	case 4:
+	{
+		return glm::vec3(-10, 0.5, -10);
+		break;
+	}
+	}
+}
+
+>>>>>>> Stashed changes
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
@@ -118,11 +183,12 @@ CScene3D::CScene3D(void)
 	, bossDED(false)
 {
 	wave_count = 0;
-	zombieCount = crawlerCount = scrakeCount = 0;
+
+	zombieCount = crawlerCount = scrakeCount = bossCount = bossStageLimit = 0;
 
 	wave2_start = wave3_start = wave4_start = boss_start = false;
 
-	spawnZTimer = spawnCTimer = spawnSTimer = 0;
+	spawnZTimer = spawnCTimer = spawnSTimer = bufferTime = 0;
 	
 	bossDED = false;
 
@@ -370,6 +436,7 @@ bool CScene3D::Init(void)
 	cRifle->SetShader(cSimpleShader);
 	cPlayer3D->SetWeapon(1, cRifle);
 
+<<<<<<< Updated upstream
 	// Initialise the cEnemy3D
 
 	// CEnemy3D == Crawler zombie
@@ -426,9 +493,11 @@ bool CScene3D::Init(void)
 
 	//CEnemyBoss3D* cBoss = new CEnemyBoss3D;
 	//AddBoss1(cBoss, glm::vec3(10, 0.5, 10), glm::vec3(0.1, 0.1, 0.1));
+=======
+	++wave_count;
+>>>>>>> Stashed changes
 
 	CStructureTower* cTower = CStructureTower::GetInstance();
-
 	cTower->SetShader(cShader);
 	cTower->Init();
 	cTower->SetScale(glm::vec3(0.5, 0.5, 0.5));
@@ -628,52 +697,61 @@ void CScene3D::Update(const double dElapsedTime)
 	spawnZTimer += dElapsedTime;
 	spawnSTimer += dElapsedTime;
 	spawnCTimer += dElapsedTime;
-	//cout << cEntityManager->get_enemy_deathCount() << endl;
+
+	//=========WAVE SPAWNING LOGIC===========
+		// Initialise the cEnemy3D
+	// CEnemy3D == Crawler zombie
+	// CEnemy3D2 == Basic zombie
+	// CEnemy3D3 == Scrake, big nigga
+
+	srand(time(NULL));
+
+	//INIT 1ST WAVE
+	//if (wave_count == 1)
+	{
+		if (zombieCount <= 11)
+		{
+			if (spawnZTimer >= 1.4f)
+			{
+				CEnemy3D2* cEnemy3D2 = new CEnemy3D2();
+				AddEnemy2(cEnemy3D2, set_enemySpawnPos(), glm::vec3(0.5, 0.5, 0.5));
+
+				++zombieCount;
+
+				spawnZTimer = 0;
+			}
+		}
+	}
 
 	//WAVE 2 LOGIC
 	if (wave_count == 1 && cEntityManager->get_enemy_deathCount() >= 12 && wave2_start == false)
 	{
-		cEntityManager->set_enemy_deathCount(0);
-		wave2_start = true;
-		cPlayer3D->SetPosition(glm::vec3(0, 0.5, 0));
+		bufferTime += dElapsedTime;
+
+		cout << bufferTime << endl;
+		if (bufferTime >= 15)
+		{
+			zombieCount = 0;
+			crawlerCount = 0;
+			scrakeCount = 0;
+
+			cEntityManager->set_enemy_deathCount(0);
+			wave2_start = true;
+			wave_count++;
+			cPlayer3D->SetPosition(glm::vec3(0, 0.5, 0));
+		}
 	}
 	if (wave2_start == true)
 	{
+		bufferTime = 0;
+
 		// basic zombie spawning
 		if (zombieCount != 14)
 		{
 			if (spawnZTimer >= 1.4f)
 			{
-				int switchPos = rand() % 4 + 1;
-
-				glm::vec3 spawnPos;
-
-				switch (switchPos)
-				{
-				case 1:
-				{
-					spawnPos = glm::vec3(10, 0.5, 10);
-					break;
-				}
-				case 2:
-				{
-					spawnPos = glm::vec3(-10, 0.5, 10);
-					break;
-				}
-				case 3:
-				{
-					spawnPos = glm::vec3(10, 0.5, -10);
-					break;
-				}
-				case 4:
-				{
-					spawnPos = glm::vec3(-10, 0.5, -10);
-					break;
-				}
-				}
-
 				CEnemy3D2* cEnemy3D2 = new CEnemy3D2();
-				AddEnemy2(cEnemy3D2, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+				AddEnemy2(cEnemy3D2, set_enemySpawnPos(), glm::vec3(0.5, 0.5, 0.5));
 
 				++zombieCount;
 
@@ -686,36 +764,8 @@ void CScene3D::Update(const double dElapsedTime)
 		{
 			if (spawnCTimer >= 1.4f)
 			{
-				int switchPos = rand() % 4 + 1;
-
-				glm::vec3 spawnPos;
-
-				switch (switchPos)
-				{
-				case 1:
-				{
-					spawnPos = glm::vec3(10, 0.5, 10);
-					break;
-				}
-				case 2:
-				{
-					spawnPos = glm::vec3(-10, 0.5, 10);
-					break;
-				}
-				case 3:
-				{
-					spawnPos = glm::vec3(10, 0.5, -10);
-					break;
-				}
-				case 4:
-				{
-					spawnPos = glm::vec3(-10, 0.5, -10);
-					break;
-				}
-				}
-
 				CEnemy3D* cEnemy3D = new CEnemy3D();
-				AddEnemy(cEnemy3D, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+				AddEnemy(cEnemy3D, set_enemySpawnPos(), glm::vec3(0.5, 0.5, 0.5));
 
 				++crawlerCount;
 
@@ -728,58 +778,36 @@ void CScene3D::Update(const double dElapsedTime)
 		if (zombieCount == 14 && crawlerCount == 6)
 		{
 			wave2_start = false;
-			++wave_count;
 		}
 	}
 
 	//WAVE 3 LOGIC
-	if (wave_count == 2 && cEntityManager->get_enemy_deathCount() > 19 && wave3_start == false)
+	if (wave_count == 2 && cEntityManager->get_enemy_deathCount() >= 20 && wave3_start == false)
 	{
-		zombieCount = 0;
-		crawlerCount = 0;
-		scrakeCount = 0;
+		bufferTime += dElapsedTime;
 
-		cEntityManager->set_enemy_deathCount(0);
-		wave3_start = true;
-		cPlayer3D->SetPosition(glm::vec3(0, 0.5, 0));
+		if (bufferTime >= 15)
+		{
+			zombieCount = 0;
+			crawlerCount = 0;
+			scrakeCount = 0;
+
+			cEntityManager->set_enemy_deathCount(0);
+			wave3_start = true;
+			wave_count++;
+			cPlayer3D->SetPosition(glm::vec3(0, 0.5, 0));
+		}
 	}
 	if (wave3_start == true)
 	{
+		bufferTime = 0;
 		// basic zombie spawning
 		if (zombieCount != 16)
 		{
 			if (spawnZTimer >= 1.4f)
 			{
-				int switchPos = rand() % 4 + 1;
-
-				glm::vec3 spawnPos;
-
-				switch (switchPos)
-				{
-				case 1:
-				{
-					spawnPos = glm::vec3(10, 0.5, 10);
-					break;
-				}
-				case 2:
-				{
-					spawnPos = glm::vec3(-10, 0.5, 10);
-					break;
-				}
-				case 3:
-				{
-					spawnPos = glm::vec3(10, 0.5, -10);
-					break;
-				}
-				case 4:
-				{
-					spawnPos = glm::vec3(-10, 0.5, -10);
-					break;
-				}
-				}
-
 				CEnemy3D2* cEnemy3D2 = new CEnemy3D2();
-				AddEnemy2(cEnemy3D2, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+				AddEnemy2(cEnemy3D2, set_enemySpawnPos(), glm::vec3(0.5, 0.5, 0.5));
 
 				++zombieCount;
 
@@ -792,36 +820,8 @@ void CScene3D::Update(const double dElapsedTime)
 		{
 			if (spawnCTimer >= 1.4f)
 			{
-				int switchPos = rand() % 4 + 1;
-
-				glm::vec3 spawnPos;
-
-				switch (switchPos)
-				{
-				case 1:
-				{
-					spawnPos = glm::vec3(10, 0.5, 10);
-					break;
-				}
-				case 2:
-				{
-					spawnPos = glm::vec3(-10, 0.5, 10);
-					break;
-				}
-				case 3:
-				{
-					spawnPos = glm::vec3(10, 0.5, -10);
-					break;
-				}
-				case 4:
-				{
-					spawnPos = glm::vec3(-10, 0.5, -10);
-					break;
-				}
-				}
-
 				CEnemy3D* cEnemy3D = new CEnemy3D();
-				AddEnemy(cEnemy3D, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+				AddEnemy(cEnemy3D, set_enemySpawnPos(), glm::vec3(0.5, 0.5, 0.5));
 
 				++crawlerCount;
 
@@ -834,36 +834,8 @@ void CScene3D::Update(const double dElapsedTime)
 		{
 			if (spawnSTimer >= 1.4f)
 			{
-				int switchPos = rand() % 4 + 1;
-
-				glm::vec3 spawnPos;
-
-				switch (switchPos)
-				{
-				case 1:
-				{
-					spawnPos = glm::vec3(10, 0.5, 10);
-					break;
-				}
-				case 2:
-				{
-					spawnPos = glm::vec3(-10, 0.5, 10);
-					break;
-				}
-				case 3:
-				{
-					spawnPos = glm::vec3(10, 0.5, -10);
-					break;
-				}
-				case 4:
-				{
-					spawnPos = glm::vec3(-10, 0.5, -10);
-					break;
-				}
-				}
-
 				CEnemy3D3* cEnemy3D = new CEnemy3D3();
-				AddEnemy3(cEnemy3D, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+				AddEnemy3(cEnemy3D, set_enemySpawnPos(), glm::vec3(0.5, 0.5, 0.5));
 
 				++scrakeCount;
 
@@ -874,58 +846,36 @@ void CScene3D::Update(const double dElapsedTime)
 		if (zombieCount == 16 && crawlerCount == 8 && scrakeCount == 4)
 		{
 			wave3_start = false;
-			++wave_count;
 		}
 	}
 
 	// WAVE 4 LOGIC
-	if (wave_count == 3 && cEntityManager->get_enemy_deathCount() > 28)
+	if (wave_count == 3 && cEntityManager->get_enemy_deathCount() >= 28 && wave4_start == false)
 	{
-		zombieCount = 0;
-		crawlerCount = 0;
-		scrakeCount = 0;
+		bufferTime += dElapsedTime;
 
-		cEntityManager->set_enemy_deathCount(0);
-		wave4_start = true;
-		cPlayer3D->SetPosition(glm::vec3(0, 0.5, 0));
+		if (bufferTime >= 15)
+		{
+			zombieCount = 0;
+			crawlerCount = 0;
+			scrakeCount = 0;
+
+			cEntityManager->set_enemy_deathCount(0);
+			wave4_start = true;
+			wave_count++;
+			cPlayer3D->SetPosition(glm::vec3(0, 0.5, 0));
+		}
 	}
 	if (wave4_start == true)
 	{
+		bufferTime = 0;
 		// basic zombie spawning
 		if (zombieCount != 18)
 		{
 			if (spawnZTimer >= 1.4f)
 			{
-				int switchPos = rand() % 4 + 1;
-
-				glm::vec3 spawnPos;
-
-				switch (switchPos)
-				{
-				case 1:
-				{
-					spawnPos = glm::vec3(10, 0.5, 10);
-					break;
-				}
-				case 2:
-				{
-					spawnPos = glm::vec3(-10, 0.5, 10);
-					break;
-				}
-				case 3:
-				{
-					spawnPos = glm::vec3(10, 0.5, -10);
-					break;
-				}
-				case 4:
-				{
-					spawnPos = glm::vec3(-10, 0.5, -10);
-					break;
-				}
-				}
-
 				CEnemy3D2* cEnemy3D2 = new CEnemy3D2();
-				AddEnemy2(cEnemy3D2, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+				AddEnemy2(cEnemy3D2, set_enemySpawnPos(), glm::vec3(0.5, 0.5, 0.5));
 
 				++zombieCount;
 
@@ -938,36 +888,8 @@ void CScene3D::Update(const double dElapsedTime)
 		{
 			if (spawnCTimer >= 1.4f)
 			{
-				int switchPos = rand() % 4 + 1;
-
-				glm::vec3 spawnPos;
-
-				switch (switchPos)
-				{
-				case 1:
-				{
-					spawnPos = glm::vec3(10, 0.5, 10);
-					break;
-				}
-				case 2:
-				{
-					spawnPos = glm::vec3(-10, 0.5, 10);
-					break;
-				}
-				case 3:
-				{
-					spawnPos = glm::vec3(10, 0.5, -10);
-					break;
-				}
-				case 4:
-				{
-					spawnPos = glm::vec3(-10, 0.5, -10);
-					break;
-				}
-				}
-
 				CEnemy3D* cEnemy3D = new CEnemy3D();
-				AddEnemy(cEnemy3D, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+				AddEnemy(cEnemy3D, set_enemySpawnPos(), glm::vec3(0.5, 0.5, 0.5));
 
 				++crawlerCount;
 
@@ -980,36 +902,8 @@ void CScene3D::Update(const double dElapsedTime)
 		{
 			if (spawnSTimer >= 1.4f)
 			{
-				int switchPos = rand() % 4 + 1;
-
-				glm::vec3 spawnPos;
-
-				switch (switchPos)
-				{
-				case 1:
-				{
-					spawnPos = glm::vec3(10, 0.5, 10);
-					break;
-				}
-				case 2:
-				{
-					spawnPos = glm::vec3(-10, 0.5, 10);
-					break;
-				}
-				case 3:
-				{
-					spawnPos = glm::vec3(10, 0.5, -10);
-					break;
-				}
-				case 4:
-				{
-					spawnPos = glm::vec3(-10, 0.5, -10);
-					break;
-				}
-				}
-
 				CEnemy3D3* cEnemy3D = new CEnemy3D3();
-				AddEnemy3(cEnemy3D, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+				AddEnemy3(cEnemy3D, set_enemySpawnPos(), glm::vec3(0.5, 0.5, 0.5));
 
 				++scrakeCount;
 
@@ -1020,15 +914,86 @@ void CScene3D::Update(const double dElapsedTime)
 		if (zombieCount == 18 && crawlerCount == 10 && scrakeCount == 6)
 		{
 			wave4_start = false;
-			boss_start = true;
-			++wave_count;
 		}
 	}
 
-	// WIN LOSE CONDITIONS
-	if (cEntityManager->get_enemy_deathCount() >= 34 && boss_start == true && printWinScreen == false)
+	//BOSS WAVE
+	if (wave_count == 4 && cEntityManager->get_enemy_deathCount() >= 34 && boss_start == false)
 	{
-		cSoundController->PlaySoundByID(6);
+		bufferTime += dElapsedTime;
+
+		if (bufferTime >= 15)
+		{
+			zombieCount = 0;
+			crawlerCount = 0;
+			scrakeCount = 0;
+
+			cEntityManager->set_enemy_deathCount(0);
+			boss_start = true;
+			++wave_count;
+			cPlayer3D->SetPosition(glm::vec3(0, 0.5, 0));
+		}
+
+		spawnZTimer = 0;
+	}
+	if (boss_start == true)
+	{
+		bufferTime = 0;
+
+		if (bossDED == false)
+		{
+			// DURING BOSS STAGE, SPAWN RANDOM ENEMIES EVERY 2.2s
+			if (bossStageLimit <= 42)
+			{
+				if (spawnZTimer >= 2.2f)
+				{
+					int randEnemy = rand() % 3 + 1;
+
+					switch (randEnemy)
+					{
+					case 1:
+					{
+						CEnemy3D3* cEnemy3D = new CEnemy3D3();
+						AddEnemy3(cEnemy3D, set_enemySpawnPos(), glm::vec3(0.5, 0.5, 0.5));
+					}
+					case 2:
+					{
+						CEnemy3D* cEnemy3D = new CEnemy3D();
+						AddEnemy(cEnemy3D, set_enemySpawnPos(), glm::vec3(0.5, 0.5, 0.5));
+					}
+					case 3:
+					{
+						CEnemy3D2* cEnemy3D = new CEnemy3D2();
+						AddEnemy2(cEnemy3D, set_enemySpawnPos(), glm::vec3(0.5, 0.5, 0.5));
+					}
+					}
+
+					spawnZTimer = 0;
+				}
+			}
+		}
+
+		CEnemyBoss3D* cBoss = new CEnemyBoss3D();
+
+		// TO ONLY SPAWN IN ONE BOSS
+		if (bossCount <= 0)
+		{
+			AddBoss1(cBoss, set_enemySpawnPos(), glm::vec3(0.1, 0.1, 0.1));
+			++bossCount;
+		}
+
+		// CHECK FOR BOSS DEATH
+		if (cBoss->get_enemyHealth() <= 0)
+		{
+			bossDED = true;
+			boss_start = false;
+		}
+	}
+	//=========WAVE SPAWNING LOGIC END=========
+
+	// WIN CONDITION
+	if (bossDED == true)
+	{
 		printWinScreen = true;
 	}
 
@@ -1037,6 +1002,8 @@ void CScene3D::Update(const double dElapsedTime)
 	//	//cSoundController->PlaySoundByID(5);
 	//	printLoseScreen = true;
 	//}
+
+	cout << cEntityManager->get_enemy_deathCount() << endl;
 
 	// Post Update the mouse controller
 	cMouseController->PostUpdate();
@@ -1231,6 +1198,27 @@ void CScene3D::Render(void)
 	}
 	cTextRenderer->Render(std::to_string(cWeaponInfo->GetMagRound()) + "/" + std::to_string(cWeaponInfo->GetMaxMagRound()), 100, 500, 1, glm::vec3(0, 0, 0));
 
+<<<<<<< Updated upstream
+=======
+		currentWeap += "Pistol";
+		cTextRenderer->Render(currentWeap, 550.f, 70.0f, 0.5f, glm::vec3(0.3f, 0.6f, 1.0f));
+	}
+	if (cPlayer3D->GetCurrentWeaponIndex() == 1)
+	{
+		currentWeap += "Minigun";
+		cTextRenderer->Render(currentWeap, 550.f, 70.0f, 0.5f, glm::vec3(1.f, 0.f, 0.f));
+	}
+	string level;
+	level += "Level: ";
+	level += to_string(cPlayer3D->GetCurrentPlayerLevel());
+	cTextRenderer->Render(level, 10.f, 40.0f, 0.5f, glm::vec3(0.0f, 0.0f, 0.0f));
+
+	string timeOfBuffer;
+	cTextRenderer->Render(std::to_string(bufferTime), 400.f, 300.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+
+	string waveno;
+	cTextRenderer->Render(std::to_string(wave_count), 400.f, 325.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+>>>>>>> Stashed changes
 	// Call the cTextRenderer's PostRender()
 	cTextRenderer->PostRender();
 

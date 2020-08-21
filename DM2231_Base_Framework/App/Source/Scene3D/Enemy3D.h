@@ -108,8 +108,12 @@ protected:
 	int iMaxNumMovement;
 
 	int enemyHealth;
+<<<<<<< Updated upstream
 
 	int enemyDamage;
+=======
+	float enemyExp;
+>>>>>>> Stashed changes
 
 	// The handle to the CCamera class instance
 	CCamera* cCamera;

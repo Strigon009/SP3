@@ -29,7 +29,11 @@ void CRifle::Init(void)
 	// The maximum number of ammunition for this magazine for this weapon
 	iMaxMagRounds = 99;
 	// The current total number of rounds currently carried by this player
+<<<<<<< Updated upstream
 	iTotalRounds = 99;
+=======
+	iTotalRounds = 99999;
+>>>>>>> Stashed changes
 	// The max total number of rounds currently carried by this player
 	iMaxTotalRounds = 99;
 

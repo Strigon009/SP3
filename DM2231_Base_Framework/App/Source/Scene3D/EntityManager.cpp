@@ -253,15 +253,55 @@ void CEntityManager::Update(const double dElapsedTime)
 				}
 			}
 
+<<<<<<< Updated upstream
+=======
+			// PLAYER COLLISION WITH OTHER THINGS
+			if (((*it)->GetType() == CEntity3D::TYPE::NPC))
+			{
+				if (bFreezeMovement == true)
+				{
+					static_cast<CEntity3D*>(*it)->SetMovementSpeed(0.0f);
+				}
+				else
+				{
+					static_cast<CEntity3D*>(*it)->SetMovementSpeed(2.5f);
+				}
+			}
+
+>>>>>>> Stashed changes
 			// Check for collisions between the 2 entities
 			if ((*it)->CheckForCollision(*it_other) == true)
 			{
-				if (((*it)->GetType() == CEntity3D::TYPE::NPC) &&
-					((*it_other)->GetType() == CEntity3D::TYPE::PROJECTILE))
+				// CHECK BETWEEN NPC AND PROJECTILE
+				if (((*it)->GetType() == CEntity3D::TYPE::NPC) && ((*it_other)->GetType() == CEntity3D::TYPE::PROJECTILE))
 				{
+<<<<<<< Updated upstream
 					if (static_cast<CEnemy3D*>(*it)->get_enemyHealth() != 0)
+=======
+					// CHECK IF NPC IS A BOSS
+					if ((*it)->GetType2() == CEntity3D::ENEMYTYPE::BOSS)
 					{
-						cout << static_cast<CEnemy3D*>(*it)->get_enemyHealth() << endl;
+						static_cast<CEnemyBoss3D*>(*it)->set_enemyHealth(static_cast<CEnemyBoss3D*>(*it)->get_enemyHealth() - 1);
+					}
+					else
+					{
+						static_cast<CEnemy3D*>(*it)->set_enemyHealth(static_cast<CEnemy3D*>(*it)->get_enemyHealth() - 1 );
+					}
+
+					// CHECK IF HEALTH IS ABOVE 0, IF NOT DELETE
+					if (static_cast<CEnemy3D*>(*it)->get_enemyHealth() > 0)
+					{
+						(*it)->RollbackPosition();
+					}
+					else
+					{
+						(*it)->SetToDelete(true);
+						++enemy_deathCount;
+					}
+
+					if (static_cast<CEnemyBoss3D*>(*it)->get_enemyHealth() > 0)
+>>>>>>> Stashed changes
+					{
 						(*it)->RollbackPosition();
 					}
 					else
@@ -271,28 +311,54 @@ void CEntityManager::Update(const double dElapsedTime)
 					}
 
 					(*it_other)->SetToDelete(true);
+<<<<<<< Updated upstream
 					cout << "** Collision between NPC and Projectile ***" << endl;
 
 					static_cast<CEnemy3D*>(*it)->set_enemyHealth(static_cast<CEnemy3D*>(*it)->get_enemyHealth() - 1);
 				}
 				else if (((*it)->GetType() == CEntity3D::TYPE::PROJECTILE) &&
 					((*it_other)->GetType() == CEntity3D::TYPE::NPC))
+=======
+					cout << "** Collision between NPC and PROJECTILE ***" << endl;
+					
+				}
+				// CHECK BETWEEN PROJECTILE AND NPC
+				else if (((*it)->GetType() == CEntity3D::TYPE::PROJECTILE) && ((*it_other)->GetType() == CEntity3D::TYPE::NPC))
+>>>>>>> Stashed changes
 				{
-					(*it)->SetToDelete(true);
-
-					if (static_cast<CEnemy3D*>(*it)->get_enemyHealth() != 0)
+					// CHECK IF NPC IS A BOSS
+					if ((*it_other)->GetType2() == CEntity3D::ENEMYTYPE::BOSS)
 					{
-						(*it_other)->RollbackPosition();
+						static_cast<CEnemyBoss3D*>(*it_other)->set_enemyHealth(static_cast<CEnemyBoss3D*>(*it_other)->get_enemyHealth() - 1);
 					}
 					else
 					{
-						(*it_other)->SetToDelete(true);
+						static_cast<CEnemy3D*>(*it_other)->set_enemyHealth(static_cast<CEnemy3D*>(*it_other)->get_enemyHealth() - 1);
+					}
+
+					// CHECK IF HEALTH IS ABOVE 0, IF NOT DELETE
+					if (static_cast<CEnemy3D*>(*it)->get_enemyHealth() > 0)
+					{
+						(*it)->RollbackPosition();
+					}
+					else
+					{
+						(*it)->SetToDelete(true);
 						++enemy_deathCount;
 					}
 
-					cout << "** Collision between NPC and Projectile ***" << endl;
+					if (static_cast<CEnemyBoss3D*>(*it)->get_enemyHealth() > 0)
+					{
+						(*it)->RollbackPosition();
+					}
+					else
+					{
+						(*it)->SetToDelete(true);
+						++enemy_deathCount;
+					}
 
-					static_cast<CEnemy3D*>(*it)->set_enemyHealth(static_cast<CEnemy3D*>(*it)->get_enemyHealth() - 1);
+					(*it)->SetToDelete(true);
+					cout << "** Collision between PROJECTILE and NPC ***" << endl;
 				}
 				else if (((*it)->GetType() == CEntity3D::TYPE::PROJECTILE) &&
 					((*it_other)->GetType() == CEntity3D::TYPE::PROJECTILE))
@@ -304,8 +370,19 @@ void CEntityManager::Update(const double dElapsedTime)
 				else if (((*it)->GetType() == CEntity3D::TYPE::NPC) &&
 					((*it_other)->GetType() == CEntity3D::TYPE::NPC))
 				{
-					(*it)->RollbackPosition();
-					//(*it_other)->RollbackPosition();
+					if ((*it)->GetType2() == CEntity3D::ENEMYTYPE::BOSS)
+					{
+
+					}
+					else if ((*it_other)->GetType2() == CEntity3D::ENEMYTYPE::BOSS)
+					{
+
+					}
+					else
+					{
+						(*it)->RollbackPosition();
+					}
+
 					cout << "** Collision between 2 NPCs ***" << endl;
 				}
 				else if (((*it)->GetType() == CEntity3D::TYPE::NPC) &&
