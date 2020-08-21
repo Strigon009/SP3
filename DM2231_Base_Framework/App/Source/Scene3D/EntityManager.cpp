@@ -14,10 +14,15 @@ CEntityManager::CEntityManager(void)
 	, projection(glm::mat4(1.0f))
 	, enemy_deathCount(0)
 	, moveTo_Tower(false)
-	, bInvincibility(false)
 	, iFrames(false)
 	, lastTime(0)
 	, lastTime2(0)
+	, bInvincibility(false)
+	, bFreezeMovement(false)
+	, bFrames(false)
+	, fLastTime(0)
+	, fLastTime2(0)
+	, fCurrentTime(0)
 {
 }
 
@@ -198,14 +203,14 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				bResult = 5;
 				break;
 			}
-			else if ((*it)->GetType() == CEntity3D::TYPE::POWERUP)
+			else if ((*it)->GetType() == CEntity3D::TYPE::INVINCIBILITY)
 			{
 				// Rollback the cEntity3D's position
 				(*it)->SetToDelete(true);
 
 				bInvincibility = true;
 				lastTime = currentTime;
-				cout << "** Collision between Player and Powerup ***" << endl;
+				cout << "** Collision between Player and Invincibility ***" << endl;
 				bResult = 6;
 				// Quit this loop since a collision has been found
 				
@@ -237,6 +242,18 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				bResult = 7;
 				break;
 				// Quit this loop since a collision has been found
+			else if ((*it)->GetType() == CEntity3D::TYPE::FREEZE_MOVEMENT)
+			{
+				// Rollback the cEntity3D's position
+				(*it)->SetToDelete(true);
+
+				bFreezeMovement = true;
+				fLastTime = currentTime;
+				cout << "** Collision between Player and FreezeMovement ***" << endl;
+				bResult = 8;
+				// Quit this loop since a collision has been found
+
+				break;
 			}
 		}
 	}
@@ -270,7 +287,11 @@ void CEntityManager::Update(const double dElapsedTime)
 		if (currentTime - lastTime2 > 0.75f)
 			iFrames = false;
 	}
-
+	if (bFreezeMovement)
+	{
+		if (fCurrentTime - fLastTime > 5)
+			bFreezeMovement = false;
+	}
 	// Check for collisions among them
 	end = lEntity3D.end();
 	for (it = lEntity3D.begin(); it != end; ++it)
@@ -296,6 +317,18 @@ void CEntityManager::Update(const double dElapsedTime)
 					((*it)->GetType() == CEntity3D::TYPE::TOWER) && ((*it_other)->GetType() == CEntity3D::TYPE::NPC))
 				{
 					moveTo_Tower = false;
+				}
+			}
+
+			if (((*it)->GetType() == CEntity3D::TYPE::NPC))
+			{
+				if (bFreezeMovement == true)
+				{
+					static_cast<CEntity3D*>(*it)->SetMovementSpeed(0.0f);
+				}
+				else
+				{
+					static_cast<CEntity3D*>(*it)->SetMovementSpeed(2.5f);
 				}
 			}
 
@@ -472,3 +505,22 @@ void CEntityManager::set_moveTo(bool b)
 	moveTo_Tower = b;
 }
 
+bool CEntityManager::GetInvincibility()
+{
+	return bInvincibility;
+}
+
+void CEntityManager::SetInvincibility(bool bInvincibility)
+{
+	this->bInvincibility = bInvincibility;
+}
+
+bool CEntityManager::GetFreezeMovement()
+{
+	return bFreezeMovement;
+}
+
+void CEntityManager::SetFreezeMovement(bool bFreezeMovement)
+{
+	this->bFreezeMovement = bFreezeMovement;
+}

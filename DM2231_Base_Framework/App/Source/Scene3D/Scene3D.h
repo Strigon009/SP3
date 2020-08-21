@@ -70,7 +70,8 @@
 // Include Pickups
 #include "ArmorPickup.h"
 #include "HealthPickup.h"
-#include "PowerUp.h"
+#include "Invincibility.h"
+#include "FreezeMovement.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -148,7 +149,7 @@ protected:
 	CCamera* cCamera;
 
 	// Handler to the Player3D class
-	//CEnemy3D* cEnemy3D;
+	CEnemy3D* cEnemy3D;
 
 	// Handler to the CSkyBox
 	CSkyBox* cSkyBox;
@@ -169,7 +170,8 @@ protected:
 	CWeaponInfo* cWeaponInfo;
 	CArmorPickup* cArmorPickup;
 	CHealthPickup* cHealthPickup;
-	CPowerUp* cPowerUp;
+	CInvincibility* cInvincibility;
+	CFreezeMovement* cFreezeMovement;
 
 	//CPhysics3D cPhysics3D;
 
@@ -201,7 +203,8 @@ protected:
 	void AddPillar(CStructure2_3D* cStructure3D, glm::vec3 pos, glm::vec3 scale);
 	void AddArmorPickUp(CArmorPickup* cArmorPickup, glm::vec3 pos, glm::vec3 scale);
 	void AddHealthPickUp(CHealthPickup* cHealthPickup, glm::vec3 pos, glm::vec3 scale);
-	void AddPowerUp(CPowerUp* cPowerUp, glm::vec3 pos, glm::vec3 scale);
+	void AddInvincibility(CInvincibility* cInvincibility, glm::vec3 pos, glm::vec3 scale);
+	void AddFreezeMovement(CFreezeMovement* cFreezeMovement, glm::vec3 pos, glm::vec3 scale);
 	
 	// Constructor
 	CScene3D(void);

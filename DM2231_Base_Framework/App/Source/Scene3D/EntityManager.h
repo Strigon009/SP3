@@ -70,6 +70,12 @@ public:
 
 	bool get_moveTo();
 	void set_moveTo(bool b);
+
+	virtual bool GetInvincibility();
+	virtual void SetInvincibility(bool bInvincibility);
+
+	virtual bool GetFreezeMovement();
+	virtual void SetFreezeMovement(bool bFreezeMovement);
 	
 	//int enemyHealth;
 
@@ -91,8 +97,6 @@ protected:
 	CExperienceBar* cExpBar;
 	//CArmorBar* cArmorBar;
 
-	CArmorPickup* cArmorPickup;
-
 	CPlayer3D* cPlayer3D;
 
 	CSoundController* cSoundController;
@@ -109,6 +113,8 @@ protected:
 
 	float lastTime, lastTime2;
 	float currentTime;
+	bool bFreezeMovement;
+	float fLastTime,
 	// Default Constructor
 	CEntityManager(void);
 	// Destructor

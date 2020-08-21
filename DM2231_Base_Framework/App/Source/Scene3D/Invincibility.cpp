@@ -1,9 +1,9 @@
 /**
- CPowerUp
+ CInvincibility
  By: Toh Da Jun
  Date: Apr 2020
  */
-#include "PowerUp.h"
+#include "Invincibility.h"
 #include "System/LoadOBJ.h"
 #include <iostream>
 using namespace std;
@@ -11,7 +11,7 @@ using namespace std;
 /**
  @brief Default Constructor
  */
-CPowerUp::CPowerUp(void)
+CInvincibility::CInvincibility(void)
 	: cGroundMap(NULL)
 {
 	// Set the default position to the origin
@@ -25,7 +25,7 @@ CPowerUp::CPowerUp(void)
  @param yaw A const float variable which contains the yaw of the camera
  @param pitch A const float variable which contains the pitch of the camera
  */
-CPowerUp::CPowerUp(const glm::vec3 vec3Position,
+CInvincibility::CInvincibility(const glm::vec3 vec3Position,
 	const glm::vec3 vec3Front,
 	const float fYaw,
 	const float fPitch)
@@ -38,7 +38,7 @@ CPowerUp::CPowerUp(const glm::vec3 vec3Position,
 /**
  @brief Destructor
  */
-CPowerUp::~CPowerUp(void)
+CInvincibility::~CInvincibility(void)
 {
 	if (cGroundMap)
 	{
@@ -55,12 +55,12 @@ CPowerUp::~CPowerUp(void)
  @brief Initialise this class instance
  @return true is successfully initialised this class instance, else false
  */
-bool CPowerUp::Init(void)
+bool CInvincibility::Init(void)
 {
 	// Check if the shader is ready
 	if (!cShader)
 	{
-		cout << "CPowerUp::Init(): The shader is not available for this class instance." << endl;
+		cout << "CInvincibility::Init(): The shader is not available for this class instance." << endl;
 		return false;
 	}
 
@@ -68,7 +68,7 @@ bool CPowerUp::Init(void)
 	CEntity3D::Init();
 
 	// Set the type
-	SetType(CEntity3D::TYPE::POWERUP);
+	SetType(CEntity3D::TYPE::INVINCIBILITY);
 
 	std::vector<glm::vec3> vertices;
 	std::vector <glm::vec2> uvs;
@@ -112,7 +112,7 @@ bool CPowerUp::Init(void)
  @brief Set model
  @param model A glm::mat4 variable containing the model for this class instance
  */
-void CPowerUp::SetModel(glm::mat4 model)
+void CInvincibility::SetModel(glm::mat4 model)
 {
 	this->model = model;
 }
@@ -121,7 +121,7 @@ void CPowerUp::SetModel(glm::mat4 model)
  @brief Set view
  @param view A glm::mat4 variable containing the model for this class instance
  */
-void CPowerUp::SetView(glm::mat4 view)
+void CInvincibility::SetView(glm::mat4 view)
 {
 	this->view = view;
 }
@@ -130,7 +130,7 @@ void CPowerUp::SetView(glm::mat4 view)
  @brief Set projection
  @param projection A glm::mat4 variable containing the model for this class instance
  */
-void CPowerUp::SetProjection(glm::mat4 projection)
+void CInvincibility::SetProjection(glm::mat4 projection)
 {
 	this->projection = projection;
 }
@@ -138,7 +138,7 @@ void CPowerUp::SetProjection(glm::mat4 projection)
 /**
 @brief Update this class instance
 */
-void CPowerUp::Update(const double dElapsedTime)
+void CInvincibility::Update(const double dElapsedTime)
 {
 	vec3ColliderScale = vec3Scale;
 }
@@ -147,7 +147,7 @@ void CPowerUp::Update(const double dElapsedTime)
 @brief Activate the CCollider for this class instance
 @param cLineShader A Shader* variable which stores a shader which renders lines
 */
-void CPowerUp::ActivateCollider(Shader* cLineShader)
+void CInvincibility::ActivateCollider(Shader* cLineShader)
 {
 	// Create a new CCollider
 	cCollider = new CCollider();
@@ -162,7 +162,7 @@ void CPowerUp::ActivateCollider(Shader* cLineShader)
 /**
 @brief PreRender Set up the OpenGL display environment before rendering
 */
-void CPowerUp::PreRender(void)
+void CInvincibility::PreRender(void)
 {
 	// Draw this as last
 	glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
@@ -172,12 +172,12 @@ void CPowerUp::PreRender(void)
 @brief Render Render this instance
 @param cShader A Shader* variable which contains the Shader to use in this class instance
 */
-void CPowerUp::Render(void)
+void CInvincibility::Render(void)
 {
 	// If the shader is in this class, then do not render
 	if (!cShader)
 	{
-		cout << "CPowerUp::Render(): The shader is not available for this class instance." << endl;
+		cout << "CInvincibility::Render(): The shader is not available for this class instance." << endl;
 		return;
 	}
 
@@ -232,7 +232,7 @@ void CPowerUp::Render(void)
 /**
 @brief PostRender Set up the OpenGL display environment after rendering.
 */
-void CPowerUp::PostRender(void)
+void CInvincibility::PostRender(void)
 {
 	glDepthFunc(GL_LESS); // set depth function back to default
 }
