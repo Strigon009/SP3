@@ -26,7 +26,7 @@
 class CEntityManager;
 
 // An abstract camera class that processes input and calculates the corresponding Euler Angles, Vectors and Matrices for use in OpenGL
-class CEnemy3D2 : public CEntity3D
+class CEnemy3DBoss : public CEntity3D
 {
 public:
 	// Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
@@ -39,16 +39,16 @@ public:
 	};
 
 	// Default Constructor
-	CEnemy3D2(void);
+	CEnemy3DBoss(void);
 
 	// Constructor with vectors
-	CEnemy3D2(	const glm::vec3 vec3Position,
+	CEnemy3DBoss(	const glm::vec3 vec3Position,
 				const glm::vec3 vec3Front = glm::vec3(0.0f, 0.0f, -1.0f),
 				const float fYaw = -90.0f,
 				const float fPitch = 0.0f);
 
 	// Destructor
-	virtual ~CEnemy3D2(void);
+	virtual ~CEnemy3DBoss(void);
 
 	// Initialise this class instance
 	bool Init(void);
@@ -89,6 +89,9 @@ public:
 	int get_enemyHealth();
 	void set_enemyHealth(int x);
 
+	int get_enemyDamage();
+	void set_enemyDamage(int t);
+
 protected:
 	// Enemy Attributes
 	glm::vec3 vec3Up;
@@ -104,7 +107,14 @@ protected:
 	int iCurrentNumMovement;
 	int iMaxNumMovement;
 
+	int iMovementCharge;
+	float elapsedTime;
+	bool chargeOrNot;
+	bool movementChange;
+
 	int enemyHealth;
+
+	int enemyDamage;
 
 	// The handle to the CCamera class instance
 	CCamera* cCamera;
