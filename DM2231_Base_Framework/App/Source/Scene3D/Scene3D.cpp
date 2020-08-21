@@ -1087,50 +1087,19 @@ void CScene3D::Update(const double dElapsedTime)
 	switch (cEntityManager->CollisionCheck(cPlayer3D))
 	{
 	case 1:
-		cCameraEffects->Activate_BloodScreen();
-		if (cPlayer3D->GetArmor() > 0)
-		{
-			cPlayer3D->SetArmor(cPlayer3D->GetArmor() - 5);
-		}
-		else if (cPlayer3D->GetHealth() > 0)
-		{
-			cPlayer3D->SetHealth(cPlayer3D->GetHealth() - 2);
-		}
-				//cCameraEffects->Activate_BloodScreen();
-		cPlayer3D->GainExp(5);
+		// Zombie
 		break;
 	case 4:
-		if (cPlayer3D->GetHealth() == 100)
-		{
-			// Do nothing
-		}
-		else
-		{
-			cPlayer3D->SetHealth(cPlayer3D->GetHealth() + 30);
-		}
-
+		// Health pickup
 		break;
 	case 5:
-		if (cPlayer3D->GetArmor() == 100)
-		{
-			// Do nothing
-		}
-		else
-		{
-			cPlayer3D->SetArmor(cPlayer3D->GetArmor() + 30);
-		}
+		// Armor pickup
 		break;
 	case 6:
-		/*if (cPlayer3D->GetArmor() > 0)
-		{
-			cPlayer3D->SetArmor(cPlayer3D->GetArmor() - 0);
-			cout << "You got yeeted" << endl;
-		}
-		else if (cPlayer3D->GetHealth() > 0)
-		{
-			cPlayer3D->SetHealth(cPlayer3D->GetHealth() - 0);
-		}*/
+		// Powerup
 		break;
+	case 7:
+		// Scrake
 	default:
 		break;
 	}

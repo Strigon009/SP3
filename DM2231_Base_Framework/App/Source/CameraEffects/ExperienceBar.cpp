@@ -9,6 +9,7 @@ using namespace std;
  */
 CExperienceBar::CExperienceBar(void)
 	:cPlayer3D(NULL)
+	, expBar(false)
 {
 }
 
@@ -55,7 +56,7 @@ bool CExperienceBar::Init(glm::vec3 pos, glm::vec4 color)
 	fWidth = 0.0333f * 8;
 	vec3Position = pos;
 	vec4Colour = color;
-	vec3Scale.x = 0;
+	vec3Scale.x = 0.f;
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	float vertices[] = {
@@ -120,8 +121,15 @@ void CExperienceBar::SetProjection(glm::mat4 projection)
 void CExperienceBar::Update(const double dElapsedTime)
 {
 	if (vec3Scale.x >= 1.f)
+	{
 		cPlayer3D->ExpUpdate();
-	vec3Scale.x = cPlayer3D->GetCurrentExp() / 100;
+		vec3Scale.x = 0;
+	}
+	if (expBar)
+	{
+		vec3Scale.x = vec3Scale.x + ExpMulti / 100.f;
+		expBar = !expBar;
+	}
 }
 
 /**
@@ -204,3 +212,27 @@ void CExperienceBar::PostRender(void)
 	glDisable(GL_BLEND);
 }
 
+void CExperienceBar::ExperienceGain(float exp)
+{
+	vec3Scale.x += exp / 100;
+}
+
+float CExperienceBar::GetExp()
+{
+	return vec3Scale.x * 100.f;
+}
+
+void CExperienceBar::SetExpMultiplier(float exp)
+{
+	ExpMulti = exp;
+}
+
+void CExperienceBar::SetExpBar(bool expBool)
+{
+	expBar = expBool;
+}
+
+bool CExperienceBar::GetExpBar()
+{
+	return expBar;
+}

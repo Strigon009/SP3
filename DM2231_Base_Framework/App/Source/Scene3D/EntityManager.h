@@ -69,9 +69,6 @@ public:
 
 	bool get_moveTo();
 	void set_moveTo(bool b);
-
-	virtual bool GetInvincibility();
-	virtual void SetInvincibility(bool bInvincibility);
 	
 	//int enemyHealth;
 
@@ -107,8 +104,9 @@ protected:
 	bool moveTo_Tower;
 
 	bool bInvincibility;
+	bool iFrames;
 
-	int lastTime;
+	float lastTime, lastTime2;
 	float currentTime;
 	// Default Constructor
 	CEntityManager(void);

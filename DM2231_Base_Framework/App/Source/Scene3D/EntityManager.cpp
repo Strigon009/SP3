@@ -15,6 +15,9 @@ CEntityManager::CEntityManager(void)
 	, enemy_deathCount(0)
 	, moveTo_Tower(false)
 	, bInvincibility(false)
+	, iFrames(false)
+	, lastTime(0)
+	, lastTime2(0)
 {
 }
 
@@ -110,8 +113,11 @@ bool CEntityManager::Erase(CEntity3D* cEntity3D)
 */
 int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 {
-	static_cast<CHealthBar*>(cHealthBar)->SetDmgMultiplier(0.1f);
-	static_cast<CArmorBar*>(cArmorBar)->SetArmorDmgMultiplier(0.1f);
+	static_cast<CHealthBar*>(cHealthBar)->SetDmgMultiplier(1.f);
+	static_cast<CArmorBar*>(cArmorBar)->SetArmorDmgMultiplier(1.f);
+	
+	
+
 	int bResult = 0;
 		
 	std::list<CEntity3D*>::iterator it, end;
@@ -121,38 +127,32 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 		// Check for collisions between the 2 entities
 		if (cEntity3D->CheckForCollision(*it) == true)
 		{
-			if ((*it)->GetType2() == CEntity3D::ENEMYTYPE::SCRAKE)
-			{
-				
-				cout << "** Collision between Player and NPC2 ***" << endl;
-
-				static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(true);
-				static_cast<CHealthBar*>(cHealthBar)->SetDmgMultiplier(0.3f);
-				static_cast<CArmorBar*>(cArmorBar)->SetArmorDmgMultiplier(0.3f);
-				static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
-
-				// Quit this loop since a collision has been found
-			}
+			
 			if ((*it)->GetType() == CEntity3D::TYPE::NPC)
 			{
-				// Rollback the cEntity3D's position
-				cEntity3D->RollbackPosition();
-				// Rollback the NPC's position
-				(*it)->RollbackPosition();
 				cout << "** Collision between Player and NPC ***" << endl;
-				bResult = 1;
+			
+				static_cast<CHealthBar*>(cHealthBar)->SetDmgMultiplier(1.f);
+				static_cast<CArmorBar*>(cArmorBar)->SetArmorDmgMultiplier(1.f);
+				if (bInvincibility || iFrames)
+				{
 
-				if (bInvincibility == true)
-				{
-					static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(false);
-					static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(false);
 				}
-				else
+				else if(!bInvincibility || !iFrames)
 				{
-					static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(true);
-					static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
+					if (static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() * 100 >= 0.f)
+						static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
+					else
+						static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(true);
+
+					// Rollback the cEntity3D's position
+					//cEntity3D->RollbackPosition();
+					// Rollback the NPC's position
+					(*it)->RollbackPosition();
+					lastTime2 = currentTime;
+					iFrames = true;
 				}
-				
+				bResult = 1;
 				break;
 			}
 			else if ((*it)->GetType() == CEntity3D::TYPE::PROJECTILE)
@@ -170,8 +170,6 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				// Rollback the cEntity3D's position
 				cEntity3D->RollbackPosition();
 
-				//cSoundController->PlaySoundByID(2);
-
 				cout << "** Collision between Player and Structure ***" << endl;
 				bResult = 3;
 				// Quit this loop since a collision has been found
@@ -182,24 +180,22 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 			{
 				// Rollback the cEntity3D's position
 				(*it)->SetToDelete(true);
-
-				static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(true);
-
+				static_cast<CHealthBar*>(cHealthBar)->AddHealth(30);
 				cout << "** Collision between Player and Health_PickUp ***" << endl;
-				bResult = 4;
 				// Quit this loop since a collision has been found
-				
+
+				bResult = 4;
 				break;
 			}
 			else if ((*it)->GetType() == CEntity3D::TYPE::ARMOR_PICKUP)
 			{
 				(*it)->SetToDelete(true);
-				static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
 
+				static_cast<CArmorBar*>(cArmorBar)->AddArmor(30);
 				cout << "** Collision between Player and Armor_PickUp ***" << endl;
-				bResult = 5;
+				
 				// Quit this loop since a collision has been found
-
+				bResult = 5;
 				break;
 			}
 			else if ((*it)->GetType() == CEntity3D::TYPE::POWERUP)
@@ -215,6 +211,33 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				
 				break;
 			}
+			if ((*it)->GetType2() == CEntity3D::ENEMYTYPE::SCRAKE)
+			{
+
+				cout << "** Collision between Player and NPC2 ***" << endl;
+				
+				static_cast<CHealthBar*>(cHealthBar)->SetDmgMultiplier(3.f);
+				static_cast<CArmorBar*>(cArmorBar)->SetArmorDmgMultiplier(3.f);
+				if (bInvincibility || iFrames)
+				{
+
+				}
+				else if (!bInvincibility || !iFrames)
+				{
+					if (static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() * 100 >= 0.f)
+						static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
+					else
+						static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(true);
+
+					(*it)->RollbackPosition();
+					lastTime2 = currentTime;
+					iFrames = true;
+				}
+
+				bResult = 7;
+				break;
+				// Quit this loop since a collision has been found
+			}
 		}
 	}
 	return bResult;
@@ -225,6 +248,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
  */
 void CEntityManager::Update(const double dElapsedTime)
 {
+	static_cast<CExperienceBar*>(cExpBar)->SetExpMultiplier(1.f);
 	std::list<CEntity3D*>::iterator it, end;
 	std::list<CEntity3D*>::iterator it_other;
 	currentTime = GetTickCount64() * 0.001f;
@@ -237,10 +261,16 @@ void CEntityManager::Update(const double dElapsedTime)
 
 	if (bInvincibility)
 	{
-		if (currentTime - lastTime > 2)
+		if (currentTime - lastTime > 5)
 			bInvincibility = false;
 			//cout << "yeet" << endl;
 	}
+	if (iFrames)
+	{
+		if (currentTime - lastTime2 > 0.75f)
+			iFrames = false;
+	}
+
 	// Check for collisions among them
 	end = lEntity3D.end();
 	for (it = lEntity3D.begin(); it != end; ++it)
@@ -296,8 +326,9 @@ void CEntityManager::Update(const double dElapsedTime)
 					{
 						(*it)->SetToDelete(true);
 						++enemy_deathCount;
+						
 					}
-
+					
 					(*it_other)->SetToDelete(true);
 					cout << "** Collision between NPC and Projectile ***" << endl;
 					
@@ -451,12 +482,3 @@ void CEntityManager::set_moveTo(bool b)
 	moveTo_Tower = b;
 }
 
-bool CEntityManager::GetInvincibility()
-{
-	return bInvincibility;
-}
-
-void CEntityManager::SetInvincibility(bool bInvincibility)
-{
-	this->bInvincibility = bInvincibility;
-}

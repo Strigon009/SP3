@@ -118,24 +118,11 @@ void CHealthBar::SetProjection(glm::mat4 projection)
  */
 void CHealthBar::Update(const double dElapsedTime)
 {
-	//vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime;
-	//if (vec3Scale.x <= 0.01f)
-	//	vec3Scale.x = 1.0f;
-	//if (GetType2() == CEntity3D::ENEMYTYPE::SCRAKE)
-	//{
-	if (healthBar)
-	{
-		//vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime * dmgmultiplier;
-		vec3Scale.x = (float)cPlayer3D->GetHealth() / 100;
-		healthBar = !healthBar;
-	}
-	//}
-
-	// if (healthBar)
-	// {
-	// 	vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime * dmgmultiplier;
-	// 	healthBar = !healthBar;
-	// }
+	 if (healthBar)
+	 {
+	 	vec3Scale.x = vec3Scale.x - dmgmultiplier / 100.f;
+	 	healthBar = !healthBar;
+	 }
 }
 
 /**
@@ -239,4 +226,9 @@ void CHealthBar::SetHealthBarLength(float length)
 void CHealthBar::SetDmgMultiplier(float dmg)
 {
 	dmgmultiplier = dmg;
+}
+
+void CHealthBar::AddHealth(float health)
+{
+	vec3Scale.x += health / 100;
 }

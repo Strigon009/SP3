@@ -92,6 +92,9 @@ public:
 	int get_enemyDamage();
 	void set_enemyDamage(int t);
 
+	float GetEnemyExp();
+	void SetEnemyExp(float exp);
+
 protected:
 	// Enemy Attributes
 	glm::vec3 vec3Up;
@@ -111,6 +114,7 @@ protected:
 
 	int enemyDamage;
 
+	float enemyExp;
 	// The handle to the CCamera class instance
 	CCamera* cCamera;
 

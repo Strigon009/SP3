@@ -102,7 +102,7 @@ protected:
 	int iMaxNumMovement;
 
 	int enemyHealth;
-
+	float enemyExp;
 	// The handle to the CCamera class instance
 	CCamera* cCamera;
 

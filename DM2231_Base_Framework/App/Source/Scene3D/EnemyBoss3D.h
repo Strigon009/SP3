@@ -102,7 +102,7 @@ protected:
 	int iMaxNumMovement;
 
 	int enemyHealth;
-
+	float enemyExp;
 	float chargeSpeed;
 
 	float elapsedtime;

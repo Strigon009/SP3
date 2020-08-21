@@ -25,6 +25,7 @@ CEnemy3D2::CEnemy3D2(void)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
 	, enemyHealth(7)
+	, enemyExp(5.f)
 	
 {
 	// Set the default position to the origin

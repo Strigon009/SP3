@@ -661,16 +661,7 @@ int CPlayer3D::GetCurrentWeaponIndex(void) const
 
 void CPlayer3D::ExpUpdate()
 {
-	if (pExp >= pExpMax && pLevel < pLevelMax)
-	{
-		pLevel++;
-		pExp = 0.f;
-		pExpMax = pExpMax * 1.2f;
-	}
-	else
-	{
-
-	}
+	pLevel++;
 }
 
 int CPlayer3D::GetCurrentPlayerLevel()

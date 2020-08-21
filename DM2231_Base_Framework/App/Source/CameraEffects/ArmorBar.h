@@ -49,6 +49,8 @@ public:
 	float GetArmorBarLength();
 	void SetArmourBarLength(float length);
 
+	void AddArmor(float armor);
+
 protected:
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;

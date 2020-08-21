@@ -27,6 +27,7 @@ CEnemy3D::CEnemy3D(void)
 	, cGroundMap(NULL)
 	, enemyDamage(2)
 	, enemyHealth(3)
+	, enemyExp(3.f)
 {
 	// Set the default position to the origin
 	vec3Position = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -415,6 +416,16 @@ int CEnemy3D::get_enemyDamage()
 void CEnemy3D::set_enemyDamage(int t)
 {
 	enemyDamage = t;
+}
+
+void CEnemy3D::SetEnemyExp(float exp)
+{
+	enemyExp = exp;
+}
+
+float CEnemy3D::GetEnemyExp()
+{
+	return enemyExp;
 }
 
 /**

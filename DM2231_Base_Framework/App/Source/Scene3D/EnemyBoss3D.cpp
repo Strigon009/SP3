@@ -27,6 +27,7 @@ CEnemyBoss3D::CEnemyBoss3D(void)
 	, enemyHealth(3)
 	, elapsedtime(0)
 	, chargeSpeed(1)
+	, enemyExp(20.f)
 {
 	// Set the default position to the origin
 	vec3Position = glm::vec3(0.0f, 0.0f, 0.0f);

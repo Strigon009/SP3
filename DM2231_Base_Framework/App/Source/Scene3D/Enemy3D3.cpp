@@ -25,7 +25,8 @@ CEnemy3D3::CEnemy3D3(void)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
 	, enemyHealth(20)
-	
+	, enemyExp(7.f)
+
 {
 	// Set the default position to the origin
 	vec3Position = glm::vec3(0.0f, 0.0f, 0.0f);

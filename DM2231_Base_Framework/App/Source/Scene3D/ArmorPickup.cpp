@@ -242,13 +242,3 @@ void CArmorPickup::PostRender(void)
 {
 	glDepthFunc(GL_LESS); // set depth function back to default
 }
-
-void CArmorPickup::SetAddArmor(const int iAddArmor)
-{
-	this->iAddArmor = iAddArmor;
-}
-
-int CArmorPickup::GetAddArmor(void) const
-{
-	return iAddArmor;
-}

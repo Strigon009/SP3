@@ -44,6 +44,8 @@ public:
 	void SetHealthBarState(bool state);
 
 	void SetDmgMultiplier(float dmg);
+
+	void AddHealth(float health);
 	
 	float GetHealthBarLength();
 	void SetHealthBarLength(float length);

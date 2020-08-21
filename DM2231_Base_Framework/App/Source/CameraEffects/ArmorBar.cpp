@@ -9,6 +9,10 @@ using namespace std;
  */
 CArmorBar::CArmorBar(void)
 	: cPlayer3D(NULL)
+	, armorBar(NULL)
+	, armorDmgMultiplier(1.f)
+	, cArmorPickup(NULL)
+	
 {
 }
 
@@ -121,7 +125,7 @@ void CArmorBar::Update(const double dElapsedTime)
 	if (armorBar)
 	{
 		//vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime * armorDmgMultiplier;
-		vec3Scale.x = (float)cPlayer3D->GetArmor() / 100;
+		vec3Scale.x = vec3Scale.x - armorDmgMultiplier / 100.f;
 		armorBar = !armorBar;
 	}
 }
@@ -227,4 +231,8 @@ void CArmorBar::SetArmorDmgMultiplier(float dmg)
 void CArmorBar::SetArmourBarLength(float length)
 {
 	vec3Scale.x = length;
+}
+void CArmorBar::AddArmor(float armor)
+{
+	vec3Scale.x += armor / 100.f;
 }

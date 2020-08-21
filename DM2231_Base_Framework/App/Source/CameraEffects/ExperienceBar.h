@@ -39,12 +39,23 @@ public:
 	// PostRender
 	virtual void PostRender(void);
 
+	void ExperienceGain(float exp);
+
+	float GetExp();
+
+	void SetExpMultiplier(float exp);
+
+	void SetExpBar(bool expBool);
+
+	bool GetExpBar();
+
 protected:
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
 
 	CPlayer3D* cPlayer3D;
-
+	bool expBar;
 	float fHeight, fWidth;
-
+	float ExpGain;
+	float ExpMulti;
 };
