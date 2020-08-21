@@ -282,34 +282,23 @@ void CEntityManager::Update(const double dElapsedTime)
 				continue;
 
 			// to chnage where enemy will move towards
-			if (glm::length((*it)->GetPosition() - (*it_other)->GetPosition()) <= 2)
+			if (glm::length((*it)->GetPosition() - (*it_other)->GetPosition()) <= 5)
 			{
-				if (((*it)->GetType() == CEntity3D::TYPE::NPC) &&
-					((*it_other)->GetType() == CEntity3D::TYPE::TOWER))
-				{
-					moveTo_Tower = true;
-				}
-
-				else if (((*it)->GetType() == CEntity3D::TYPE::TOWER) &&
-					((*it_other)->GetType() == CEntity3D::TYPE::NPC))
+				if (((*it)->GetType() == CEntity3D::TYPE::NPC) && ((*it_other)->GetType() == CEntity3D::TYPE::TOWER) ||
+					((*it)->GetType() == CEntity3D::TYPE::TOWER) && ((*it_other)->GetType() == CEntity3D::TYPE::NPC))
 				{
 					moveTo_Tower = true;
 				}
 			}
-			else if (glm::length((*it)->GetPosition() - (*it_other)->GetPosition()) > 2)
+			else if (glm::length((*it)->GetPosition() - (*it_other)->GetPosition()) > 5)
 			{
-				if (((*it)->GetType() == CEntity3D::TYPE::NPC) &&
-					((*it_other)->GetType() == CEntity3D::TYPE::TOWER))
-				{
-					moveTo_Tower = false;
-				}
-
-				if (((*it)->GetType() == CEntity3D::TYPE::TOWER) &&
-					((*it_other)->GetType() == CEntity3D::TYPE::NPC))
+				if (((*it)->GetType() == CEntity3D::TYPE::NPC) && ((*it_other)->GetType() == CEntity3D::TYPE::TOWER) ||
+					((*it)->GetType() == CEntity3D::TYPE::TOWER) && ((*it_other)->GetType() == CEntity3D::TYPE::NPC))
 				{
 					moveTo_Tower = false;
 				}
 			}
+
 			// Check for collisions between the 2 entities
 			if ((*it)->CheckForCollision(*it_other) == true)
 			{
@@ -320,6 +309,7 @@ void CEntityManager::Update(const double dElapsedTime)
 
 					if (static_cast<CEnemy3D*>(*it)->get_enemyHealth() != 0)
 					{
+						cout << static_cast<CEnemy3D*>(*it)->get_enemyHealth() << endl;
 						(*it)->RollbackPosition();
 					}
 					else

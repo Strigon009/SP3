@@ -44,7 +44,8 @@
 #include "Enemy3D.h"
 #include "Enemy3D2.h"
 #include "Enemy3D3.h"
-#include "EnemyBoss3D.h"
+//#include "EnemyBoss3D.h"
+#include "Enemy3DBoss.h"
 // Include Camera
 #include "Camera.h"
 

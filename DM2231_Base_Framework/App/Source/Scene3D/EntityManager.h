@@ -16,6 +16,7 @@
 
 #include "Enemy3D.h"
 #include "EnemyBoss3D.h"
+#include "Enemy3DBoss.h"
 #include "../CameraEffects/HealthBar.h"
 #include "../CameraEffects/ArmorBar.h"
 #include "../CameraEffects/ExperienceBar.h"

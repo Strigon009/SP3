@@ -76,7 +76,7 @@ bool CStructureTower::Init(void)
     std::vector <glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
 
-	vec3Scale = glm::vec3(1, 1, 1);
+	//vec3Scale = glm::vec3(1, 1, 1);
 	vec3ColliderScale = glm::vec3(2, 9, 2);
 
 	std::string file_path = "OBJ/tower.obj";
