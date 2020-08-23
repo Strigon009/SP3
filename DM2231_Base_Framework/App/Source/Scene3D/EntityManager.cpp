@@ -203,6 +203,21 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				bResult = 5;
 				break;
 			}
+			else if ((*it)->GetType() == CEntity3D::TYPE::AMMO_PICKUP)
+			{
+				(*it)->SetToDelete(true);
+
+				if (static_cast<CPlayer3D*>(cEntity3D)->GetCurrentWeaponIndex() != 0)
+				{
+					static_cast<CPlayer3D*>(cEntity3D)->GetWeapon()->AddRounds(50);
+				}
+
+				cout << "** Collision between Player and Ammo_PickUp ***" << endl;
+				bResult = 6;
+				// Quit this loop since a collision has been found
+
+				break;
+			}
 			else if ((*it)->GetType() == CEntity3D::TYPE::INVINCIBILITY)
 			{
 				// Rollback the cEntity3D's position
@@ -211,7 +226,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				bInvincibility = true;
 				lastTime = currentTime;
 				cout << "** Collision between Player and Invincibility ***" << endl;
-				bResult = 6;
+				bResult = 7;
 				// Quit this loop since a collision has been found
 				
 				break;
@@ -239,7 +254,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 					iFrames = true;
 				}
 
-				bResult = 7;
+				bResult = 8;
 				break;
 			}// Quit this loop since a collision has been found
 			else if ((*it)->GetType() == CEntity3D::TYPE::FREEZE_MOVEMENT)
@@ -250,7 +265,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				bFreezeMovement = true;
 				lastTime3 = currentTime;
 				cout << "** Collision between Player and FreezeMovement ***" << endl;
-				bResult = 8;
+				bResult = 9;
 				// Quit this loop since a collision has been found
 
 				break;

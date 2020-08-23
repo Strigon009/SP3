@@ -70,6 +70,7 @@
 // Include Pickups
 #include "ArmorPickup.h"
 #include "HealthPickup.h"
+#include "AmmoPickup.h"
 #include "Invincibility.h"
 #include "FreezeMovement.h"
 
@@ -170,6 +171,7 @@ protected:
 	CWeaponInfo* cWeaponInfo;
 	CArmorPickup* cArmorPickup;
 	CHealthPickup* cHealthPickup;
+	CAmmoPickup* cAmmoPickup;
 	CInvincibility* cInvincibility;
 	CFreezeMovement* cFreezeMovement;
 
@@ -203,6 +205,7 @@ protected:
 	void AddPillar(CStructure2_3D* cStructure3D, glm::vec3 pos, glm::vec3 scale);
 	void AddArmorPickUp(CArmorPickup* cArmorPickup, glm::vec3 pos, glm::vec3 scale);
 	void AddHealthPickUp(CHealthPickup* cHealthPickup, glm::vec3 pos, glm::vec3 scale);
+	void AddAmmoPickUp(CAmmoPickup* cAmmoPickup, glm::vec3 pos, glm::vec3 scale);
 	void AddInvincibility(CInvincibility* cInvincibility, glm::vec3 pos, glm::vec3 scale);
 	void AddFreezeMovement(CFreezeMovement* cFreezeMovement, glm::vec3 pos, glm::vec3 scale);
 	

@@ -28,6 +28,7 @@ public:
 		STRUCTURE,	// Buildings etc
 		HEALTH_PICKUP,
 		ARMOR_PICKUP,
+		AMMO_PICKUP,
 		INVINCIBILITY,
 		FREEZE_MOVEMENT,
 		OTHERS,		// Default value: Other entities such as ground and skybox

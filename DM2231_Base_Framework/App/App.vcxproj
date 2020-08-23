@@ -21,6 +21,7 @@
     <ClCompile Include="Source\CSVWriter\CSVWriter.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Minimap\Minimap.cpp" />
+    <ClCompile Include="Source\Scene3D\AmmoPickup.cpp" />
     <ClCompile Include="Source\Scene3D\ArmorPickup.cpp" />
     <ClCompile Include="Source\Scene3D\Camera.cpp" />
     <ClCompile Include="Source\Scene3D\CrossHair\CrossHair.cpp" />
@@ -58,6 +59,7 @@
     <ClInclude Include="Source\CSVReader\CSVReader.h" />
     <ClInclude Include="Source\CSVWriter\CSVWriter.h" />
     <ClInclude Include="Source\Minimap\Minimap.h" />
+    <ClInclude Include="Source\Scene3D\AmmoPickup.h" />
     <ClInclude Include="Source\Scene3D\Camera.h" />
     <ClInclude Include="Source\Scene3D\CrossHair\CrossHair.h" />
     <ClInclude Include="Source\Scene3D\Enemy3D.h" />
