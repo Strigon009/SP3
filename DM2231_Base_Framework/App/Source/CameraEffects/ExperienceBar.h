@@ -46,9 +46,9 @@ protected:
 	CPlayer3D* cPlayer3D;
 
 	float fHeight, fWidth;
-<<<<<<< Updated upstream
 
-=======
+
+
 	float ExpMulti;
->>>>>>> Stashed changes
+
 };

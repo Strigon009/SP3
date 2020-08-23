@@ -221,11 +221,9 @@ void CEntityManager::Update(const double dElapsedTime)
 {
 	std::list<CEntity3D*>::iterator it, end;
 	std::list<CEntity3D*>::iterator it_other;
-<<<<<<< Updated upstream
-=======
 	cCurrentWeapon = CPlayer3D::GetInstance()->GetWeapon();
 	currentTime = GetTickCount64() * 0.001f;
->>>>>>> Stashed changes
+
 
 	// Update all CEntity3D
 	end = lEntity3D.end();

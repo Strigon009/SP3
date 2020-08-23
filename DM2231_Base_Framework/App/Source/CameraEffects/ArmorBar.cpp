@@ -9,15 +9,12 @@ using namespace std;
  */
 CArmorBar::CArmorBar(void)
 	: cPlayer3D(NULL)
-<<<<<<< Updated upstream
-=======
 	, armorBar(NULL)
 	, armorDmgMultiplier(1.f)
 	, cArmorPickup(NULL)
 	, fHeight(0)
 	, fWidth(0)
 	, transform (glm::mat4(1.0f))
->>>>>>> Stashed changes
 {
 }
 

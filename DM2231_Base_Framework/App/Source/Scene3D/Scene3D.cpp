@@ -119,6 +119,14 @@ CScene3D::CScene3D(void)
 	, printLoseScreen(false)
 	, printWinScreen(false)
 	, bossDED(false)
+	, wave3_start(false)
+	, wave_count(0)
+	, zombieCount(0)
+	, crawlerCount(0)
+	, scrakeCount(0)
+	, spawnCTimer(0)
+	, spawnZTimer(0)
+	, spawnSTimer(0)
 {
 }
 
@@ -638,7 +646,6 @@ void CScene3D::Update(const double dElapsedTime)
 		//cSoundController->PlaySoundByID(7);
 		//cSoundController->VolumeDecrease(7);
 
-<<<<<<< Updated upstream
 		CEnemyBoss3D* cEnemyBoss3D = new CEnemyBoss3D(glm::vec3(4.f, 40.f, -4.f));
 
 		cEnemyBoss3D->SetShader(cShader);
@@ -657,7 +664,7 @@ void CScene3D::Update(const double dElapsedTime)
 		cRifle->Init();
 		cRifle->SetShader(cSimpleShader);
 		cPlayer3D->SetWeapon(1, cRifle);
-=======
+
 		cEntityManager->set_enemy_deathCount(0);
 		wave3_start = true;
 		cPlayer3D->SetPosition(glm::vec3(0, 0.5, 0));
@@ -803,7 +810,6 @@ void CScene3D::Update(const double dElapsedTime)
 		zombieCount = 0;
 		crawlerCount = 0;
 		scrakeCount = 0;
->>>>>>> Stashed changes
 
 		cEntityManager->set_enemy_deathCount(0);
 		renderBoss = false;
@@ -854,17 +860,16 @@ void CScene3D::Update(const double dElapsedTime)
 	cCameraEffects->Update(dElapsedTime);
 
 	// Update progress bar
-<<<<<<< Updated upstream
+
 	//if(static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() >= 0)
 		cArmorBar->Update(dElapsedTime);
 	//else
 		//cHealthBar->Update(dElapsedTime);
-=======
+
 	if (static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() >= 0)
 		cArmorBar->Update(dElapsedTime);
 	//else
 	cHealthBar->Update(dElapsedTime);
->>>>>>> Stashed changes
 
 	cExpBar->Update(dElapsedTime);
 
