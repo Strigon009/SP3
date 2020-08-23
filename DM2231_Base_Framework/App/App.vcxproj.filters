@@ -1,6 +1,77 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+<<<<<<< Updated upstream
+    <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\CameraEffects\ArmorBar.cpp" />
+    <ClCompile Include="Source\CameraEffects\CameraEffects.cpp" />
+    <ClCompile Include="Source\CameraEffects\HealthBar.cpp" />
+    <ClCompile Include="Source\CSVReader\CSVReader.cpp" />
+    <ClCompile Include="Source\CSVWriter\CSVWriter.cpp" />
+    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Minimap\Minimap.cpp" />
+    <ClCompile Include="Source\Scene3D\Camera.cpp" />
+    <ClCompile Include="Source\Scene3D\CrossHair\CrossHair.cpp" />
+    <ClCompile Include="Source\Scene3D\Enemy3D.cpp" />
+    <ClCompile Include="Source\Scene3D\EnemyBoss3D.cpp" />
+    <ClCompile Include="Source\Scene3D\EntityManager.cpp" />
+    <ClCompile Include="Source\Scene3D\GroundMap.cpp" />
+    <ClCompile Include="Source\Scene3D\GroundTile.cpp" />
+    <ClCompile Include="Source\Scene3D\HealthPickup.cpp" />
+    <ClCompile Include="Source\Scene3D\Physics3D.cpp" />
+    <ClCompile Include="Source\Scene3D\Player3D.cpp" />
+    <ClCompile Include="Source\Scene3D\PowerUp.cpp" />
+    <ClCompile Include="Source\Scene3D\Scene3D.cpp" />
+    <ClCompile Include="Source\Scene3D\SkyBox.cpp" />
+    <ClCompile Include="Source\Scene3D\Structure3D.cpp" />
+    <ClCompile Include="Source\Scene3D\Structure3D_2.cpp" />
+    <ClCompile Include="Source\Scene3D\Structure3D_Tower.cpp" />
+    <ClCompile Include="Source\Scene3D\WeaponInfo\Pistol.cpp" />
+    <ClCompile Include="Source\Scene3D\WeaponInfo\Projectile.cpp" />
+    <ClCompile Include="Source\Scene3D\WeaponInfo\Rifle.cpp" />
+    <ClCompile Include="Source\Scene3D\WeaponInfo\WeaponInfo.cpp" />
+    <ClCompile Include="Source\SoundController\SoundController.cpp" />
+    <ClCompile Include="Source\SoundController\SoundInfo.cpp" />
+    <ClCompile Include="Source\Scene3D\Enemy3D2.cpp" />
+    <ClCompile Include="Source\Scene3D\Enemy3D3.cpp" />
+    <ClCompile Include="Source\Scene3D\ArmorPickup.cpp" />
+    <ClCompile Include="Source\CameraEffects\ExperienceBar.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\CameraEffects\ArmorBar.h" />
+    <ClInclude Include="Source\CameraEffects\CameraEffects.h" />
+    <ClInclude Include="Source\CameraEffects\HealthBar.h" />
+    <ClInclude Include="Source\CSVReader\CSVReader.h" />
+    <ClInclude Include="Source\CSVWriter\CSVWriter.h" />
+    <ClInclude Include="Source\Minimap\Minimap.h" />
+    <ClInclude Include="Source\Scene3D\ArmorPickup.h" />
+    <ClInclude Include="Source\Scene3D\Camera.h" />
+    <ClInclude Include="Source\Scene3D\CrossHair\CrossHair.h" />
+    <ClInclude Include="Source\Scene3D\Enemy3D.h" />
+    <ClInclude Include="Source\Scene3D\EnemyBoss3D.h" />
+    <ClInclude Include="Source\Scene3D\EntityManager.h" />
+    <ClInclude Include="Source\Scene3D\GroundMap.h" />
+    <ClInclude Include="Source\Scene3D\GroundTile.h" />
+    <ClInclude Include="Source\Scene3D\HealthPickup.h" />
+    <ClInclude Include="Source\Scene3D\Physics3D.h" />
+    <ClInclude Include="Source\Scene3D\Player3D.h" />
+    <ClInclude Include="Source\Scene3D\PowerUp.h" />
+    <ClInclude Include="Source\Scene3D\Scene3D.h" />
+    <ClInclude Include="Source\Scene3D\SkyBox.h" />
+    <ClInclude Include="Source\Scene3D\Structure3D.h" />
+    <ClInclude Include="Source\Scene3D\Structure3D_2.h" />
+    <ClInclude Include="Source\Scene3D\Structure3D_Tower.h" />
+    <ClInclude Include="Source\Scene3D\WeaponInfo\Pistol.h" />
+    <ClInclude Include="Source\Scene3D\WeaponInfo\Projectile.h" />
+    <ClInclude Include="Source\Scene3D\WeaponInfo\Rifle.h" />
+    <ClInclude Include="Source\Scene3D\WeaponInfo\WeaponInfo.h" />
+    <ClInclude Include="Source\SoundController\SoundController.h" />
+    <ClInclude Include="Source\SoundController\SoundInfo.h" />
+    <ClInclude Include="Source\Scene3D\Enemy3D2.h" />
+    <ClInclude Include="Source\Scene3D\Enemy3D3.h" />
+    <ClInclude Include="Source\CameraEffects\ExperienceBar.h" />
+=======
     <ClCompile Include="Source\CameraEffects\ArmorBar.cpp">
       <Filter>CameraEffects</Filter>
     </ClCompile>
@@ -43,22 +114,7 @@
     <ClCompile Include="Source\CameraEffects\HealthBar.cpp">
       <Filter>CameraEffects</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene3D\ArmorPickup.cpp">
-      <Filter>Scene3D</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scene3D\Camera.cpp">
-      <Filter>Scene3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene3D\Enemy3D.cpp">
-      <Filter>Scene3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene3D\Enemy3D2.cpp">
-      <Filter>Scene3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene3D\Enemy3D3.cpp">
-      <Filter>Scene3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene3D\EnemyBoss3D.cpp">
       <Filter>Scene3D</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene3D\EntityManager.cpp">
@@ -71,12 +127,6 @@
       <Filter>Scene3D</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene3D\GroundTile.cpp">
-      <Filter>Scene3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene3D\HealthPickup.cpp">
-      <Filter>Scene3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene3D\Invincibility.cpp">
       <Filter>Scene3D</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene3D\Physics3D.cpp">
@@ -105,6 +155,30 @@
     </ClCompile>
     <ClCompile Include="Source\Scene3D\Structure3D_Tower.cpp">
       <Filter>Scene3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CameraEffects\InfectionBar.cpp">
+      <Filter>CameraEffects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene3D\Enemy3D.cpp">
+      <Filter>Scene3D\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene3D\Enemy3D2.cpp">
+      <Filter>Scene3D\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene3D\Enemy3D3.cpp">
+      <Filter>Scene3D\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene3D\EnemyBoss3D.cpp">
+      <Filter>Scene3D\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene3D\ArmorPickup.cpp">
+      <Filter>Scene3D\Pickups</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene3D\HealthPickup.cpp">
+      <Filter>Scene3D\Pickups</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene3D\Invincibility.cpp">
+      <Filter>Scene3D\Pickups</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -147,22 +221,7 @@
     <ClInclude Include="Source\CameraEffects\HealthBar.h">
       <Filter>CameraEffects</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene3D\ArmorPickup.h">
-      <Filter>Scene3D</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scene3D\Camera.h">
-      <Filter>Scene3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene3D\Enemy3D.h">
-      <Filter>Scene3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene3D\Enemy3D2.h">
-      <Filter>Scene3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene3D\Enemy3D3.h">
-      <Filter>Scene3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene3D\EnemyBoss3D.h">
       <Filter>Scene3D</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene3D\EntityManager.h">
@@ -175,12 +234,6 @@
       <Filter>Scene3D</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene3D\GroundTile.h">
-      <Filter>Scene3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene3D\HealthPickup.h">
-      <Filter>Scene3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene3D\Invincibility.h">
       <Filter>Scene3D</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene3D\Physics3D.h">
@@ -209,6 +262,30 @@
     </ClInclude>
     <ClInclude Include="Source\Scene3D\Structure3D_Tower.h">
       <Filter>Scene3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CameraEffects\InfectionBar.h">
+      <Filter>CameraEffects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene3D\Enemy3D.h">
+      <Filter>Scene3D\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene3D\Enemy3D2.h">
+      <Filter>Scene3D\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene3D\Enemy3D3.h">
+      <Filter>Scene3D\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene3D\EnemyBoss3D.h">
+      <Filter>Scene3D\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene3D\ArmorPickup.h">
+      <Filter>Scene3D\Pickups</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene3D\HealthPickup.h">
+      <Filter>Scene3D\Pickups</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene3D\Invincibility.h">
+      <Filter>Scene3D\Pickups</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -239,5 +316,12 @@
     <Filter Include="SoundController">
       <UniqueIdentifier>{068fa901-09aa-4a0c-ba25-750db71bd1e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene3D\Enemies">
+      <UniqueIdentifier>{75eb82e9-ae34-4f60-841d-f74b0f3bb8ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene3D\Pickups">
+      <UniqueIdentifier>{19efcc54-bbc2-4a2d-a99b-dcb97ff60ce0}</UniqueIdentifier>
+    </Filter>
+>>>>>>> Stashed changes
   </ItemGroup>
 </Project>

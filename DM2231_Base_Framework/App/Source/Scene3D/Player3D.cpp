@@ -345,20 +345,20 @@ void CPlayer3D::SetToJump(void)
  @param direction A const Player_Movement variable which contains the movement direction of the camera
  @param deltaTime A const float variable which contains the delta time for the realtime loop
  */
-void CPlayer3D::ProcessMovement(const Player_Movement direction, const float deltaTime)
+void CPlayer3D::ProcessMovement(const Player_Movement direction, const float deltaTime, float weaponWeight)
 {
 	float sprintVel = 1.5f;
 	float velocity = fMovementSpeed * deltaTime;
 	if (direction == FORWARD)
-		vec3Position += vec3Front * velocity;
+		vec3Position += vec3Front * velocity * weaponWeight;
 	if (direction == BACKWARD)
-		vec3Position -= vec3Front * velocity;
+		vec3Position -= vec3Front * velocity * weaponWeight;
 	if (direction == LEFT)
-		vec3Position -= vec3Right * velocity;
+		vec3Position -= vec3Right * velocity * weaponWeight;
 	if (direction == RIGHT)
-		vec3Position += vec3Right * velocity;
+		vec3Position += vec3Right * velocity * weaponWeight;
 	if (direction == SPRINT)
-		vec3Position += vec3Front * velocity * sprintVel;
+		vec3Position += vec3Front * velocity * sprintVel * weaponWeight;
 
 	// Indicate that camera sway is to be updated
 	if (bCameraSwayActive)

@@ -60,7 +60,7 @@
 #include "../CameraEffects/HealthBar.h"
 #include "../CameraEffects/ArmorBar.h"
 #include "../CameraEffects/ExperienceBar.h"
-//#include "../CameraEffects/ArmorBar.h"
+#include "../CameraEffects/InfectionBar.h"
 // Include Minimap
 #include "..\Minimap\Minimap.h"
 // Include CrossHair
@@ -162,7 +162,7 @@ protected:
 	CHealthBar* cHealthBar;
 	CArmorBar* cArmorBar;
 	CExperienceBar* cExpBar;
-	//CInfectionBar* cInfectBar;
+	CInfectionBar* cInfectBar;
 	// Handler to the CMinimap
 	CMinimap* cMinimap;
 	// Handler to the CCrossHair
@@ -194,7 +194,14 @@ protected:
 
 	bool printLoseScreen;
 	bool printWinScreen;
-
+	bool wave3_start;
+	int wave_count;
+	int zombieCount;
+	int crawlerCount;
+	int scrakeCount;
+	float spawnCTimer;
+	float spawnZTimer;
+	float spawnSTimer;
 	void AddEnemy(CEnemy3D* cEnemy3D, glm::vec3 pos, glm::vec3 scale);
 	void AddEnemy2(CEnemy3D2* cEnemy3D2, glm::vec3 pos, glm::vec3 scale);
 	void AddEnemy3(CEnemy3D3* cEnemy3D3, glm::vec3 pos, glm::vec3 scale);

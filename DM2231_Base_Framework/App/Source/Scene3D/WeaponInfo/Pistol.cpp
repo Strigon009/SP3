@@ -37,8 +37,10 @@ void CPistol::Init(void)
 	// Weapon Stats
 	reloadTime = 1.2f;
 	weaponDamage = 1.f;
+	weaponWeight = 1.f;
 	dTimeBetweenShots = 0.3333;
 	autoFire = false;
+
 	// The elapsed time (between shots)
 	dElapsedTime = 0.0;
 	// Boolean flag to indicate if weapon can fire now

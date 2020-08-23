@@ -10,6 +10,7 @@ using namespace std;
 CCameraEffects::CCameraEffects(void)
 	: bStatus_BloodScreen(false)
 	, fCountdownTimer_BloodScreen(0.1f)
+	, transform (glm::mat4(1.0f))
 {
 }
 

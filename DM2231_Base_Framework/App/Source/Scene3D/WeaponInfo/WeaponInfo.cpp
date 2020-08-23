@@ -17,6 +17,7 @@ CWeaponInfo::CWeaponInfo()
 	, bFire(true)
 	, type(RIFLE)
 	, IsReloading(false)
+	, reloadTime(1.f)
 {
 }
 
@@ -300,4 +301,9 @@ void CWeaponInfo::PrintSelf(void)
 	cout << "dTimeBetweenShots\t:\t" << dTimeBetweenShots << endl;
 	cout << "dElapsedTime\t\t:\t" << dElapsedTime << endl;
 	cout << "bFire\t\t:\t" << bFire << endl;
+}
+
+float CWeaponInfo::GetWeaponWeight()
+{
+	return weaponWeight;
 }
