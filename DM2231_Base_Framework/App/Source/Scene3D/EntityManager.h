@@ -107,7 +107,7 @@ protected:
 	CWeaponInfo* cPrimaryWeapon;
 	CWeaponInfo* cSecondaryWeapon;
 	CWeaponInfo* cCurrentWeapon;
-	float currentTime;
+
 	int enemy_deathCount;
 
 	bool moveTo_Tower;
