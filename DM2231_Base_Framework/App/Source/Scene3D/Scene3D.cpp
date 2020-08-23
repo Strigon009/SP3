@@ -108,6 +108,17 @@ void CScene3D::AddHealthPickUp(CHealthPickup* cHealthPickup, glm::vec3 pos, glm:
 	cEntityManager->Add(cHealthPickup);
 }
 
+void CScene3D::AddAmmoPickUp(CAmmoPickup* cAmmoPickup, glm::vec3 pos, glm::vec3 scale)
+{
+	cAmmoPickup = new CAmmoPickup(pos);
+
+	cAmmoPickup->SetShader(cShader);
+	cAmmoPickup->Init();
+	cAmmoPickup->SetScale(scale);
+	cAmmoPickup->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cAmmoPickup);
+}
+
 void CScene3D::AddInvincibility(CInvincibility* cInvincibility, glm::vec3 pos, glm::vec3 scale)
 {
 	cInvincibility = new CInvincibility(pos);
@@ -160,6 +171,7 @@ CScene3D::CScene3D(void)
 	, cWeaponInfo(NULL)
 	, cArmorPickup(NULL)
 	, cHealthPickup(NULL)
+	, cAmmoPickup(NULL)
 	, cInvincibility(NULL)
 	, cFreezeMovement(NULL)
 	, renderBoss(false)
@@ -342,6 +354,8 @@ CScene3D::~CScene3D(void)
 
 	cHealthPickup = NULL;
 
+	cAmmoPickup = NULL;
+
 	cInvincibility = NULL;
 
 	cFreezeMovement = NULL;
@@ -504,6 +518,10 @@ bool CScene3D::Init(void)
 	CHealthPickup* cHealthPickup = new CHealthPickup();
 
 	AddHealthPickUp(cHealthPickup, glm::vec3(3.5f, 0.25f, -3.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+
+	CAmmoPickup* cAmmoPickup = new CAmmoPickup();
+
+	AddAmmoPickUp(cAmmoPickup, glm::vec3(3.5f, 0.25f, -6.0f), glm::vec3(0.5f, 0.5f, 0.5f));
 
 	CInvincibility* cInvincibility = new CInvincibility();
 
@@ -1137,10 +1155,16 @@ void CScene3D::Update(const double dElapsedTime)
 		// Armor pickup
 		break;
 	case 6:
-		// Invincibility
+		// Ammo Pickup
 		break;
 	case 7:
+		// Invincibility
+		break;
+	case 8:
 		// Scrake
+	case 9:
+		// Freeze Movement
+		break;
 	default:
 		break;
 	}

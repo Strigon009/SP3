@@ -32,7 +32,7 @@ void CRifle::Init(void)
 	// The current total number of rounds currently carried by this player
 	iTotalRounds = 150;
 	// The max total number of rounds currently carried by this player
-	iMaxTotalRounds = 99;
+	iMaxTotalRounds = 150;
 	//	Weapon Stats
 	reloadTime = 1.8f;
 	weaponDamage = 2.f;
