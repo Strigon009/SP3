@@ -3,21 +3,22 @@
 // Include Entity3D
 #include <Primitives/Entity3D.h>
 
-#include "..\Scene3D\Player3D.h"
 // Include GLM
 #include <includes/glm.hpp>
 #include <includes/gtc/matrix_transform.hpp>
 #include <includes/gtc/type_ptr.hpp>
 
-class CExperienceBar : public CEntity3D
+#include "..\Scene3D\Player3D.h"
+
+#include "..\Scene3D\HealthPickup.h"
+
+class CInfectionBar : public CEntity3D
 {
 public:
 	// Constructor
-	CExperienceBar(void);
+	CInfectionBar(void);
 	// Destructor
-	virtual ~CExperienceBar(void);
-
-	
+	virtual ~CInfectionBar(void);
 
 	// Initialise this class instance
 	bool Init(glm::vec3 pos, glm::vec4 color);
@@ -39,16 +40,19 @@ public:
 	// PostRender
 	virtual void PostRender(void);
 
+	bool GetInfectBarState();
+
+	void SetInfectBarState(bool infect);
+
 protected:
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
-
-	CPlayer3D* cPlayer3D;
+	bool infectionBar;
 
 	float fHeight, fWidth;
-<<<<<<< Updated upstream
 
-=======
-	float ExpMulti;
->>>>>>> Stashed changes
+
+	// Handler to the Player3D class
+	CPlayer3D* cPlayer3D;
+
 };

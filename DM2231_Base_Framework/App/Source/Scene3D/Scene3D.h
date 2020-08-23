@@ -59,7 +59,7 @@
 #include "../CameraEffects/HealthBar.h"
 #include "../CameraEffects/ArmorBar.h"
 #include "../CameraEffects/ExperienceBar.h"
-//#include "../CameraEffects/ArmorBar.h"
+#include "../CameraEffects/InfectionBar.h"
 // Include Minimap
 #include "..\Minimap\Minimap.h"
 // Include CrossHair
@@ -157,7 +157,7 @@ protected:
 	CHealthBar* cHealthBar;
 	CArmorBar* cArmorBar;
 	CExperienceBar* cExpBar;
-	//CInfectionBar* cInfectBar;
+	CInfectionBar* cInfectBar;
 	// Handler to the CMinimap
 	CMinimap* cMinimap;
 	// Handler to the CCrossHair

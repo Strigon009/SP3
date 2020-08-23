@@ -87,9 +87,10 @@ public:
 	// Set to Jump
 	void SetToJump(void);
 
+	
     // Processes input received from any keyboard-like input system as player movements. 
 	// Accepts input parameter in the form of Player defined ENUM (to abstract it from windowing systems)
-	void ProcessMovement(const Player_Movement direction, const float fDeltaTime);
+	void ProcessMovement(const Player_Movement direction, const float deltaTime, float weaponWeight);
 
     // Processes input received from a mouse input system as player rotation. 
 	// Expects the offset value in both the x and y direction.

@@ -1,4 +1,4 @@
-#include "ArmorBar.h"
+#include "InfectionBar.h"
 #include "GL\glew.h"
 
 #include <iostream>
@@ -7,24 +7,15 @@ using namespace std;
 /**
  @brief Default Constructor
  */
-CArmorBar::CArmorBar(void)
+CInfectionBar::CInfectionBar(void)
 	: cPlayer3D(NULL)
-<<<<<<< Updated upstream
-=======
-	, armorBar(NULL)
-	, armorDmgMultiplier(1.f)
-	, cArmorPickup(NULL)
-	, fHeight(0)
-	, fWidth(0)
-	, transform (glm::mat4(1.0f))
->>>>>>> Stashed changes
 {
 }
 
 /**
  @brief Destructor
  */
-CArmorBar::~CArmorBar(void)
+CInfectionBar::~CInfectionBar(void)
 {
 	// Delete the rendering objects in the graphics card
 	glDeleteVertexArrays(1, &VAO);
@@ -40,7 +31,7 @@ CArmorBar::~CArmorBar(void)
  @brief Initialise this class instance
  @return true is successfully initialised this class instance, else false
  */
-bool CArmorBar::Init(glm::vec3 pos, glm::vec4 color)
+bool CInfectionBar::Init(glm::vec3 pos, glm::vec4 color)
 {
 	// Check if the shader is ready
 	if (!cShader)
@@ -99,7 +90,7 @@ bool CArmorBar::Init(glm::vec3 pos, glm::vec4 color)
  @brief Set model
  @param model A glm::mat4 variable containing the model for this class instance
  */
-void CArmorBar::SetModel(glm::mat4 model)
+void CInfectionBar::SetModel(glm::mat4 model)
 {
 	this->model = model;
 }
@@ -108,7 +99,7 @@ void CArmorBar::SetModel(glm::mat4 model)
  @brief Set view
  @param view A glm::mat4 variable containing the model for this class instance
  */
-void CArmorBar::SetView(glm::mat4 view)
+void CInfectionBar::SetView(glm::mat4 view)
 {
 	this->view = glm::mat4(glm::mat3(view)); // remove translation from the view matrix
 }
@@ -117,7 +108,7 @@ void CArmorBar::SetView(glm::mat4 view)
  @brief Set projection
  @param projection A glm::mat4 variable containing the model for this class instance
  */
-void CArmorBar::SetProjection(glm::mat4 projection)
+void CInfectionBar::SetProjection(glm::mat4 projection)
 {
 	this->projection = projection;
 }
@@ -125,20 +116,19 @@ void CArmorBar::SetProjection(glm::mat4 projection)
 /**
  @brief PreRender Set up the OpenGL display environment before rendering
  */
-void CArmorBar::Update(const double dElapsedTime)
+void CInfectionBar::Update(const double dElapsedTime)
 {
-	if (armorBar)
-	{
-		//vec3Scale.x = vec3Scale.x - 0.5f * dElapsedTime;
-		vec3Scale.x = (float)cPlayer3D->GetArmor() / 100 ;
-		armorBar = !armorBar;
-	}
+	 if (infectionBar)
+	 {
+	 	vec3Scale.x = vec3Scale.x ;
+		infectionBar = !infectionBar;
+	 }
 }
 
 /**
  @brief PreRender Set up the OpenGL display environment before rendering
  */
-void CArmorBar::PreRender(void)
+void CInfectionBar::PreRender(void)
 {
 	// bind textures on corresponding texture units
 	glActiveTexture(GL_TEXTURE0);
@@ -152,7 +142,7 @@ void CArmorBar::PreRender(void)
  @brief Render Render this instance
  @param cShader A Shader* variable which contains the Shader to use in this class instance
  */
-void CArmorBar::Render(void)
+void CInfectionBar::Render(void)
 {
 	// If the shader is in this class, then do not render
 	if (!cShader)
@@ -209,31 +199,18 @@ void CArmorBar::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void CArmorBar::PostRender(void)
+void CInfectionBar::PostRender(void)
 {
 	// Disable blending
 	glDisable(GL_BLEND);
 }
 
-bool CArmorBar::GetArmorBarState()
+bool CInfectionBar::GetInfectBarState()
 {
-	return armorBar;
+	return infectionBar;
 }
 
-void CArmorBar::SetArmorBarState(bool state)
+void CInfectionBar::SetInfectBarState(bool infect)
 {
-	armorBar = state;
-}
-
-float CArmorBar::GetArmorBarLength()
-{
-	return vec3Scale.x;
-}
-void CArmorBar::SetArmorDmgMultiplier(float dmg)
-{
-	armorDmgMultiplier = dmg;
-}
-void CArmorBar::SetArmourBarLength(float length)
-{
-	vec3Scale.x = length;
+	infectionBar = infect;
 }

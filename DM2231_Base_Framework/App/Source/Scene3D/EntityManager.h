@@ -19,10 +19,11 @@
 #include "../CameraEffects/HealthBar.h"
 #include "../CameraEffects/ArmorBar.h"
 #include "../CameraEffects/ExperienceBar.h"
-//#include "../CameraEffects/InfectionBar.h"
+#include "../CameraEffects/InfectionBar.h"
 #include "WeaponInfo/WeaponInfo.h"
 #include "ArmorPickup.h"
-
+#include "WeaponInfo/Pistol.h"
+#include "WeaponInfo/Rifle.h"
 #include "../SoundController/SoundController.h"
 
 class CEntityManager : public CSingletonTemplate<CEntityManager>
@@ -67,6 +68,8 @@ public:
 
 	void SetExpBar(CExperienceBar* pBar);
 
+	void SetInfectionBar(CInfectionBar* pBar);
+
 	bool get_moveTo();
 	void set_moveTo(bool b);
 	
@@ -88,7 +91,7 @@ protected:
 	CHealthBar* cHealthBar;
 	CArmorBar* cArmorBar;
 	CExperienceBar* cExpBar;
-	//CArmorBar* cArmorBar;
+	CInfectionBar* cInfectBar;
 
 	CArmorPickup* cArmorPickup;
 
@@ -98,6 +101,7 @@ protected:
 
 	CWeaponInfo* cPrimaryWeapon;
 	CWeaponInfo* cSecondaryWeapon;
+	CWeaponInfo* cCurrentWeapon;
 
 	int enemy_deathCount;
 

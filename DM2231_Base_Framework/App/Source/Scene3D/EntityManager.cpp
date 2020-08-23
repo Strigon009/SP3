@@ -42,6 +42,9 @@ bool CEntityManager::Init(void)
 
 	cSoundController = CSoundController::GetInstance();
 	cSoundController->Init();
+	cPlayer3D = CPlayer3D::GetInstance();
+	cCurrentWeapon = CPlayer3D::GetInstance()->GetWeapon();
+	
 	//cSoundController->LoadSound("../Sounds/damage.ogg", 1);
 
 	lEntity3D.clear();
@@ -218,9 +221,15 @@ void CEntityManager::Update(const double dElapsedTime)
 {
 	std::list<CEntity3D*>::iterator it, end;
 	std::list<CEntity3D*>::iterator it_other;
+<<<<<<< Updated upstream
+=======
+	cCurrentWeapon = CPlayer3D::GetInstance()->GetWeapon();
+	currentTime = GetTickCount64() * 0.001f;
+>>>>>>> Stashed changes
 
 	// Update all CEntity3D
 	end = lEntity3D.end();
+
 	for (it = lEntity3D.begin(); it != end; ++it)
 	{
 		(*it)->Update(dElapsedTime);
@@ -271,9 +280,9 @@ void CEntityManager::Update(const double dElapsedTime)
 				if (((*it)->GetType() == CEntity3D::TYPE::NPC) &&
 					((*it_other)->GetType() == CEntity3D::TYPE::PROJECTILE))
 				{
-					static_cast<CEnemy3D*>(*it)->set_enemyHealth(static_cast<CEnemy3D*>(*it)->get_enemyHealth() - 1 );
-
-					if (static_cast<CEnemy3D*>(*it)->get_enemyHealth() != 0)
+					static_cast<CEnemy3D*>(*it)->set_enemyHealth(static_cast<CEnemy3D*>(*it)->get_enemyHealth() - cPlayer3D->GetWeapon()->GetWeaponDamage());
+					
+					if (static_cast<CEnemy3D*>(*it)->get_enemyHealth() > 0)
 					{
 						(*it)->RollbackPosition();
 					}
@@ -291,7 +300,7 @@ void CEntityManager::Update(const double dElapsedTime)
 				{
 					(*it)->SetToDelete(true);
 
-					if (static_cast<CEnemy3D*>(*it)->get_enemyHealth() != 0)
+					if (static_cast<CEnemy3D*>(*it)->get_enemyHealth() > 0)
 					{
 						(*it_other)->RollbackPosition();
 					}
@@ -302,8 +311,7 @@ void CEntityManager::Update(const double dElapsedTime)
 					}
 
 					cout << "** Collision between NPC and Projectile ***" << endl;
-
-					static_cast<CEnemy3D*>(*it)->set_enemyHealth(static_cast<CEnemy3D*>(*it)->get_enemyHealth() - 1);
+					static_cast<CEnemy3D*>(*it)->set_enemyHealth(static_cast<CEnemy3D*>(*it)->get_enemyHealth() - cPlayer3D->GetWeapon()->GetWeaponDamage());
 				}
 				else if (((*it)->GetType() == CEntity3D::TYPE::PROJECTILE) &&
 					((*it_other)->GetType() == CEntity3D::TYPE::PROJECTILE))
@@ -339,7 +347,7 @@ void CEntityManager::Update(const double dElapsedTime)
 				{
 					(*it)->RollbackPosition();
 
-					static_cast<CStructureTower*>(*it_other)->set_towerHP(static_cast<CStructureTower*>(*it_other)->get_towerHP() - 1);
+					static_cast<CStructureTower*>(*it_other)->set_towerHP(static_cast<CStructureTower*>(*it_other)->get_towerHP() - static_cast<CEnemy3D*>(*it)->get_enemyDamage());
 					cout << static_cast<CStructureTower*>(*it_other)->get_towerHP() << endl;
 
 					cout << "** Collision between NPC and tower ***" << endl;
@@ -348,7 +356,7 @@ void CEntityManager::Update(const double dElapsedTime)
 				{
 					(*it_other)->RollbackPosition();
 
-					static_cast<CStructureTower*>(*it)->set_towerHP(static_cast<CStructureTower*>(*it_other)->get_towerHP() - 1);
+					static_cast<CStructureTower*>(*it)->set_towerHP(static_cast<CStructureTower*>(*it_other)->get_towerHP() - static_cast<CEnemy3D*>(*it)->get_enemyDamage());
 					cout << static_cast<CStructureTower*>(*it)->get_towerHP() << endl;
 
 					cout << "** Collision between NPC and tower ***" << endl;
@@ -366,6 +374,7 @@ void CEntityManager::CleanUp(void)
 	std::list<CEntity3D*>::iterator it, end;
 	it = lEntity3D.begin();
 	end = lEntity3D.end();
+
 	while (it != end)
 	{
 		if ((*it)->IsToDelete())
@@ -424,6 +433,10 @@ void CEntityManager::SetArmorBar(CArmorBar* pBar)
 void CEntityManager::SetExpBar(CExperienceBar* pBar)
 {
 	cExpBar = pBar;
+}
+void CEntityManager::SetInfectionBar(CInfectionBar* pBar)
+{
+	cInfectBar = pBar;
 }
 
 bool CEntityManager::get_moveTo()

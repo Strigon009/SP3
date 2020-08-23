@@ -75,6 +75,8 @@ public:
 	// Print Self
 	virtual void PrintSelf(void);
 
+	float GetWeaponWeight();
+
 	enum WeaponType
 	{
 		PISTOL,
@@ -107,6 +109,7 @@ protected:
 	bool IsReloading;
 	// Weapon Stats
 	float reloadTime;
+	float weaponWeight;
 	float weaponDamage;
 	bool autoFire;
 };

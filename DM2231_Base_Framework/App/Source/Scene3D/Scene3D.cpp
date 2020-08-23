@@ -109,6 +109,7 @@ CScene3D::CScene3D(void)
 	, cCameraEffects(NULL)
 	, cHealthBar(NULL)
 	, cArmorBar(NULL)
+	, cInfectBar(NULL)
 	, cExpBar(NULL)
 	, cMinimap(NULL)
 	, cCrossHair(NULL)
@@ -151,6 +152,12 @@ CScene3D::~CScene3D(void)
 	{
 		delete cArmorBar;
 		cArmorBar = NULL;
+	}
+	// Destroy the cCameraEffects
+	if (cInfectBar)
+	{
+		delete cInfectBar;
+		cInfectBar = NULL;
 	}
 	// Destroy the cCameraEffects
 	if (cExpBar)
@@ -470,6 +477,13 @@ bool CScene3D::Init(void)
 
 	cEntityManager->SetArmorBar(cArmorBar);
 	// Load the ProgressBar
+	cInfectBar = new CInfectionBar();
+	// Set a shader to this class instance of CameraEffects
+	cInfectBar->SetShader(cGUISimpleShader);
+	cInfectBar->Init(glm::vec3(-1.0f + 0.0333f, -1.2f + 0.0333f * 58, 0.0f), glm::vec4(0.0f, 0.0f, 1.0f, 0.5f));
+
+	cEntityManager->SetInfectionBar(cInfectBar);
+	// Load the ProgressBar
 	cExpBar = new CExperienceBar();
 	// Set a shader to this class instance of CameraEffects
 	cExpBar->SetShader(cGUISimpleShader);
@@ -503,7 +517,6 @@ void CScene3D::Update(const double dElapsedTime)
 			cPlayer3D->AttachCamera();
 		else
 			cPlayer3D->AttachCamera(cCamera);
-
 		// Reset the key so that it will not repeat until the key is released and pressed again
 		CKeyboardController::GetInstance()->ResetKey(GLFW_KEY_0);
 	}
@@ -514,7 +527,7 @@ void CScene3D::Update(const double dElapsedTime)
 			cCrossHair->SetStatus(true);
 		else
 			cCrossHair->SetStatus(false);
-		
+
 		// Reset the key so that it will not repeat until the key is released and pressed again
 		CKeyboardController::GetInstance()->ResetKey(GLFW_KEY_9);
 	}
@@ -530,26 +543,26 @@ void CScene3D::Update(const double dElapsedTime)
 
 	// Store the current position, if rollback is needed.
 	cPlayer3D->StorePositionForRollback();
-
+	
 	// Update the joystick
 	cJoystickController->Update(cJoystickController->GetJoystickID());
 
 	// Get keyboard updates for player3D
 	if ((CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_W))
 		|| (cJoystickController->IsJoystickActivated(CJoystickController::FORWARD)))
-		cPlayer3D->ProcessMovement(CPlayer3D::FORWARD, (float)dElapsedTime);
+		cPlayer3D->ProcessMovement(CPlayer3D::FORWARD, (float)dElapsedTime, cPlayer3D->GetWeapon()->GetWeaponWeight());
 	if ((CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_S))
 		|| (cJoystickController->IsJoystickActivated(CJoystickController::BACKWARD)))
-		cPlayer3D->ProcessMovement(CPlayer3D::BACKWARD, (float)dElapsedTime);
+		cPlayer3D->ProcessMovement(CPlayer3D::BACKWARD, (float)dElapsedTime, cPlayer3D->GetWeapon()->GetWeaponWeight());
 	if ((CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_A))
 		|| (cJoystickController->IsJoystickActivated(CJoystickController::LEFT)))
-		cPlayer3D->ProcessMovement(CPlayer3D::LEFT, (float)dElapsedTime);
+		cPlayer3D->ProcessMovement(CPlayer3D::LEFT, (float)dElapsedTime, cPlayer3D->GetWeapon()->GetWeaponWeight());
 	if ((CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_D))
 		|| (cJoystickController->IsJoystickActivated(CJoystickController::RIGHT)))
-		cPlayer3D->ProcessMovement(CPlayer3D::RIGHT, (float)dElapsedTime);
+		cPlayer3D->ProcessMovement(CPlayer3D::RIGHT, (float)dElapsedTime, cPlayer3D->GetWeapon()->GetWeaponWeight());
 	if ((CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_W) && CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_LEFT_SHIFT))
 		|| (cJoystickController->IsJoystickActivated(CJoystickController::FORWARD)))
-		cPlayer3D->ProcessMovement(CPlayer3D::SPRINT, (float)dElapsedTime);
+		cPlayer3D->ProcessMovement(CPlayer3D::SPRINT, (float)dElapsedTime, cPlayer3D->GetWeapon()->GetWeaponWeight());
 	if ((CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_SPACE))
 		|| (cJoystickController->IsButtonDown(0))) // Button 0 is the A button on the GamePad
 		cPlayer3D->SetToJump();
@@ -603,6 +616,7 @@ void CScene3D::Update(const double dElapsedTime)
 		// If the projectile was successfully created then add to the EntityManager
 		if (cProjectile)
 			cEntityManager->Add(cProjectile);
+		
 	}
 	else if (cMouseController->IsButtonDown(CMouseController::BUTTON_TYPE::RMB))
 	{
@@ -624,6 +638,7 @@ void CScene3D::Update(const double dElapsedTime)
 		//cSoundController->PlaySoundByID(7);
 		//cSoundController->VolumeDecrease(7);
 
+<<<<<<< Updated upstream
 		CEnemyBoss3D* cEnemyBoss3D = new CEnemyBoss3D(glm::vec3(4.f, 40.f, -4.f));
 
 		cEnemyBoss3D->SetShader(cShader);
@@ -642,6 +657,153 @@ void CScene3D::Update(const double dElapsedTime)
 		cRifle->Init();
 		cRifle->SetShader(cSimpleShader);
 		cPlayer3D->SetWeapon(1, cRifle);
+=======
+		cEntityManager->set_enemy_deathCount(0);
+		wave3_start = true;
+		cPlayer3D->SetPosition(glm::vec3(0, 0.5, 0));
+	}
+	if (wave3_start == true)
+	{
+		// basic zombie spawning
+		if (zombieCount != 16)
+		{
+			if (spawnZTimer >= 1.4f)
+			{
+				int switchPos = rand() % 4 + 1;
+
+				glm::vec3 spawnPos;
+
+				switch (switchPos)
+				{
+				case 1:
+				{
+					spawnPos = glm::vec3(10, 0.5, 10);
+					break;
+				}
+				case 2:
+				{
+					spawnPos = glm::vec3(-10, 0.5, 10);
+					break;
+				}
+				case 3:
+				{
+					spawnPos = glm::vec3(10, 0.5, -10);
+					break;
+				}
+				case 4:
+				{
+					spawnPos = glm::vec3(-10, 0.5, -10);
+					break;
+				}
+				}
+
+				CEnemy3D2* cEnemy3D2 = new CEnemy3D2();
+				AddEnemy2(cEnemy3D2, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+
+				++zombieCount;
+
+				spawnZTimer = 0;
+			}
+		}
+
+		//crawler spawning
+		if (crawlerCount != 8)
+		{
+			if (spawnCTimer >= 1.4f)
+			{
+				int switchPos = rand() % 4 + 1;
+
+				glm::vec3 spawnPos;
+
+				switch (switchPos)
+				{
+				case 1:
+				{
+					spawnPos = glm::vec3(10, 0.5, 10);
+					break;
+				}
+				case 2:
+				{
+					spawnPos = glm::vec3(-10, 0.5, 10);
+					break;
+				}
+				case 3:
+				{
+					spawnPos = glm::vec3(10, 0.5, -10);
+					break;
+				}
+				case 4:
+				{
+					spawnPos = glm::vec3(-10, 0.5, -10);
+					break;
+				}
+				}
+
+				CEnemy3D* cEnemy3D = new CEnemy3D();
+				AddEnemy(cEnemy3D, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+
+				++crawlerCount;
+
+				spawnCTimer = 0;
+			}
+		}
+
+		// big nigga spawning
+		if (scrakeCount != 4)
+		{
+			if (spawnSTimer >= 1.4f)
+			{
+				int switchPos = rand() % 4 + 1;
+
+				glm::vec3 spawnPos;
+
+				switch (switchPos)
+				{
+				case 1:
+				{
+					spawnPos = glm::vec3(10, 0.5, 10);
+					break;
+				}
+				case 2:
+				{
+					spawnPos = glm::vec3(-10, 0.5, 10);
+					break;
+				}
+				case 3:
+				{
+					spawnPos = glm::vec3(10, 0.5, -10);
+					break;
+				}
+				case 4:
+				{
+					spawnPos = glm::vec3(-10, 0.5, -10);
+					break;
+				}
+				}
+
+				CEnemy3D3* cEnemy3D = new CEnemy3D3();
+				AddEnemy3(cEnemy3D, spawnPos, glm::vec3(0.5, 0.5, 0.5));
+
+				++scrakeCount;
+
+				spawnSTimer = 0;
+			}
+		}
+
+		if (zombieCount == 16 && crawlerCount == 8 && scrakeCount == 4)
+		{
+			wave3_start = false;
+			++wave_count;
+		}
+	}
+
+	// WAVE 4 LOGIC
+	if (wave_count == 3 && cEntityManager->get_enemy_deathCount() > 28)
+	{
+		zombieCount = 0;
+		crawlerCount = 0;
+		scrakeCount = 0;
+>>>>>>> Stashed changes
 
 		cEntityManager->set_enemy_deathCount(0);
 		renderBoss = false;
@@ -692,14 +854,21 @@ void CScene3D::Update(const double dElapsedTime)
 	cCameraEffects->Update(dElapsedTime);
 
 	// Update progress bar
+<<<<<<< Updated upstream
 	//if(static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() >= 0)
 		cArmorBar->Update(dElapsedTime);
 	//else
 		//cHealthBar->Update(dElapsedTime);
+=======
+	if (static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() >= 0)
+		cArmorBar->Update(dElapsedTime);
+	//else
+	cHealthBar->Update(dElapsedTime);
+>>>>>>> Stashed changes
 
-		cExpBar->Update(dElapsedTime);
+	cExpBar->Update(dElapsedTime);
 
-	cWeaponInfo = cPlayer3D->GetWeapon();
+	cInfectBar->Update(dElapsedTime);
 }
 
 /**
@@ -827,6 +996,10 @@ void CScene3D::Render(void)
 	cArmorBar->PreRender();
 	cArmorBar->Render();
 	cArmorBar->PostRender();
+
+	cInfectBar->PreRender();
+	cInfectBar->Render();
+	cInfectBar->PostRender();
 	
 	cExpBar->PreRender();
 	cExpBar->Render();
