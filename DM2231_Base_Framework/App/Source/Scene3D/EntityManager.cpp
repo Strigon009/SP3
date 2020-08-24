@@ -426,7 +426,7 @@ void CEntityManager::Update(const double dElapsedTime)
 				{
 					(*it)->RollbackPosition();
 
-					static_cast<CStructureTower*>(*it_other)->set_towerHP(static_cast<CStructureTower*>(*it_other)->get_towerHP() - static_cast<CEnemy3D*>(*it)->get_enemyDamage());
+					static_cast<CStructureTower*>(*it_other)->set_towerHP(static_cast<CStructureTower*>(*it_other)->get_towerHP() - 1/*static_cast<CEnemy3D*>(*it)->get_enemyDamage()*/);
 					cout << static_cast<CStructureTower*>(*it_other)->get_towerHP() << endl;
 
 					cout << "** Collision between NPC and tower ***" << endl;
@@ -435,7 +435,7 @@ void CEntityManager::Update(const double dElapsedTime)
 				{
 					(*it_other)->RollbackPosition();
 
-					static_cast<CStructureTower*>(*it)->set_towerHP(static_cast<CStructureTower*>(*it_other)->get_towerHP() - static_cast<CEnemy3D*>(*it)->get_enemyDamage());
+					static_cast<CStructureTower*>(*it)->set_towerHP(static_cast<CStructureTower*>(*it_other)->get_towerHP() - 1/*static_cast<CEnemy3D*>(*it)->get_enemyDamage()*/);
 					cout << static_cast<CStructureTower*>(*it)->get_towerHP() << endl;
 
 					cout << "** Collision between NPC and tower ***" << endl;
