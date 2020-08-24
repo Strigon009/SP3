@@ -12,8 +12,8 @@ CArmorBar::CArmorBar(void)
 	, armorBar(NULL)
 	, armorDmgMultiplier(1.f)
 	, cArmorPickup(NULL)
-	, fHeight(0)
-	, fWidth(0)
+	, fHeight(0.f)
+	, fWidth(0.f)
 	, transform (glm::mat4(1.0f))
 {
 }

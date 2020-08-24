@@ -33,6 +33,7 @@ CPlayer3D::CPlayer3D(void)
 	, pLevelMax(5)
 	, pExp(1.f)
 	, pExpMax(pLevel * pLevelMax * 10)
+	, isWeaponDischarged(false)
 {
 	// Set the default position so it is above the ground
 	vec3Position = glm::vec3(0.0f, 0.5f, 0.0f);
@@ -302,6 +303,11 @@ CWeaponInfo* CPlayer3D::GetWeapon(void) const
 	return NULL;
 }
 
+CWeaponInfo* CPlayer3D::GetWeaponInfo(void) const
+{
+	return cSecondaryWeapon;
+}
+
 /**
  @brief Set current weapon
  @param iSlot A const int variable which contains the weapon info to check for. 0 == Primary, 1 == Secondary
@@ -447,6 +453,10 @@ void CPlayer3D::Update(const double dElapsedTime)
 		}
 
 		bUpdateCameraSway = false;
+	}
+	if (isWeaponDischarged)
+	{
+
 	}
 }
 
@@ -677,6 +687,7 @@ int CPlayer3D::GetCurrentPlayerLevel()
 {
 	return pLevel;
 }
+
 void CPlayer3D::SetToDodge(void)
 {
 	if (cPhysics3D.GetStatus() == CPhysics3D::STATUS::IDLE)

@@ -9,7 +9,6 @@ using namespace std;
  */
 CCrossHair::CCrossHair(void)
 	: bActive(true)
-	, transform(glm::mat4(1.0f))
 {
 }
 

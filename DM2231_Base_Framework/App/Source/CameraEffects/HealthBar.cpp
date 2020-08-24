@@ -8,6 +8,11 @@ using namespace std;
  @brief Default Constructor
  */
 CHealthBar::CHealthBar(void)
+	: healthBar(false)
+	, fHeight(0)
+	, fWidth(0)
+	, transform(glm::mat4(1.0f))
+	, dmgmultiplier(1.f)
 {
 }
 

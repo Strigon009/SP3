@@ -14,6 +14,17 @@ CEntityManager::CEntityManager(void)
 	, projection(glm::mat4(1.0f))
 	, enemy_deathCount(0)
 	, moveTo_Tower(false)
+	, cCurrentWeapon(NULL)
+	, cArmorPickup(NULL)
+	, cArmorBar(NULL)
+	, cExpBar(NULL)
+	, cHealthBar(NULL)
+	, cInfectBar(NULL)
+	, cSoundController(NULL)
+	, cPrimaryWeapon(NULL)
+	, cSecondaryWeapon(NULL)
+	, currentTime(GetTickCount64() * 0.001f)
+	, cPlayer3D(NULL)
 {
 }
 
@@ -207,6 +218,77 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				bResult = 6;
 				// Quit this loop since a collision has been found
 				
+				break;
+			}
+			else if ((*it)->GetType() == CEntity3D::TYPE::BARREL_PICKUP)
+			{
+				// Rollback the cEntity3D's position
+				(*it)->RollbackPosition();
+
+				cout << "** Collision between Player and Barrel ***" << endl;
+				bResult = 7;
+				// Quit this loop since a collision has been found
+				
+				break;
+			}
+			else if ((*it)->GetType() == CEntity3D::TYPE::MAGAZINE_PICKUP)
+			{
+				// Rollback the cEntity3D's position
+				(*it)->RollbackPosition();
+
+				cout << "** Collision between Player and Magazine ***" << endl;
+				bResult = 8;
+				// Quit this loop since a collision has been found
+				
+				break;
+			}
+			else if ((*it)->GetType() == CEntity3D::TYPE::MINIGUN_PICKUP)
+			{
+				// Rollback the cEntity3D's position
+				cout << "** Collision between Player and Minigun ***" << endl;
+				if (cPlayer3D->GetWeaponInfo() == NULL && CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_F))
+				{
+					(*it)->SetToDelete(true);
+					bResult = 9;
+				}
+				else if (cPlayer3D->GetWeaponInfo() != NULL && CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_F))
+				{
+					(*it)->SetToDelete(true);
+					bResult = 10;
+				}
+				// Quit this loop since a collision has been found
+				break;
+			}
+			else if ((*it)->GetType() == CEntity3D::TYPE::RIFLE_PICKUP)
+			{
+				cout << "** Collision between Player and Rifle ***" << endl;
+				if (cPlayer3D->GetWeaponInfo() == NULL && CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_F))
+				{
+					(*it)->SetToDelete(true);
+					bResult = 11;
+				}
+				else if (cPlayer3D->GetWeaponInfo() != NULL && CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_F))
+				{
+					(*it)->SetToDelete(true);
+					bResult = 12;
+				}
+				// Quit this loop since a collision has been found
+				break;
+			}
+			else if ((*it)->GetType() == CEntity3D::TYPE::SMG_PICKUP)
+			{
+				cout << "** Collision between Player and SMG ***" << endl;
+				if (cPlayer3D->GetWeaponInfo() == NULL && CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_F))
+				{
+					(*it)->SetToDelete(true);
+					bResult = 13;
+				}
+				else if (cPlayer3D->GetWeaponInfo() != NULL && CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_F))
+				{
+					(*it)->SetToDelete(true);
+					bResult = 14;
+				}
+				// Quit this loop since a collision has been found
 				break;
 			}
 		}

@@ -2,6 +2,7 @@
 #include "Projectile.h"
 #include "../../SoundController/SoundController.h"
 #include <iostream>
+#include "BarrelAttachment.h"
 using namespace std;
 
 /**
@@ -18,6 +19,13 @@ CWeaponInfo::CWeaponInfo()
 	, type(RIFLE)
 	, IsReloading(false)
 	, reloadTime(1.f)
+	, weaponWeight(1.f)
+	, weaponDamage(1.f)
+	, lastTime(0.f)
+	, iMaxOriMaxRounds(iMaxMagRounds)
+	, iAudioShoot(0)
+	, iAudioReload(0)
+	, autoFire(false)
 {
 }
 
@@ -71,7 +79,6 @@ void CWeaponInfo::SetMaxTotalRound(const int iMaxTotalRounds)
 	this->iMaxTotalRounds = iMaxTotalRounds;
 }
 
-
 /**
  @brief Get the number of ammunition in the magazine for this player
  */
@@ -104,6 +111,10 @@ int CWeaponInfo::GetMaxTotalRound(void) const
 	return iMaxTotalRounds;
 }
 
+int CWeaponInfo::GetOriMaxRound(void) const
+{
+	return iMaxOriMaxRounds;
+}
 /**
  @brief Set the time between shots
  */
@@ -306,4 +317,19 @@ void CWeaponInfo::PrintSelf(void)
 float CWeaponInfo::GetWeaponWeight()
 {
 	return weaponWeight;
+}
+
+void CWeaponInfo::EquipBarrel()
+{
+
+}
+
+void CWeaponInfo::EquipMagazine()
+{
+	iMaxMagRounds = iMaxOriMaxRounds * 1.2;
+}
+
+float CWeaponInfo::GetWeaponRecoil()
+{
+	return weaponRecoil;
 }

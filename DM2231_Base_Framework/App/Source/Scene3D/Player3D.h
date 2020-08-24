@@ -78,6 +78,8 @@ public:
 	// Get current weapon of this class instance
 	CWeaponInfo* GetWeapon(void) const;
 
+	CWeaponInfo* GetWeaponInfo(void) const;
+
 	// Set current weapon
 	void SetCurrentWeapon(const int iSlot);
 
@@ -158,6 +160,7 @@ protected:
 	bool bCameraSwayDirection; // false = left, true = right
 	bool bCameraSwayActive;
 	bool bUpdateCameraSway;
+	bool isWeaponDischarged;
 
 	// Physics
 	CPhysics3D cPhysics3D;

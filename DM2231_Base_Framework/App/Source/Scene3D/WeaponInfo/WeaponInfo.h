@@ -7,6 +7,7 @@
 
 #include "DesignPatterns\SingletonTemplate.h"
 
+
 // Include Entity3D
 #include <Primitives/Entity3D.h>
 
@@ -45,6 +46,8 @@ public:
 	// Get the max total number of rounds currently carried by this player
 	virtual int GetMaxTotalRound(void) const;
 
+	int GetOriMaxRound(void) const;
+
 	// Set the time between shots
 	virtual void SetTimeBetweenShots(const double dTimeBetweenShots);
 	// Set the firing rate in rounds per min
@@ -76,15 +79,20 @@ public:
 	virtual void PrintSelf(void);
 
 	float GetWeaponWeight();
+	void EquipBarrel();
+	void EquipMagazine();
+	float GetWeaponRecoil();
 
 	enum WeaponType
 	{
 		PISTOL,
 		RIFLE,
+		MINIGUN,
+		SMG
 	};
 
 	WeaponType type;
-
+	
 protected:
 	// Handler to the Shader Program instance
 	Shader* cShader;
@@ -99,6 +107,7 @@ protected:
 	int iMaxTotalRounds;
 	int iAudioReload;
 	int iAudioShoot;
+	int iMaxOriMaxRounds;
 	// The time between shots in milliseconds
 	double dTimeBetweenShots;
 	// The elapsed time (between shots) in milliseconds
@@ -112,4 +121,6 @@ protected:
 	float weaponWeight;
 	float weaponDamage;
 	bool autoFire;
+	bool MagazineEquipped;
+	float weaponRecoil;
 };

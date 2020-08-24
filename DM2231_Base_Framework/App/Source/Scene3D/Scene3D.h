@@ -53,6 +53,12 @@
 // Include GroundMap
 #include "GroundMap.h"
 
+// Include Pistol
+#include "WeaponInfo/Pistol.h"
+#include "WeaponInfo/SMG.h"
+#include "WeaponInfo/Minigun.h"
+#include "WeaponInfo/Rifle.h"
+
 // Include CameraEffects
 #include "../CameraEffects/CameraEffects.h"
 // Include ProgressBar
@@ -61,13 +67,19 @@
 #include "../CameraEffects/ExperienceBar.h"
 #include "../CameraEffects/InfectionBar.h"
 // Include Minimap
-#include "..\Minimap\Minimap.h"
+#include "../Minimap/Minimap.h"
 // Include CrossHair
-#include "CrossHair\CrossHair.h"
-
+#include "CrossHair/CrossHair.h"
 #include "WeaponInfo/WeaponInfo.h"
+#include "WeaponInfo/BarrelAttachment.h"
+#include "WeaponInfo/MagazineAttachment.h"
+#include "CrossHair/BarrelHUD.h"
+#include "CrossHair/MagazineHUD.h"
 // Include Pickups
 #include "ArmorPickup.h"
+#include "SMGPickup.h"
+#include "RiflePickup.h"
+#include "MinigunPickup.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -90,6 +102,10 @@ public:
 	// Render
 	void Render(void);
 
+	void SetBarrel(bool barrel);
+	bool GetBarrel();
+	void SetMagazine(bool magazine);
+	bool GetMagazine();
 	// PostRender
 	void PostRender(void);
 
@@ -166,6 +182,11 @@ protected:
 	CWeaponInfo* cWeaponInfo;
 	CArmorPickup* cArmorPickup;
 
+	CBarrelHUD* cBarrelHUD;
+	CMagazineHUD* cMagazineHUD;
+
+	bool barrelAttachment;
+	bool magazineAttachment;
 	bool renderBoss;
 	bool bossDED;
 	bool printLoseScreen;
@@ -178,13 +199,24 @@ protected:
 	float spawnCTimer;
 	float spawnZTimer;
 	float spawnSTimer;
+	float fOriginalPitch;
+
 	void AddEnemy(CEnemy3D* cEnemy3D, glm::vec3 pos, glm::vec3 scale);
 	void AddEnemy2(CEnemy3D2* cEnemy3D2, glm::vec3 pos, glm::vec3 scale);
 	void AddEnemy3(CEnemy3D3* cEnemy3D3, glm::vec3 pos, glm::vec3 scale);
 	void AddWall(CStructure3D* cStructure3D, glm::vec3 pos, glm::vec3 scale);
 	void AddPillar(CStructure2_3D* cStructure3D, glm::vec3 pos, glm::vec3 scale);
 	void AddArmorPickUp(CArmorPickup* cArmorPickup, glm::vec3 pos, glm::vec3 scale);
-	
+	void AddBarrelPickup(CBarrelAttachment* cBarrelAttachment, glm::vec3 pos, glm::vec3 scale);
+	void AddMagazinePickup(CMagazineAttachment* cMagazineAttachment, glm::vec3 pos, glm::vec3 scale);
+	void AddRiflePickup(CRiflePickup* cRiflePickup, glm::vec3 pos, glm::vec3 scale);
+	void AddMinigunPickup(CMinigunPickup* cRiflePickup, glm::vec3 pos, glm::vec3 scale);
+	void AddSMGPickup(CSMGPickup* cRiflePickup, glm::vec3 pos, glm::vec3 scale);
+
+	void SetRifle(int index);
+	void SetMinigun(int index);
+	void SetSMG(int index);
+
 	// Constructor
 	CScene3D(void);
 	// Destructor

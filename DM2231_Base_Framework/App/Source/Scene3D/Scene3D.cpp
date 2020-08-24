@@ -12,12 +12,6 @@ using namespace std;
 #define GLM_ENABLE_EXPERIMENTAL
 #include <includes/gtx/string_cast.hpp>
 
-// Include Pistol
-#include "WeaponInfo\Pistol.h"
-
-
-#include "WeaponInfo/Rifle.h"
-
 void CScene3D::AddEnemy(CEnemy3D* cEnemy3D, glm::vec3 pos, glm::vec3 scale)
 {
 	cEnemy3D = new CEnemy3D(pos);
@@ -85,6 +79,81 @@ void CScene3D::AddArmorPickUp(CArmorPickup* cArmorPickup, glm::vec3 pos, glm::ve
 
 }
 
+void CScene3D::AddBarrelPickup(CBarrelAttachment* cBarrelAttachment, glm::vec3 pos, glm::vec3 scale)
+{
+	cBarrelAttachment = new CBarrelAttachment(pos);
+	cBarrelAttachment->SetShader(cShader);
+	cBarrelAttachment->Init();
+	cBarrelAttachment->SetScale(scale);
+	cBarrelAttachment->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cBarrelAttachment);
+
+}
+
+void CScene3D::AddMagazinePickup(CMagazineAttachment* cMagazineAttachment, glm::vec3 pos, glm::vec3 scale)
+{
+	cMagazineAttachment = new CMagazineAttachment(pos);
+	cMagazineAttachment->SetShader(cShader);
+	cMagazineAttachment->Init();
+	cMagazineAttachment->SetScale(scale);
+	cMagazineAttachment->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cMagazineAttachment);
+
+}
+
+void CScene3D::AddRiflePickup(CRiflePickup* cRiflePickup, glm::vec3 pos, glm::vec3 scale)
+{
+	cRiflePickup = new CRiflePickup(pos);
+	cRiflePickup->SetShader(cShader);
+	cRiflePickup->Init();
+	cRiflePickup->SetScale(scale);
+	cRiflePickup->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cRiflePickup);
+}
+
+void CScene3D::AddMinigunPickup(CMinigunPickup* cMinigunPickup, glm::vec3 pos, glm::vec3 scale)
+{
+	cMinigunPickup = new CMinigunPickup(pos);
+	cMinigunPickup->SetShader(cShader);
+	cMinigunPickup->Init();
+	cMinigunPickup->SetScale(scale);
+	cMinigunPickup->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cMinigunPickup);
+}
+
+void CScene3D::AddSMGPickup(CSMGPickup* cSMGPickup, glm::vec3 pos, glm::vec3 scale)
+{
+	cSMGPickup = new CSMGPickup(pos);
+	cSMGPickup->SetShader(cShader);
+	cSMGPickup->Init();
+	cSMGPickup->SetScale(scale);
+	cSMGPickup->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cSMGPickup);
+}
+
+void CScene3D::SetRifle(int index)
+{
+	CRifle* cRifle = new CRifle();
+	cRifle->Init();
+	cRifle->SetShader(cSimpleShader);
+	cPlayer3D->SetWeapon(index, cRifle);
+}
+
+void CScene3D::SetMinigun(int index)
+{
+	CMinigun* cMinigun = new CMinigun();
+	cMinigun->Init();
+	cMinigun->SetShader(cSimpleShader);
+	cPlayer3D->SetWeapon(index, cMinigun);
+}
+
+void CScene3D::SetSMG(int index)
+{
+	CSMG* cSMG = new CSMG();
+	cSMG->Init();
+	cSMG->SetShader(cSimpleShader);
+	cPlayer3D->SetWeapon(index, cSMG);
+}
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
@@ -115,6 +184,8 @@ CScene3D::CScene3D(void)
 	, cCrossHair(NULL)
 	, cWeaponInfo(NULL)
 	, cArmorPickup(NULL)
+	, cBarrelHUD(NULL)
+	, cMagazineHUD(NULL)
 	, renderBoss(false)
 	, printLoseScreen(false)
 	, printWinScreen(false)
@@ -127,6 +198,9 @@ CScene3D::CScene3D(void)
 	, spawnCTimer(0)
 	, spawnZTimer(0)
 	, spawnSTimer(0)
+	, fOriginalPitch(0)
+	, barrelAttachment(false)
+	, magazineAttachment(false)
 {
 }
 
@@ -361,6 +435,14 @@ bool CScene3D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\pistolreload.ogg"), 8, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\riflereload.ogg"), 9, true);
 
+	cBarrelHUD = CBarrelHUD::GetInstance();
+	cBarrelHUD->SetShader(cGUIShader);
+	cBarrelHUD->Init();
+
+	cMagazineHUD = CMagazineHUD::GetInstance();
+	cMagazineHUD->SetShader(cGUIShader);
+	cMagazineHUD->Init();
+
 	// Initialise the EntityManager
 	cEntityManager = CEntityManager::GetInstance();
 	cEntityManager->Init();
@@ -372,16 +454,15 @@ bool CScene3D::Init(void)
 	cPlayer3D->AttachCamera(cCamera);
 	//cPlayer3D->SetScale(glm::vec3(0.5f));
 	cPlayer3D->ActivateCollider(cSimpleShader);
+
 	// Assign a cPistol to the cPlayer3D
 	CPistol* cPistol = new CPistol();
 	cPistol->Init();
 	cPistol->SetShader(cSimpleShader);
 	cPlayer3D->SetWeapon(0, cPistol);
 
-	CRifle* cRifle = new CRifle();
-	cRifle->Init();
-	cRifle->SetShader(cSimpleShader);
-	cPlayer3D->SetWeapon(1, cRifle);
+	CSMGPickup* cSmgPickup = new CSMGPickup;
+	AddSMGPickup(cSmgPickup, glm::vec3(-2, 0.2f, -2), glm::vec3(1, 1, 1));
 	float randPos = rand() % 3 + 2;
 	float randPos2 = rand() % 6 + 4;
 	//float randPos3 = rand() % 8 + 7;
@@ -391,8 +472,8 @@ bool CScene3D::Init(void)
 	CEnemy3D2* cEnemy3D2 = new CEnemy3D2();
 	CEnemy3D3* cEnemy3D3 = new CEnemy3D3();
 	
-	AddEnemy(cEnemy3D, glm::vec3(2, 1.f, 4), glm::vec3(1, 0.3f, 1));
-	AddEnemy(cEnemy3D, glm::vec3(6, 1.f, 2), glm::vec3(1, 0.3f, 1));
+	//AddEnemy(cEnemy3D, glm::vec3(2, 1.f, 4), glm::vec3(1, 0.3f, 1));
+	//AddEnemy(cEnemy3D, glm::vec3(6, 1.f, 2), glm::vec3(1, 0.3f, 1));
 	//AddEnemy(cEnemy3D, glm::vec3(2, 1.f, 2), glm::vec3(1, 0.3f, 1));
 	//AddEnemy(cEnemy3D, glm::vec3(4, 1.f, 2), glm::vec3(1, 0.3f, 1));
 
@@ -401,29 +482,29 @@ bool CScene3D::Init(void)
 	//AddEnemy2(cEnemy3D2, glm::vec3(1, 1.f, 6), glm::vec3(1, 1, 1));
 	//AddEnemy2(cEnemy3D2, glm::vec3(5, 1.f, 3), glm::vec3(1, 1, 1));
 
-	AddEnemy3(cEnemy3D3, glm::vec3(8, 1, 4), glm::vec3(2,2,2));
+	//AddEnemy3(cEnemy3D3, glm::vec3(8, 1, 4), glm::vec3(2,2,2));
 	//AddEnemy2(cEnemy3D2, glm::vec3(6, 1.f, 6), glm::vec3(1, 1, 1));
 	//AddEnemy2(cEnemy3D2, glm::vec3(1, 1.f, 6), glm::vec3(1, 1, 1));
 	//AddEnemy2(cEnemy3D2, glm::vec3(5, 1.f, 3), glm::vec3(1, 1, 1));
 	
-	AddEnemy(cEnemy3D, glm::vec3(2, 10.f, 2), glm::vec3(1,1,1));
-	AddEnemy(cEnemy3D, glm::vec3(4, 10.f, 2), glm::vec3(1,1,1));
+	//AddEnemy(cEnemy3D, glm::vec3(2, 10.f, 2), glm::vec3(1,1,1));
+	//AddEnemy(cEnemy3D, glm::vec3(4, 10.f, 2), glm::vec3(1,1,1));
 
 	// Initialise a CStructure3D
-	CStructure3D* cStructure3D = new CStructure3D();
+	//CStructure3D* cStructure3D = new CStructure3D();
 	
-	AddWall(cStructure3D, glm::vec3(10.f, 0.5f, 0.0f),glm::vec3(1, 5, 100));
-	AddWall(cStructure3D, glm::vec3(-10.f, 0.5f, 0.0f), glm::vec3(1, 5, 100));
-	AddWall(cStructure3D, glm::vec3(0.0f, 0.5f, -10.f), glm::vec3(100, 5, 1));
-	AddWall(cStructure3D, glm::vec3(0.0f, 0.5f, 10.f), glm::vec3(100, 5, 1));
+	//AddWall(cStructure3D, glm::vec3(10.f, 0.5f, 0.0f),glm::vec3(1, 5, 100));
+	//AddWall(cStructure3D, glm::vec3(-10.f, 0.5f, 0.0f), glm::vec3(1, 5, 100));
+	//AddWall(cStructure3D, glm::vec3(0.0f, 0.5f, -10.f), glm::vec3(100, 5, 1));
+	//AddWall(cStructure3D, glm::vec3(0.0f, 0.5f, 10.f), glm::vec3(100, 5, 1));
 
-	CStructureTower* cTower = new CStructureTower(glm::vec3(-5, 0, 5));
+	//CStructureTower* cTower = new CStructureTower(glm::vec3(-5, 0, 5));
 
-	cTower->SetShader(cShader);
-	cTower->Init();
-	cTower->SetScale(glm::vec3(0.5, 0.5, 0.5));
-	cTower->ActivateCollider(cSimpleShader);
-	cEntityManager->Add(cTower);
+	//cTower->SetShader(cShader);
+	//cTower->Init();
+	//cTower->SetScale(glm::vec3(0.5, 0.5, 0.5));
+	//cTower->ActivateCollider(cSimpleShader);
+	//cEntityManager->Add(cTower);
 
 	//CStructure2_3D* cStructure3D2 = new CStructure2_3D(glm::vec3(6, 0.5, 6));
 
@@ -437,8 +518,16 @@ bool CScene3D::Init(void)
 	//AddPillar(cStructure3D2, glm::vec3(0, 0.5, 6), glm::vec3(0.5, 5, 0.5));
 
 	CArmorPickup* cArmorPickup = new CArmorPickup();
-
 	AddArmorPickUp(cArmorPickup, glm::vec3(3.5f, 0.2f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+	
+	CBarrelAttachment* cBarrelAttachment = new CBarrelAttachment();
+	AddBarrelPickup(cBarrelAttachment, glm::vec3(5.f, 0.2f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+	
+	CMagazineAttachment* cMagazineAttachment = new CMagazineAttachment();
+	AddMagazinePickup(cMagazineAttachment, glm::vec3(-5.f, 0.2f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+	
+	
+	
 	// Load the SkyBox
 	cSkyBox = CSkyBox::GetInstance();
 	// Set a shader to this class instance of CSkyBox
@@ -451,6 +540,8 @@ bool CScene3D::Init(void)
 	cGroundMap->Init(glm::vec3(50.0f, 1.0f, 50.0f), glm::i32vec3(10, 1, 10));
 	// Set a shader to this class instance of CSkyBox
 	cGroundMap->ReCalculate();
+
+
 
 	// Create and initialise the TextRenderer
 	cTextRenderer = CTextRenderer::GetInstance();
@@ -606,7 +697,7 @@ void CScene3D::Update(const double dElapsedTime)
 	{
 		cPlayer3D->SetCurrentWeapon(0);
 	}
-	if (CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_2))
+	if (CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_2) && cPlayer3D->GetWeaponInfo() != NULL )
 	{
 		cPlayer3D->SetCurrentWeapon(1);
 	}
@@ -623,10 +714,15 @@ void CScene3D::Update(const double dElapsedTime)
 		CProjectile* cProjectile = cPlayer3D->DischargeWeapon();
 		// If the projectile was successfully created then add to the EntityManager
 		if (cProjectile)
+		{
+			cPlayer3D->fPitch += cPlayer3D->GetWeapon()->GetWeaponRecoil();
+			fOriginalPitch += cPlayer3D->GetWeapon()->GetWeaponRecoil();
 			cEntityManager->Add(cProjectile);
-		
+			
+		}
 	}
-	else if (cMouseController->IsButtonDown(CMouseController::BUTTON_TYPE::RMB))
+
+	if (cMouseController->IsButtonDown(CMouseController::BUTTON_TYPE::RMB))
 	{
 		cCamera->fZoom = 25.f;
 		// Scope mode
@@ -636,6 +732,12 @@ void CScene3D::Update(const double dElapsedTime)
 		cCamera->fZoom = 45.f;
 	}
 
+	if (fOriginalPitch > 0.f && cMouseController->IsButtonUp(CMouseController::BUTTON_TYPE::LMB))
+	{
+		cout << "oi" << endl;
+		fOriginalPitch -= 0.05f;
+		cPlayer3D->fPitch -= 0.05f;
+	}
 	if (cEntityManager->get_enemy_deathCount() > 4)
 	{
 		renderBoss = true;
@@ -659,11 +761,6 @@ void CScene3D::Update(const double dElapsedTime)
 		cEnemyBoss3D_2->Init();
 		cEnemyBoss3D_2->ActivateCollider(cSimpleShader);
 		cEntityManager->Add(cEnemyBoss3D_2);
-
-		CRifle* cRifle = new CRifle();
-		cRifle->Init();
-		cRifle->SetShader(cSimpleShader);
-		cPlayer3D->SetWeapon(1, cRifle);
 
 		cEntityManager->set_enemy_deathCount(0);
 		wave3_start = true;
@@ -839,16 +936,53 @@ void CScene3D::Update(const double dElapsedTime)
 	switch (cEntityManager->CollisionCheck(cPlayer3D))
 	{
 	case 1:
-		//cCameraEffects->Activate_BloodScreen();
 		cPlayer3D->SetArmor(cPlayer3D->GetArmor() - 5);
 		cPlayer3D->GainExp(5);
 		break;
 	case 5:
 		cPlayer3D->SetArmor(cPlayer3D->GetArmor() + 30);
 		break;
+	case 7:
+		SetBarrel(true);
+		break;
+	case 8:
+		SetMagazine(true);
+		break;
+	case 9:
+		SetMinigun(1);
+		break;
+	case 10:
+		//Minigun
+		SetMinigun(cPlayer3D->GetCurrentWeaponIndex());
+		break;
+	case 11:
+		//Rifle
+		SetRifle(1);
+		break;
+	case 12:
+		//Rifle
+		SetRifle(cPlayer3D->GetCurrentWeaponIndex());
+		break;
+	case 13:
+		//SMG
+		SetSMG(1);
+		break;
+	case 14:
+		//SMG
+		SetSMG(cPlayer3D->GetCurrentWeaponIndex());
+		break;
 	default:
 		break;
 	}
+
+
+	cBarrelHUD->SetStatus(GetBarrel());
+	if (cBarrelHUD->GetStatus() && cPlayer3D->GetWeapon())
+		cPlayer3D->GetWeapon()->EquipBarrel();
+
+	cMagazineHUD->SetStatus(GetMagazine());
+	if (cMagazineHUD->GetStatus() && cPlayer3D->GetWeapon())
+		cPlayer3D->GetWeapon()->EquipMagazine();
 
 	// Clean up the deleted CEntity3D in the entity manager
 	cEntityManager->CleanUp();
@@ -859,13 +993,7 @@ void CScene3D::Update(const double dElapsedTime)
 	// Update camera effects
 	cCameraEffects->Update(dElapsedTime);
 
-	// Update progress bar
-
-	//if(static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() >= 0)
-		cArmorBar->Update(dElapsedTime);
-	//else
-		//cHealthBar->Update(dElapsedTime);
-
+	// Update HUD
 	if (static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() >= 0)
 		cArmorBar->Update(dElapsedTime);
 	//else
@@ -1014,6 +1142,14 @@ void CScene3D::Render(void)
 	cCrossHair->Render();
 	cCrossHair->PostRender();
 
+	cBarrelHUD->PreRender();
+	cBarrelHUD->Render();
+	cBarrelHUD->PostRender();
+	
+	cMagazineHUD->PreRender();
+	cMagazineHUD->Render();
+	cMagazineHUD->PostRender();
+
 	cMinimap->Render();
 
 	// Call the cTextRenderer's PreRender()
@@ -1061,9 +1197,30 @@ void CScene3D::Render(void)
 	return;
 }
 
+void CScene3D::SetBarrel(bool barrel)
+{
+	barrelAttachment = barrel;
+}
+
+bool CScene3D::GetBarrel()
+{
+	return barrelAttachment;
+}
+
+bool CScene3D::GetMagazine()
+{
+	return magazineAttachment;
+}
+
+void CScene3D::SetMagazine(bool magazine)
+{
+	magazineAttachment = magazine;
+}
+
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
 void CScene3D::PostRender(void)
 {
+
 }
