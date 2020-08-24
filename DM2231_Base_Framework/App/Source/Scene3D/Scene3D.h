@@ -54,6 +54,12 @@
 // Include GroundMap
 #include "GroundMap.h"
 
+// Include Pistol
+#include "WeaponInfo/Pistol.h"
+#include "WeaponInfo/SMG.h"
+#include "WeaponInfo/Minigun.h"
+#include "WeaponInfo/Rifle.h"
+
 // Include CameraEffects
 #include "../CameraEffects/CameraEffects.h"
 // Include ProgressBar
@@ -62,11 +68,14 @@
 #include "../CameraEffects/ExperienceBar.h"
 #include "../CameraEffects/InfectionBar.h"
 // Include Minimap
-#include "..\Minimap\Minimap.h"
+#include "../Minimap/Minimap.h"
 // Include CrossHair
-#include "CrossHair\CrossHair.h"
-
+#include "CrossHair/CrossHair.h"
 #include "WeaponInfo/WeaponInfo.h"
+#include "WeaponInfo/BarrelAttachment.h"
+#include "WeaponInfo/MagazineAttachment.h"
+#include "CrossHair/BarrelHUD.h"
+#include "CrossHair/MagazineHUD.h"
 // Include Pickups
 #include "ArmorPickup.h"
 #include "HealthPickup.h"
@@ -74,6 +83,9 @@
 #include "Invincibility.h"
 #include "FreezeMovement.h"
 
+#include "SMGPickup.h"
+#include "RiflePickup.h"
+#include "MinigunPickup.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -96,6 +108,10 @@ public:
 	// Render
 	void Render(void);
 
+	void SetBarrel(bool barrel);
+	bool GetBarrel();
+	void SetMagazine(bool magazine);
+	bool GetMagazine();
 	// PostRender
 	void PostRender(void);
 
@@ -177,6 +193,16 @@ protected:
 
 	//CPhysics3D cPhysics3D;
 
+	CBarrelHUD* cBarrelHUD;
+	CMagazineHUD* cMagazineHUD;
+
+	bool barrelAttachment;
+	bool magazineAttachment;
+	bool renderBoss;
+	bool bossDED;
+	bool printLoseScreen;
+	bool printWinScreen;
+	bool wave3_start;
 	int wave_count;
 	int zombieCount;
 	int crawlerCount;
@@ -196,6 +222,7 @@ protected:
 
 	bool printLoseScreen;
 	bool printWinScreen;
+	float fOriginalPitch;
 
 	void AddEnemy(CEnemy3D* cEnemy3D, glm::vec3 pos, glm::vec3 scale);
 	void AddEnemy2(CEnemy3D2* cEnemy3D2, glm::vec3 pos, glm::vec3 scale);
@@ -209,6 +236,16 @@ protected:
 	void AddInvincibility(CInvincibility* cInvincibility, glm::vec3 pos, glm::vec3 scale);
 	void AddFreezeMovement(CFreezeMovement* cFreezeMovement, glm::vec3 pos, glm::vec3 scale);
 	
+	void AddBarrelPickup(CBarrelAttachment* cBarrelAttachment, glm::vec3 pos, glm::vec3 scale);
+	void AddMagazinePickup(CMagazineAttachment* cMagazineAttachment, glm::vec3 pos, glm::vec3 scale);
+	void AddRiflePickup(CRiflePickup* cRiflePickup, glm::vec3 pos, glm::vec3 scale);
+	void AddMinigunPickup(CMinigunPickup* cRiflePickup, glm::vec3 pos, glm::vec3 scale);
+	void AddSMGPickup(CSMGPickup* cRiflePickup, glm::vec3 pos, glm::vec3 scale);
+
+	void SetRifle(int index);
+	void SetMinigun(int index);
+	void SetSMG(int index);
+
 	// Constructor
 	CScene3D(void);
 	// Destructor

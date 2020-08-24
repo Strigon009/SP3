@@ -9,7 +9,10 @@ using namespace std;
  */
 CExperienceBar::CExperienceBar(void)
 	:cPlayer3D(NULL)
-	, expBar(false)
+	, ExpMulti(1.f)
+	, fHeight(0.f)
+	, fWidth(0.f)
+	, transform(glm::mat4(1.0f))
 {
 }
 

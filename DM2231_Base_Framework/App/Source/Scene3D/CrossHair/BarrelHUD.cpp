@@ -1,4 +1,4 @@
-#include "CrossHair.h"
+#include "BarrelHUD.h"
 #include "GL\glew.h"
 
 #include <iostream>
@@ -7,16 +7,17 @@ using namespace std;
 /**
  @brief Default Constructor
  */
-CCrossHair::CCrossHair(void)
+CBarrelHUD::CBarrelHUD(void)
 	: bActive(true)
 	, transform(glm::mat4(1.0f))
+
 {
 }
 
 /**
  @brief Destructor
  */
-CCrossHair::~CCrossHair(void)
+CBarrelHUD::~CBarrelHUD(void)
 {
 	// Delete the rendering objects in the graphics card
 	glDeleteVertexArrays(1, &VAO);
@@ -30,12 +31,12 @@ CCrossHair::~CCrossHair(void)
  @brief Initialise this class instance
  @return true is successfully initialised this class instance, else false
  */
-bool CCrossHair::Init(void)
+bool CBarrelHUD::Init(void)
 {
 	// Check if the shader is ready
 	if (!cShader)
 	{
-		cout << "CCrossHair::Init(): The shader is not available for this class instance." << endl;
+		cout << "CBarrelHUD::Init(): The shader is not available for this class instance." << endl;
 		return false;
 	}
 
@@ -82,8 +83,10 @@ bool CCrossHair::Init(void)
 		return false;
 	}
 
-	// load and create a texture 
-	iTextureID = LoadTexture("Image/crosshair.tga");
+	// load and create a texture
+	iTextureID1 = LoadTexture("Image/green.tga");
+	iTextureID2 = LoadTexture("Image/barrelHUD.tga");
+	iTextureID = iTextureID1;
 	if (iTextureID == 0)
 	{
 		cout << "Unable to load Image/Scene3D_CrossHair.tga" << endl;
@@ -97,7 +100,7 @@ bool CCrossHair::Init(void)
  @brief Set model
  @param model A glm::mat4 variable containing the model for this class instance
  */
-void CCrossHair::SetModel(glm::mat4 model)
+void CBarrelHUD::SetModel(glm::mat4 model)
 {
 	this->model = model;
 }
@@ -106,7 +109,7 @@ void CCrossHair::SetModel(glm::mat4 model)
  @brief Set view
  @param view A glm::mat4 variable containing the model for this class instance
  */
-void CCrossHair::SetView(glm::mat4 view)
+void CBarrelHUD::SetView(glm::mat4 view)
 {
 	this->view = glm::mat4(glm::mat3(view)); // remove translation from the view matrix
 }
@@ -115,7 +118,7 @@ void CCrossHair::SetView(glm::mat4 view)
  @brief Set projection
  @param projection A glm::mat4 variable containing the model for this class instance
  */
-void CCrossHair::SetProjection(glm::mat4 projection)
+void CBarrelHUD::SetProjection(glm::mat4 projection)
 {
 	this->projection = projection;
 }
@@ -123,14 +126,14 @@ void CCrossHair::SetProjection(glm::mat4 projection)
 /**
 @brief Toggle crosshair on or off
 */
-void CCrossHair::SetStatus(const bool bStatus)
+void CBarrelHUD::SetStatus(const bool bStatus)
 {
 	bActive = bStatus;
 }
 /**
 @brief Get crosshair status
 */
-bool CCrossHair::GetStatus(void) const
+bool CBarrelHUD::GetStatus(void) const
 {
 	return bActive;
 }
@@ -138,14 +141,14 @@ bool CCrossHair::GetStatus(void) const
 /**
  @brief PreRender Set up the OpenGL display environment before rendering
  */
-void CCrossHair::Update(const double dElapsedTime)
+void CBarrelHUD::Update(const double dElapsedTime)
 {
 }
 
 /**
  @brief PreRender Set up the OpenGL display environment before rendering
  */
-void CCrossHair::PreRender(void)
+void CBarrelHUD::PreRender(void)
 {
 	if (!bActive)
 		return;
@@ -162,19 +165,20 @@ void CCrossHair::PreRender(void)
  @brief Render Render this instance
  @param cShader A Shader* variable which contains the Shader to use in this class instance
  */
-void CCrossHair::Render()
+void CBarrelHUD::Render()
 {
+
 	if (!bActive)
 		return;
 
 	// If the shader is in this class, then do not render
 	if (!cShader)
 	{
-		cout << "CCrossHair::Render(): The shader is not available for this class instance." << endl;
+		cout << "CBarrelHUD::Render(): The shader is not available for this class instance." << endl;
 		return;
 	}
 
-	// Activate shader
+
 	// Activate shader
 	cShader->use();
 
@@ -200,7 +204,7 @@ void CCrossHair::Render()
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void CCrossHair::PostRender(void)
+void CBarrelHUD::PostRender(void)
 {
 	if (!bActive)
 		return;

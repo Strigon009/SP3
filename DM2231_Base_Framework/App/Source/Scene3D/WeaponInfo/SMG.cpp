@@ -1,46 +1,46 @@
-#include "Pistol.h"
+#include "SMG.h"
 
 /**
 @brief Default Constructor
 */
-CPistol::CPistol()
+CSMG::CSMG()
 {
 }
 
 /**
 @brief Default Destructor
 */
-CPistol::~CPistol()
+CSMG::~CSMG()
 {
 }
 
 /**
 @brief Initialise this instance to default values
 */
-void CPistol::Init(void)
+void CSMG::Init(void)
 {
 	// Call the parent's Init method
 	CWeaponInfo::Init();
 
-	type = CWeaponInfo::WeaponType::PISTOL;
-	iAudioReload = 12;
-	iAudioShoot = 22;
+	type = CWeaponInfo::WeaponType::RIFLE;
+	iAudioReload = 11;
+	iAudioShoot = 21;
 	// The number of ammunition in a magazine for this weapon
-	iMagRounds = 8;
+	iMagRounds = 30;
 	// The maximum number of ammunition for this magazine for this weapon
-	iMaxMagRounds = 8;
+	iMaxMagRounds = 30;
 	// The current total number of rounds currently carried by this player
-	iTotalRounds = INT_MAX;
+	iTotalRounds = 150;
 	// The max total number of rounds currently carried by this player
-	iMaxTotalRounds = INT_MAX;
+	iMaxTotalRounds = 99;
 	// Weapon Stats
-	reloadTime = 1.2f;
-	weaponDamage = 1.f;
-	weaponWeight = 1.f;
-	dTimeBetweenShots = 0.3333;
-	autoFire = false;
+	reloadTime = 3.f;
+	weaponDamage = 2.f;
+	dTimeBetweenShots = 0.05;
+	weaponWeight = 0.75f;
+	autoFire = true;
 	iMaxOriMaxRounds = iMaxMagRounds;
-	weaponRecoil = 0.1f;
+	weaponRecoil = 0.2f;
 	// The elapsed time (between shots)
 	dElapsedTime = 0.0;
 	// Boolean flag to indicate if weapon can fire now
