@@ -38,6 +38,8 @@ public:
 	{
 		SCRAKE = 0,
 		CRAWLER,
+		BASIC,
+		BOSS,
 		NUM_ENEMY_TYPES
 	};
 

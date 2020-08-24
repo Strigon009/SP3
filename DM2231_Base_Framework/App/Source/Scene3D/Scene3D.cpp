@@ -494,13 +494,13 @@ bool CScene3D::Init(void)
 	// CEnemy3D2 == Basic zombie
 	// CEnemy3D3 == Scrake, big nigga
 
-	//++wave_count;
+	++wave_count;
 
 	//CEnemy3D* ce = new CEnemy3D;
 	//AddEnemy(ce, set_enemySpawnPos(), glm::vec3(0.35, 0.35, 0.35), glm::vec3(0.5,0.5,0.5));
 
-	CEnemyBoss3D* ce2 = new CEnemyBoss3D;
-	AddBoss1(ce2, set_enemySpawnPos(), glm::vec3(0.6, 0.6, 0.6), glm::vec3(1.5, 3.75, 1.5));
+	//CEnemyBoss3D* ce2 = new CEnemyBoss3D;
+	//AddBoss1(ce2, set_enemySpawnPos(), glm::vec3(0.6, 0.6, 0.6), glm::vec3(1.5, 3.75, 1.5));
 
 	//CEnemy3D2* ce3 = new CEnemy3D2;
 	//AddEnemy2(ce3, set_enemySpawnPos(), glm::vec3(0.2, 0.2, 0.2), glm::vec3(0.4, 1.15, 0.4));
