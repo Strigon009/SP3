@@ -19,9 +19,12 @@
 #include "Enemy3DBoss.h"
 #include "../CameraEffects/HealthBar.h"
 #include "../CameraEffects/ArmorBar.h"
-
+#include "../CameraEffects/ExperienceBar.h"
+#include "../CameraEffects/InfectionBar.h"
+#include "WeaponInfo/WeaponInfo.h"
 #include "ArmorPickup.h"
-
+#include "WeaponInfo/Pistol.h"
+#include "WeaponInfo/Rifle.h"
 #include "../SoundController/SoundController.h"
 
 class CEntityManager : public CSingletonTemplate<CEntityManager>
@@ -64,9 +67,19 @@ public:
 
 	void SetArmorBar(CArmorBar* pBar);
 
+	void SetExpBar(CExperienceBar* pBar);
+
+	void SetInfectionBar(CInfectionBar* pBar);
+
 	bool get_moveTo();
 	void set_moveTo(bool b);
-	
+
+	virtual bool GetInvincibility();
+	virtual void SetInvincibility(bool bInvincibility);
+
+	virtual bool GetFreezeMovement();
+	virtual void SetFreezeMovement(bool bFreezeMovement);
+
 	//int enemyHealth;
 
 protected:
@@ -84,18 +97,29 @@ protected:
 
 	CHealthBar* cHealthBar;
 	CArmorBar* cArmorBar;
-
-	CArmorPickup* cArmorPickup;
+	CExperienceBar* cExpBar;
+	CInfectionBar* cInfectBar;
 
 	CPlayer3D* cPlayer3D;
 
 	CSoundController* cSoundController;
 
+	CWeaponInfo* cPrimaryWeapon;
+	CWeaponInfo* cSecondaryWeapon;
+	CWeaponInfo* cCurrentWeapon;
+
 	int enemy_deathCount;
 
 	bool moveTo_Tower;
 
-	// Default Constructor
+	bool bInvincibility;
+	bool iFrames;
+
+	float lastTime, lastTime2, lastTime3;
+	float currentTime;
+	bool bFreezeMovement;
+
+		// Default Constructor
 	CEntityManager(void);
 	// Destructor
 	virtual ~CEntityManager(void);

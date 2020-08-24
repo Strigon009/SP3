@@ -25,14 +25,16 @@ CEnemy3D::CEnemy3D(void)
 	, cCamera(NULL)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
+	, enemyDamage(2)
 	, enemyHealth(3)
+	, enemyExp(3.f)
 {
 	// Set the default position to the origin
 	vec3Position = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	cManager = CEntityManager::GetInstance();
-	cPlayer3D = CPlayer3D::GetInstance();
-	cTower = CStructureTower::GetInstance();
+	//cPlayer3D = CPlayer3D::GetInstance();
+	//cTower = CStructureTower::GetInstance();
 
 	// Update the vectors for this enemy
 	UpdateEnemyVectors();
@@ -59,13 +61,14 @@ CEnemy3D::CEnemy3D(	const glm::vec3 vec3Position,
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
 	, enemyHealth(2)
+	, enemyDamage(2)
 {
 	// Set the default position to the origin
 	this->vec3Position = vec3Position;
 
 	cManager = CEntityManager::GetInstance();
-	cPlayer3D = CPlayer3D::GetInstance();
-	cTower = CStructureTower::GetInstance();
+	//cPlayer3D = CPlayer3D::GetInstance();
+	//cTower = CStructureTower::GetInstance();
 
 	// Update the vectors for this enemy
 	UpdateEnemyVectors();
@@ -121,13 +124,11 @@ bool CEnemy3D::Init(void)
 
 	// Initialise the cPlayer3D
 	cPlayer3D = CPlayer3D::GetInstance();
+	cTower = CStructureTower::GetInstance();
 
 	std::vector<glm::vec3> vertices;
 	std:: vector <glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
-
-	vec3Scale = glm::vec3(1,1,1);
-	vec3ColliderScale = glm::vec3(1.25, 2, 0.5);
 
 	std::string file_path = "OBJ//enemy2.obj";
 	bool success = LoadOBJ(file_path.c_str(), vertices, uvs, normals);
@@ -409,7 +410,6 @@ void CEnemy3D::set_enemyHealth(int x)
 	enemyHealth = x;
 }
 
-<<<<<<< Updated upstream
 int CEnemy3D::get_enemyDamage()
 {
 	return 0;
@@ -418,7 +418,8 @@ int CEnemy3D::get_enemyDamage()
 void CEnemy3D::set_enemyDamage(int t)
 {
 	enemyDamage = t;
-=======
+}
+
 void CEnemy3D::SetEnemyExp(float exp)
 {
 	enemyExp = exp;
@@ -427,7 +428,6 @@ void CEnemy3D::SetEnemyExp(float exp)
 float CEnemy3D::GetEnemyExp()
 {
 	return enemyExp;
->>>>>>> Stashed changes
 }
 
 /**
@@ -445,19 +445,6 @@ void CEnemy3D::UpdateEnemyVectors(void)
 	// Check if we are too far from the player
 	if (cPlayer3D)
 	{
-<<<<<<< Updated upstream
-		if ((cManager)->get_moveTo() == true)
-		{
-			front = glm::normalize(glm::vec3(cTower->GetPosition() - vec3Position));
-
-			// Update the yaw and pitch
-			fYaw = glm::degrees(glm::atan(front.z, front.x));
-			fPitch = glm::degrees(glm::asin(front.y));
-		}
-		else
-		{
-=======
-		// Update the direction of the enemy
 		if ((cManager)->get_moveTo() == true)
 		{
 			cout << "move to tower" << endl;
@@ -466,21 +453,13 @@ void CEnemy3D::UpdateEnemyVectors(void)
 		else
 		{
 			cout << "move to player" << endl;
->>>>>>> Stashed changes
 			front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
 		}
 
-<<<<<<< Updated upstream
-			// Update the yaw and pitch
-			fYaw = glm::degrees(glm::atan(front.z, front.x));
-			fPitch = glm::degrees(glm::asin(front.y));
-		}
-=======
 		// Update the yaw and pitch
 		fYaw = glm::degrees(glm::atan(front.z, front.x));
 		fPitch = glm::degrees(glm::asin(front.y));
 	}
->>>>>>> Stashed changes
 
 	vec3Front = front;
 	// Also re-calculate the Right and Up vector

@@ -59,6 +59,8 @@
 // Include ProgressBar
 #include "../CameraEffects/HealthBar.h"
 #include "../CameraEffects/ArmorBar.h"
+#include "../CameraEffects/ExperienceBar.h"
+#include "../CameraEffects/InfectionBar.h"
 // Include Minimap
 #include "..\Minimap\Minimap.h"
 // Include CrossHair
@@ -67,6 +69,11 @@
 #include "WeaponInfo/WeaponInfo.h"
 // Include Pickups
 #include "ArmorPickup.h"
+#include "HealthPickup.h"
+#include "AmmoPickup.h"
+#include "Invincibility.h"
+#include "FreezeMovement.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -143,7 +150,7 @@ protected:
 	CCamera* cCamera;
 
 	// Handler to the Player3D class
-	//CEnemy3D* cEnemy3D;
+	CEnemy3D* cEnemy3D;
 
 	// Handler to the CSkyBox
 	CSkyBox* cSkyBox;
@@ -155,21 +162,27 @@ protected:
 	// Handler to the ProgressBar
 	CHealthBar* cHealthBar;
 	CArmorBar* cArmorBar;
+	CExperienceBar* cExpBar;
+	CInfectionBar* cInfectBar;
 	// Handler to the CMinimap
 	CMinimap* cMinimap;
 	// Handler to the CCrossHair
 	CCrossHair* cCrossHair;
 	CWeaponInfo* cWeaponInfo;
 	CArmorPickup* cArmorPickup;
+	CHealthPickup* cHealthPickup;
+	CAmmoPickup* cAmmoPickup;
+	CInvincibility* cInvincibility;
+	CFreezeMovement* cFreezeMovement;
 
 	//CPhysics3D cPhysics3D;
 
 	int wave_count;
+
 	int zombieCount;
 	int crawlerCount;
 	int scrakeCount;
 	int bossCount;
-
 	int bossStageLimit;
 
 	bool wave2_start;
@@ -177,10 +190,7 @@ protected:
 	bool wave4_start;
 	bool boss_start;
 	bool bossDED;
-<<<<<<< Updated upstream
-=======
 	bool renderBoss;
->>>>>>> Stashed changes
 
 	float spawnZTimer;
 	float spawnCTimer;
@@ -193,9 +203,14 @@ protected:
 	void AddEnemy(CEnemy3D* cEnemy3D, glm::vec3 pos, glm::vec3 scale);
 	void AddEnemy2(CEnemy3D2* cEnemy3D2, glm::vec3 pos, glm::vec3 scale);
 	void AddEnemy3(CEnemy3D3* cEnemy3D3, glm::vec3 pos, glm::vec3 scale);
+	void AddBoss1(CEnemyBoss3D* cEnemyBoss3D, glm::vec3 pos, glm::vec3 scale);
 	void AddWall(CStructure3D* cStructure3D, glm::vec3 pos, glm::vec3 scale);
 	void AddPillar(CStructure2_3D* cStructure3D, glm::vec3 pos, glm::vec3 scale);
 	void AddArmorPickUp(CArmorPickup* cArmorPickup, glm::vec3 pos, glm::vec3 scale);
+	void AddHealthPickUp(CHealthPickup* cHealthPickup, glm::vec3 pos, glm::vec3 scale);
+	void AddAmmoPickUp(CAmmoPickup* cAmmoPickup, glm::vec3 pos, glm::vec3 scale);
+	void AddInvincibility(CInvincibility* cInvincibility, glm::vec3 pos, glm::vec3 scale);
+	void AddFreezeMovement(CFreezeMovement* cFreezeMovement, glm::vec3 pos, glm::vec3 scale);
 	
 	glm::vec3 set_enemySpawnPos();
 

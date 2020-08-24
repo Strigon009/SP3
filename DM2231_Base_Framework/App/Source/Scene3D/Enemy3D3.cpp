@@ -8,6 +8,7 @@
 
 // Allowing loading of LoadOBJ.h
 #include "System/LoadOBJ.h"
+#include "EntityManager.h"
 
 #include <iostream>
 using namespace std;
@@ -26,14 +27,13 @@ CEnemy3D3::CEnemy3D3(void)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
 	, enemyHealth(20)
-	
+	, enemyExp(7.f)
+
 {
 	// Set the default position to the origin
 	vec3Position = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	cManager = CEntityManager::GetInstance();
-	cPlayer3D = CPlayer3D::GetInstance();
-	cTower = CStructureTower::GetInstance();
 
 	// Update the vectors for this enemy
 	UpdateEnemyVectors();
@@ -62,11 +62,9 @@ CEnemy3D3::CEnemy3D3(	const glm::vec3 vec3Position,
 	, enemyHealth(20)
 {
 	// Set the default position to the origin
-	this->vec3Position = vec3Position;
+	//this->vec3Position = vec3Position;
 
 	cManager = CEntityManager::GetInstance();
-	cPlayer3D = CPlayer3D::GetInstance();
-	cTower = CStructureTower::GetInstance();
 
 	// Update the vectors for this enemy
 	UpdateEnemyVectors();
@@ -122,6 +120,7 @@ bool CEnemy3D3::Init(void)
 
 	// Initialise the cPlayer3D
 	cPlayer3D = CPlayer3D::GetInstance();
+	cTower = CStructureTower::GetInstance();
 
 	std::vector<glm::vec3> vertices;
 	std:: vector <glm::vec2> uvs;
@@ -423,7 +422,6 @@ void CEnemy3D3::UpdateEnemyVectors(void)
 	// Check if we are too far from the player
 	if (cPlayer3D)
 	{
-		// Update the direction of the enemy
 		if ((cManager)->get_moveTo() == true)
 		{
 			cout << "move to tower" << endl;
@@ -439,12 +437,12 @@ void CEnemy3D3::UpdateEnemyVectors(void)
 		fYaw = glm::degrees(glm::atan(front.z, front.x));
 		fPitch = glm::degrees(glm::asin(front.y));
 	}
-	
+
 	vec3Front = front;
 	// Also re-calculate the Right and Up vector
 	// Normalize the vectors, because their length gets closer to 0 the more 
 	// you look up or down which results in slower movement.
-	vec3Right = glm::normalize(glm::cross(vec3Front, vec3WorldUp));  
+	vec3Right = glm::normalize(glm::cross(vec3Front, vec3WorldUp));
 	vec3Up = glm::normalize(glm::cross(vec3Right, vec3Front));
 
 	// If the camera is attached to this player, then update the camera
