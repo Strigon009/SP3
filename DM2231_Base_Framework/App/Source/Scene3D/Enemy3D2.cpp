@@ -118,6 +118,7 @@ bool CEnemy3D2::Init(void)
 
 	// Set the type
 	SetType(CEntity3D::TYPE::NPC);
+	SetType2(CEntity3D::ENEMYTYPE::BASIC);
 
 	// Initialise the cPlayer3D
 	cPlayer3D = CPlayer3D::GetInstance();
@@ -126,7 +127,7 @@ bool CEnemy3D2::Init(void)
 	std::vector<glm::vec3> vertices;
 	std:: vector <glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
-	std::string file_path = "OBJ//enemy2.obj";
+	std::string file_path = "OBJ//basic.obj";
 	bool success = LoadOBJ(file_path.c_str(), vertices, uvs, normals);
 	if (!success)
 		return NULL;
@@ -155,7 +156,7 @@ bool CEnemy3D2::Init(void)
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(glm::vec3) + sizeof(glm::vec3)));
 
 	// load and create a texture 
-	iTextureID = LoadTexture("Image/enemy2.tga");
+	iTextureID = LoadTexture("Image/basic.tga");
 	if (iTextureID == 0)
 	{
 		cout << "Unable to load Image/Scene3D_Enemy_01.tga" << endl;
@@ -350,7 +351,7 @@ void CEnemy3D2::Render(void)
 	//model = glm::rotate(model, (float)glfwGetTime()/10.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::translate(model, vec3Position);
 	model = glm::scale(model, vec3Scale);
-	model = glm::rotate(model, glm::radians(180.f) + (atan2((cPlayer3D->GetPosition().x) - vec3Position.x, (cPlayer3D->GetPosition().z) - vec3Position.z)), glm::vec3(0, 1, 0));
+	model = glm::rotate(model, /*glm::radians(180.f) + */(atan2((cPlayer3D->GetPosition().x) - vec3Position.x, (cPlayer3D->GetPosition().z) - vec3Position.z)), glm::vec3(0, 1, 0));
 
 	// note: currently we set the projection matrix each frame, but since the projection 
 	// matrix rarely changes it's often best practice to set it outside the main loop only once.

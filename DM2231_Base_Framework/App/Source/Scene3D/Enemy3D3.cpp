@@ -4,9 +4,11 @@
  Date: Apr 2020
  */
 #include "Enemy3D3.h"
+#include "EntityManager.h"
 
 // Allowing loading of LoadOBJ.h
 #include "System/LoadOBJ.h"
+#include "EntityManager.h"
 
 #include <iostream>
 using namespace std;
@@ -30,6 +32,8 @@ CEnemy3D3::CEnemy3D3(void)
 {
 	// Set the default position to the origin
 	vec3Position = glm::vec3(0.0f, 0.0f, 0.0f);
+
+	cManager = CEntityManager::GetInstance();
 
 	// Update the vectors for this enemy
 	UpdateEnemyVectors();
@@ -58,7 +62,9 @@ CEnemy3D3::CEnemy3D3(	const glm::vec3 vec3Position,
 	, enemyHealth(20)
 {
 	// Set the default position to the origin
-	this->vec3Position = vec3Position;
+	//this->vec3Position = vec3Position;
+
+	cManager = CEntityManager::GetInstance();
 
 	// Update the vectors for this enemy
 	UpdateEnemyVectors();
@@ -114,13 +120,14 @@ bool CEnemy3D3::Init(void)
 
 	// Initialise the cPlayer3D
 	cPlayer3D = CPlayer3D::GetInstance();
+	cTower = CStructureTower::GetInstance();
 
 	std::vector<glm::vec3> vertices;
 	std:: vector <glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
 
 
-	std::string file_path = "OBJ//enemy3.obj";
+	std::string file_path = "OBJ//scrake.obj";
 	bool success = LoadOBJ(file_path.c_str(), vertices, uvs, normals);
 	if (!success)
 		return NULL;
@@ -149,7 +156,7 @@ bool CEnemy3D3::Init(void)
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(glm::vec3) + sizeof(glm::vec3)));
 
 	// load and create a texture 
-	iTextureID = LoadTexture("Image/enemy3.tga");
+	iTextureID = LoadTexture("Image/scrake.tga");
 	if (iTextureID == 0)
 	{
 		cout << "Unable to load Image/Scene3D_Enemy_01.tga" << endl;
@@ -344,7 +351,7 @@ void CEnemy3D3::Render(void)
 	//model = glm::rotate(model, (float)glfwGetTime()/10.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::translate(model, vec3Position);
 	model = glm::scale(model, vec3Scale);
-	model = glm::rotate(model, glm::radians(180.f) + (atan2((cPlayer3D->GetPosition().x) - vec3Position.x, (cPlayer3D->GetPosition().z) - vec3Position.z)), glm::vec3(0, 1, 0));
+	model = glm::rotate(model, (atan2((cPlayer3D->GetPosition().x) - vec3Position.x, (cPlayer3D->GetPosition().z) - vec3Position.z)), glm::vec3(0, 1, 0));
 
 	// note: currently we set the projection matrix each frame, but since the projection 
 	// matrix rarely changes it's often best practice to set it outside the main loop only once.
@@ -415,19 +422,27 @@ void CEnemy3D3::UpdateEnemyVectors(void)
 	// Check if we are too far from the player
 	if (cPlayer3D)
 	{
-		// Update the direction of the enemy
-		front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
+		if ((cManager)->get_moveTo() == true)
+		{
+			cout << "move to tower" << endl;
+			front = glm::normalize(glm::vec3(cTower->GetPosition() - vec3Position));
+		}
+		else
+		{
+			cout << "move to player" << endl;
+			front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
+		}
 
 		// Update the yaw and pitch
 		fYaw = glm::degrees(glm::atan(front.z, front.x));
 		fPitch = glm::degrees(glm::asin(front.y));
 	}
-	
+
 	vec3Front = front;
 	// Also re-calculate the Right and Up vector
 	// Normalize the vectors, because their length gets closer to 0 the more 
 	// you look up or down which results in slower movement.
-	vec3Right = glm::normalize(glm::cross(vec3Front, vec3WorldUp));  
+	vec3Right = glm::normalize(glm::cross(vec3Front, vec3WorldUp));
 	vec3Up = glm::normalize(glm::cross(vec3Right, vec3Front));
 
 	// If the camera is attached to this player, then update the camera

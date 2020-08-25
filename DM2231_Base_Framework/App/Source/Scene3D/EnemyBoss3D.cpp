@@ -25,9 +25,11 @@ CEnemyBoss3D::CEnemyBoss3D(void)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
 	, enemyHealth(3)
-	, elapsedtime(0)
-	, chargeSpeed(1)
 	, enemyExp(20.f)
+	, elapsedtime(0)
+	, iMovementCharge(0)
+	, chargeOrNot(false)
+	, movementChange(false)
 {
 	// Set the default position to the origin
 	vec3Position = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -57,10 +59,11 @@ CEnemyBoss3D::CEnemyBoss3D(	const glm::vec3 vec3Position,
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
 	, enemyHealth(30)
+	, enemyExp(20.f)
 	, elapsedtime(0)
-	, charge(false)
-	, remainingHP(0)
-	, changeMovement(false)
+	, iMovementCharge(0)
+	, chargeOrNot(false)
+	, movementChange(false)
 {
 	// Set the default position to the origin
 	this->vec3Position = vec3Position;
@@ -115,6 +118,7 @@ bool CEnemyBoss3D::Init(void)
 
 	// Set the type
 	SetType(CEntity3D::TYPE::NPC);
+	SetType2(CEntity3D::ENEMYTYPE::BOSS);
 
 	// Initialise the cPlayer3D
 	cPlayer3D = CPlayer3D::GetInstance();
@@ -123,10 +127,10 @@ bool CEnemyBoss3D::Init(void)
 	std:: vector <glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
 
-	vec3Scale = glm::vec3(0.125, 0.125, 0.125);
-	vec3ColliderScale = glm::vec3(1.5, 4, 1.5);
+	//vec3Scale = glm::vec3(0.125, 0.125, 0.125);
+	//vec3ColliderScale = glm::vec3(1.5, 4, 1.5);
 
-	std::string file_path = "OBJ//boss2.obj";
+	std::string file_path = "OBJ//theboss.obj";
 	bool success = LoadOBJ(file_path.c_str(), vertices, uvs, normals);
 	if (!success)
 		return NULL;
@@ -155,7 +159,7 @@ bool CEnemyBoss3D::Init(void)
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(glm::vec3) + sizeof(glm::vec3)));
 
 	// load and create a texture 
-	iTextureID = LoadTexture("Image/boss2.tga");
+	iTextureID = LoadTexture("Image/theboss.tga");
 	if (iTextureID == 0)
 	{
 		cout << "Unable to load Image/Scene3D_Enemy_01.tga" << endl;
@@ -167,7 +171,8 @@ bool CEnemyBoss3D::Init(void)
 
 	// Movement Control
 	iCurrentNumMovement = 0;
-	iMaxNumMovement = 50;
+	iMaxNumMovement = 200;
+	iMovementCharge = 0;
 
 	return true;
 }
@@ -235,7 +240,52 @@ bool CEnemyBoss3D::IsCameraAttached(void)
  */
 void CEnemyBoss3D::ProcessMovement(const Enemy_Movement direction, const float deltaTime)
 {
-	float velocity = fMovementSpeed * deltaTime * chargeSpeed;
+	// BOSS MOVEMENT
+	float velocity;
+
+	if (enemyHealth <= 9)
+	{
+		movementChange = true;
+	}
+
+	if (movementChange != true)
+	{
+		if (chargeOrNot)
+		{
+			velocity = fMovementSpeed * deltaTime * 5;
+		}
+		else
+		{
+			velocity = fMovementSpeed * deltaTime * 1.35;
+		}
+
+		if (iMovementCharge >= 600)
+		{
+			elapsedtime += deltaTime;
+			cout << elapsedtime << endl;
+
+			// ENEMY FREESE/RECALCULATING
+			if (elapsedtime <= 3.5f)
+			{
+				velocity = 0;
+				iCurrentNumMovement = 0;
+			}
+			// AFTER ENEMY RECALCULATING
+			else
+			{
+				chargeOrNot = true;
+
+				iMovementCharge = 0;
+				elapsedtime = 0;
+			}
+		}
+	}
+	else
+	{
+		iMaxNumMovement = 50;
+		velocity = fMovementSpeed * deltaTime * 1.85;
+	}
+
 	if (direction == FORWARD)
 		vec3Position += vec3Front * velocity;
 	if (direction == BACKWARD)
@@ -281,10 +331,11 @@ void CEnemyBoss3D::Update(const double dElapsedTime)
 	if (iCurrentNumMovement < iMaxNumMovement)
 	{
 		// Process the movement
-		ProcessMovement(RIGHT, (float)dElapsedTime);
+		ProcessMovement(FORWARD, (float)dElapsedTime);
 
 		// Update the counter
 		iCurrentNumMovement++;
+		iMovementCharge++;
 	}
 	else
 	{
@@ -295,45 +346,6 @@ void CEnemyBoss3D::Update(const double dElapsedTime)
 		iCurrentNumMovement = 0;
 	}
 	cout << iCurrentNumMovement << endl;
-
-	CProjectile* aProjectile = new CProjectile();
-	aProjectile->SetShader(cShader);
-	aProjectile->Init(vec3Position + vec3Front * 0.75f, vec3Front, 2.0f, 20.0f);
-	aProjectile->ActivateCollider(cShader);
-	aProjectile->SetStatus(true);
-
-	if (enemyHealth > 9)
-	{
-		changeMovement = false;
-	}
-	if (enemyHealth <= 9)
-	{
-		changeMovement = true;
-	}
-
-	if (elapsedtime <= 0.f)
-	{
-		charge = true;
-	}
-	else if (elapsedtime >= 20.f)
-	{
-		charge = false;
-	}
-
-	if (charge == true)
-	{
-		elapsedtime += dElapsedTime;
-		chargeSpeed = 2.5;
-	}
-	else if (charge == false)
-	{
-		elapsedtime -= dElapsedTime;
-		chargeSpeed = 1;
-		if (elapsedtime <= 10.f)
-			elapsedtime = 0;
-	}
-
-	cout << elapsedtime << endl;
 }
 
 /**
@@ -390,7 +402,7 @@ void CEnemyBoss3D::Render(void)
 	//model = glm::rotate(model, (float)glfwGetTime()/10.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::translate(model, vec3Position);
 	model = glm::scale(model, vec3Scale);
-	model = glm::rotate(model, glm::radians(180.f) + (atan2((cPlayer3D->GetPosition().x) - vec3Position.x, (cPlayer3D->GetPosition().z) - vec3Position.z)), glm::vec3(0, 1, 0));
+	model = glm::rotate(model, (atan2((cPlayer3D->GetPosition().x) - vec3Position.x, (cPlayer3D->GetPosition().z) - vec3Position.z)), glm::vec3(0, 1, 0));
 	// note: currently we set the projection matrix each frame, but since the projection 
 	// matrix rarely changes it's often best practice to set it outside the main loop only once.
 	cShader->setMat4("projection", projection);
@@ -460,16 +472,12 @@ void CEnemyBoss3D::UpdateEnemyVectors(void)
 	// Check if we are too far from the player
 	if (cPlayer3D)
 	{
-	float fDistanceToPlayer = glm::length(cPlayer3D->GetPosition() - vec3Position);
-		if (fDistanceToPlayer > 15.0f)
-		{
-			// Update the direction of the enemy
-			front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
-			
-			// Update the yaw and pitch
-			fYaw = glm::degrees(glm::atan(front.z, front.x));
-			fPitch = glm::degrees(glm::asin(front.y));
-		}
+		// Update the direction of the enemy
+		front = glm::normalize(glm::vec3(cPlayer3D->GetPosition() - vec3Position));
+
+		// Update the yaw and pitch
+		fYaw = glm::degrees(glm::atan(front.z, front.x));
+		fPitch = glm::degrees(glm::asin(front.y));
 	}
 	
 	vec3Front = front;
