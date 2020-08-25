@@ -106,7 +106,7 @@ bool CBarrelAttachment::Init(void)
 	iTextureID = LoadTexture("Image/Barrel.tga");
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/HealthKit.tga" << endl; // Change file
+		cout << "Unable to load Image/Barrel.tga" << endl; // Change file
 		return false;
 	}
 

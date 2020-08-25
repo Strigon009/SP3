@@ -123,16 +123,7 @@ void CExperienceBar::SetProjection(glm::mat4 projection)
  */
 void CExperienceBar::Update(const double dElapsedTime)
 {
-	if (vec3Scale.x >= 1.f)
-	{
-		cPlayer3D->ExpUpdate();
-		vec3Scale.x = 0;
-	}
-	if (expBar)
-	{
-		vec3Scale.x = vec3Scale.x + ExpMulti / 100.f;
-		expBar = !expBar;
-	}
+	vec3Scale.x = cPlayer3D->GetCurrentExp() / cPlayer3D->GetMaxExp();
 }
 
 /**
@@ -203,7 +194,6 @@ void CExperienceBar::Render(void)
 
 	// Reset to default
 	glBindVertexArray(0);
-
 }
 
 /**
@@ -213,29 +203,4 @@ void CExperienceBar::PostRender(void)
 {
 	// Disable blending
 	glDisable(GL_BLEND);
-}
-
-void CExperienceBar::ExperienceGain(float exp)
-{
-	vec3Scale.x += exp / 100;
-}
-
-float CExperienceBar::GetExp()
-{
-	return vec3Scale.x * 100.f;
-}
-
-void CExperienceBar::SetExpMultiplier(float exp)
-{
-	ExpMulti = exp;
-}
-
-void CExperienceBar::SetExpBar(bool expBool)
-{
-	expBar = expBool;
-}
-
-bool CExperienceBar::GetExpBar()
-{
-	return expBar;
 }

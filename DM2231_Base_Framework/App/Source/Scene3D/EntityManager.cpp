@@ -15,7 +15,6 @@ CEntityManager::CEntityManager(void)
 	, enemy_deathCount(0)
 	, moveTo_Tower(false)
 	, cCurrentWeapon(NULL)
-	, cArmorPickup(NULL)
 	, cArmorBar(NULL)
 	, cExpBar(NULL)
 	, cHealthBar(NULL)
@@ -123,8 +122,8 @@ bool CEntityManager::Erase(CEntity3D* cEntity3D)
 */
 int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 {
-	static_cast<CHealthBar*>(cHealthBar)->SetDmgMultiplier(1.f);
-	static_cast<CArmorBar*>(cArmorBar)->SetArmorDmgMultiplier(1.f);
+	//static_cast<CHealthBar*>(cHealthBar)->SetDmgMultiplier(1.f);
+	//static_cast<CArmorBar*>(cArmorBar)->SetArmorDmgMultiplier(1.f);
 	
 	
 
@@ -142,18 +141,13 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 			{
 				cout << "** Collision between Player and NPC ***" << endl;
 			
-				static_cast<CHealthBar*>(cHealthBar)->SetDmgMultiplier(1.f);
-				static_cast<CArmorBar*>(cArmorBar)->SetArmorDmgMultiplier(1.f);
-				if (bInvincibility || iFrames)
-				{
-
-				}
-				else if(!bInvincibility || !iFrames)
-				{
-					if (static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() * 100 >= 0.f)
-						static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
-					else
-						static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(true);
+				//static_cast<CHealthBar*>(cHealthBar)->SetDmgMultiplier(1.f);
+				//static_cast<CArmorBar*>(cArmorBar)->SetArmorDmgMultiplier(1.f);
+				
+					//if (static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() * 100 >= 0.f)
+					//	static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
+					//else
+					//	static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(true);
 
 					// Rollback the cEntity3D's position
 					//cEntity3D->RollbackPosition();
@@ -161,7 +155,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 					(*it)->RollbackPosition();
 					lastTime2 = currentTime;
 					iFrames = true;
-				}
+				
 				bResult = 1;
 				break;
 			}
@@ -190,7 +184,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 			{
 				// Rollback the cEntity3D's position
 				(*it)->SetToDelete(true);
-				static_cast<CHealthBar*>(cHealthBar)->AddHealth(30);
+				//static_cast<CHealthBar*>(cHealthBar)->AddHealth(30);
 				cout << "** Collision between Player and Health_PickUp ***" << endl;
 				// Quit this loop since a collision has been found
 
@@ -201,7 +195,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 			{
 				(*it)->SetToDelete(true);
 
-				static_cast<CArmorBar*>(cArmorBar)->AddArmor(30);
+				//static_cast<CArmorBar*>(cArmorBar)->AddArmor(30);
 				cout << "** Collision between Player and Armor_PickUp ***" << endl;
 				
 				// Quit this loop since a collision has been found
@@ -317,7 +311,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
  */
 void CEntityManager::Update(const double dElapsedTime)
 {
-	static_cast<CExperienceBar*>(cExpBar)->SetExpMultiplier(1.f);
+	//static_cast<CExperienceBar*>(cExpBar)->SetExpMultiplier(1.f);
 	std::list<CEntity3D*>::iterator it, end;
 	std::list<CEntity3D*>::iterator it_other;
 	cCurrentWeapon = CPlayer3D::GetInstance()->GetWeapon();

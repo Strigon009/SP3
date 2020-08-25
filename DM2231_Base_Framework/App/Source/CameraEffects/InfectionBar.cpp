@@ -8,7 +8,7 @@ using namespace std;
  @brief Default Constructor
  */
 CInfectionBar::CInfectionBar(void)
-	: cPlayer3D(NULL)
+	: cStructureTower(NULL)
 {
 }
 
@@ -23,8 +23,8 @@ CInfectionBar::~CInfectionBar(void)
 
 	// We set this to NULL, since it was created elsewhere so we don't delete it here
 	cShader = NULL;
-
 	cPlayer3D = NULL;
+	cStructureTower = NULL;
 }
 
 /**
@@ -45,6 +45,7 @@ bool CInfectionBar::Init(glm::vec3 pos, glm::vec4 color)
 
 	// Initialise the cPlayer3D
 	cPlayer3D = CPlayer3D::GetInstance();
+	cStructureTower = CStructureTower::GetInstance();
 
 	// Set the type
 	SetType(CEntity3D::TYPE::OTHERS);
@@ -118,11 +119,7 @@ void CInfectionBar::SetProjection(glm::mat4 projection)
  */
 void CInfectionBar::Update(const double dElapsedTime)
 {
-	 if (infectionBar)
-	 {
-	 	vec3Scale.x = vec3Scale.x ;
-		infectionBar = !infectionBar;
-	 }
+	vec3Scale.x = cStructureTower->GetInfection() / cStructureTower->GetMaxInfection();
 }
 
 /**
@@ -203,14 +200,4 @@ void CInfectionBar::PostRender(void)
 {
 	// Disable blending
 	glDisable(GL_BLEND);
-}
-
-bool CInfectionBar::GetInfectBarState()
-{
-	return infectionBar;
-}
-
-void CInfectionBar::SetInfectBarState(bool infect)
-{
-	infectionBar = infect;
 }

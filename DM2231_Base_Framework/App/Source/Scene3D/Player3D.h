@@ -113,33 +113,39 @@ public:
 	// Get the health of the player
 	int GetHealth(void) const;
 
+	void SetMaxHealth(const int pMaxHealth);
+	int GetMaxHealth(void) const;
+
 	// Set the health of the player
 	void SetArmor(const int iArmor);
 	// Get the health of the player
 	int GetArmor(void) const;
 
+	void SetMaxArmor(const int iMaxArmor);
+	int GetMaxArmor(void) const;
+
 	//Player's level , Experience
-	void GainExp(const int exp);
 	int GetCurrentExp(void) const;
-	void ExpUpdate(void);
-
 	int GetCurrentPlayerLevel();
-
+	int GetMaxExp(void) const;
+	void TakeDamage(int damage);
 	void SetToDodge(void);
-	
-	// Player's health
-	int iHealth;
 
-	// Player's Armor
-	int iArmor;
+
+	
 	
 	int GetCurrentWeaponIndex(void) const;
 
 protected:
 
 	//Player's level , Experience
-	int pExp, pExpMax;
-	int pLevel, pLevelMax;
+	int pExp, pMaxExp;
+	int pLevel, pMaxLevel;
+
+	// Player's health
+	int pHealth, pMaxHealth;
+	// Player's Armor
+	int pArmor, pMaxArmor;
 
 	// The handle to the CCamera class instance
 	CCamera* cCamera;
@@ -160,7 +166,6 @@ protected:
 	bool bCameraSwayDirection; // false = left, true = right
 	bool bCameraSwayActive;
 	bool bUpdateCameraSway;
-	bool isWeaponDischarged;
 
 	// Physics
 	CPhysics3D cPhysics3D;

@@ -67,9 +67,13 @@ public:
 	int get_towerHP();
 	void set_towerHP(int hp);
 
+	int GetInfection();
+	int GetMaxInfection();
+
 protected:
 	// The handle to the CGroundMap class instance
 	CGroundMap* cGroundMap;
 
 	int towerHP;
+	int towerInfection, towerMaxInfection;
 };

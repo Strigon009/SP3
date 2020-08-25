@@ -43,22 +43,11 @@ public:
 	bool GetArmorBarState();
 	void SetArmorBarState(bool state);
 
-	void SetArmorDmgMultiplier(float dmg);
-
-
-	float GetArmorBarLength();
-	void SetArmourBarLength(float length);
-
-	void AddArmor(float armor);
-
 protected:
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
 	bool armorBar;
-
 	float fHeight, fWidth;
-
-	float armorDmgMultiplier;
 
 	// Handler to the Player3D class
 	CPlayer3D* cPlayer3D;

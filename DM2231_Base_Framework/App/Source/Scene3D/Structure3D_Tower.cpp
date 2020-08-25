@@ -259,3 +259,13 @@ void CStructureTower::set_towerHP(int hp)
 {
 	towerHP = hp;
 }
+
+int CStructureTower::GetInfection()
+{
+	return towerInfection;
+}
+
+int CStructureTower::GetMaxInfection()
+{
+	return towerMaxInfection;
+}

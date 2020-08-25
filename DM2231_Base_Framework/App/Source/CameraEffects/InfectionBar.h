@@ -9,8 +9,7 @@
 #include <includes/gtc/type_ptr.hpp>
 
 #include "..\Scene3D\Player3D.h"
-
-#include "..\Scene3D\HealthPickup.h"
+#include "..\Scene3D\Structure3D_Tower.h"
 
 class CInfectionBar : public CEntity3D
 {
@@ -40,19 +39,14 @@ public:
 	// PostRender
 	virtual void PostRender(void);
 
-	bool GetInfectBarState();
-
-	void SetInfectBarState(bool infect);
-
 protected:
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
 	bool infectionBar;
-
 	float fHeight, fWidth;
-
 
 	// Handler to the Player3D class
 	CPlayer3D* cPlayer3D;
+	CStructureTower* cStructureTower;
 
 };

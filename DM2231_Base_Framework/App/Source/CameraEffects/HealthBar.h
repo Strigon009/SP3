@@ -30,6 +30,8 @@ public:
 	// Set projection
 	virtual void SetProjection(glm::mat4 projection);
 
+	
+
 	// Update this class instance
 	virtual void Update(const double dElapsedTime);
 
@@ -42,19 +44,12 @@ public:
 
 	bool GetHealthBarState();
 	void SetHealthBarState(bool state);
-
 	void SetDmgMultiplier(float dmg);
-
-	void AddHealth(float health);
-	
-	float GetHealthBarLength();
-	void SetHealthBarLength(float length);
 
 protected:
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
 	bool healthBar;
-
 	float fHeight, fWidth;
 	float dmgmultiplier;
 

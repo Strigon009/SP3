@@ -59,6 +59,7 @@ bool CHealthBar::Init(glm::vec3 pos, glm::vec4 color)
 	fWidth = 0.0333f * 8;
 	vec3Position = pos;
 	vec4Colour = color;
+	vec3Scale.x = 1.f;
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	float vertices[] = {
@@ -122,11 +123,7 @@ void CHealthBar::SetProjection(glm::mat4 projection)
  */
 void CHealthBar::Update(const double dElapsedTime)
 {
-	 if (healthBar)
-	 {
-	 	vec3Scale.x = vec3Scale.x - dmgmultiplier / 100.f;
-	 	healthBar = !healthBar;
-	 }
+	vec3Scale.x = cPlayer3D->GetHealth() / cPlayer3D->GetMaxHealth();
 }
 
 /**
@@ -219,20 +216,7 @@ void CHealthBar::SetHealthBarState(bool state)
 	healthBar = state;
 }
 
-float CHealthBar::GetHealthBarLength()
-{
-	return vec3Scale.x;
-}
-void CHealthBar::SetHealthBarLength(float length)
-{
-	vec3Scale.x = length;
-}
 void CHealthBar::SetDmgMultiplier(float dmg)
 {
 	dmgmultiplier = dmg;
-}
-
-void CHealthBar::AddHealth(float health)
-{
-	vec3Scale.x += health / 100;
 }

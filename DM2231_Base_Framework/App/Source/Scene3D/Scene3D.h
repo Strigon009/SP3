@@ -198,11 +198,7 @@ protected:
 
 	bool barrelAttachment;
 	bool magazineAttachment;
-	bool renderBoss;
-	bool bossDED;
-	bool printLoseScreen;
-	bool printWinScreen;
-	bool wave3_start;
+
 	int wave_count;
 	int zombieCount;
 	int crawlerCount;

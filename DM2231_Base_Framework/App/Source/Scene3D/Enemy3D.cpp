@@ -410,7 +410,7 @@ void CEnemy3D::set_enemyHealth(int x)
 
 int CEnemy3D::get_enemyDamage()
 {
-	return 0;
+	return enemyDamage;
 }
 
 void CEnemy3D::set_enemyDamage(int t)

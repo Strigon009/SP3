@@ -40,7 +40,6 @@
     <ClCompile Include="Source\Scene3D\Physics3D.cpp" />
     <ClCompile Include="Source\Scene3D\Player3D.cpp" />
     <ClCompile Include="Source\Scene3D\MinigunPickup.cpp" />
-    <ClCompile Include="Source\Scene3D\PowerUp.cpp" />
     <ClCompile Include="Source\Scene3D\RiflePickup.cpp" />
     <ClCompile Include="Source\Scene3D\Scene3D.cpp" />
     <ClCompile Include="Source\Scene3D\SkyBox.cpp" />
@@ -88,7 +87,6 @@
     <ClInclude Include="Source\Scene3D\Physics3D.h" />
     <ClInclude Include="Source\Scene3D\Player3D.h" />
     <ClInclude Include="Source\Scene3D\MinigunPickup.h" />
-    <ClInclude Include="Source\Scene3D\PowerUp.h" />
     <ClInclude Include="Source\Scene3D\RiflePickup.h" />
     <ClInclude Include="Source\Scene3D\Scene3D.h" />
     <ClInclude Include="Source\Scene3D\SkyBox.h" />

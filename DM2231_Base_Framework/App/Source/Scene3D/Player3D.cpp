@@ -27,13 +27,13 @@ CPlayer3D::CPlayer3D(void)
 	, fCameraSwayDeltaAngle(0.15f)
 	, bCameraSwayDirection(false)	// false = left, true = right
 	, bCameraSwayActive(true)
-	, iHealth(100)
-	, iArmor(100)
+	, pHealth(100)
+	, pArmor(100)
 	, pLevel(1)
-	, pLevelMax(5)
-	, pExp(1.f)
-	, pExpMax(pLevel * pLevelMax * 10)
-	, isWeaponDischarged(false)
+	, pMaxLevel(5)
+	, pExp(1)
+	, pMaxExp(pLevel * pMaxLevel * 10)
+
 {
 	// Set the default position so it is above the ground
 	vec3Position = glm::vec3(0.0f, 0.5f, 0.0f);
@@ -66,6 +66,10 @@ CPlayer3D::CPlayer3D(	const glm::vec3 vec3Position,
 	, iCurrentWeapon(0)
 	, fCameraSwayAngle(0.0f)
 	, fCameraSwayDeltaAngle(0.5f)
+	, pHealth(100)
+	, pMaxHealth(pHealth)
+	, pArmor(100)
+	, pMaxArmor(pArmor)
 	, bCameraSwayDirection(false)	// false = left, true = right
 	, bCameraSwayActive(true)
 {
@@ -454,10 +458,6 @@ void CPlayer3D::Update(const double dElapsedTime)
 
 		bUpdateCameraSway = false;
 	}
-	if (isWeaponDischarged)
-	{
-
-	}
 }
 
 /**
@@ -622,41 +622,44 @@ void CPlayer3D::UpdateJumpFall(const double dElapsedTime)
 	}
 }
 
-/**
- @brief Set the health of the player
- */
-void CPlayer3D::SetHealth(const int iHealth)
+void CPlayer3D::SetHealth(const int pHealth)
 {
-	this->iHealth = iHealth;
+	this->pHealth = pHealth;
 }
 
-/**
- @brief Get the health of the player
- */
 int CPlayer3D::GetHealth(void) const
 {
-	return iHealth;
+	return pHealth;
 }
 
-/**
- @brief Set the health of the player
- */
-void CPlayer3D::SetArmor(const int iArmor)
+void CPlayer3D::SetMaxHealth(const int pMaxHealth)
 {
-	this->iArmor = iArmor;
+	this->pMaxHealth = pMaxHealth;
 }
 
-/**
- @brief Get the health of the player
- */
+int CPlayer3D::GetMaxHealth(void) const
+{
+	return pMaxHealth;
+}
+
+void CPlayer3D::SetArmor(const int pArmor)
+{
+	this->pArmor = pArmor;
+}
+
 int CPlayer3D::GetArmor(void) const
 {
-	return iArmor;
+	return pArmor;
 }
 
-void CPlayer3D::GainExp(const int exp)
+void CPlayer3D::SetMaxArmor(const int pMaxArmor)
 {
-	pExp += exp;
+	this->pMaxArmor = pMaxArmor;
+}
+
+int CPlayer3D::GetMaxArmor(void) const
+{
+	return pMaxArmor;
 }
 
 int CPlayer3D::GetCurrentExp(void) const
@@ -664,14 +667,14 @@ int CPlayer3D::GetCurrentExp(void) const
 	return pExp;
 }
 
+int CPlayer3D::GetMaxExp(void) const
+{
+	return pMaxExp;
+}
+
 int CPlayer3D::GetCurrentWeaponIndex(void) const
 {
 	return iCurrentWeapon;
-}
-
-void CPlayer3D::ExpUpdate()
-{
-	pLevel++;
 }
 
 int CPlayer3D::GetCurrentPlayerLevel()
@@ -679,6 +682,10 @@ int CPlayer3D::GetCurrentPlayerLevel()
 	return pLevel;
 }
 
+void CPlayer3D::TakeDamage(int damage)
+{
+	this->pHealth -= damage;
+}
 void CPlayer3D::SetToDodge(void)
 {
 	if (cPhysics3D.GetStatus() == CPhysics3D::STATUS::IDLE)

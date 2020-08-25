@@ -10,7 +10,6 @@ using namespace std;
 CArmorBar::CArmorBar(void)
 	: cPlayer3D(NULL)
 	, armorBar(NULL)
-	, armorDmgMultiplier(1.f)
 	, cArmorPickup(NULL)
 	, fHeight(0.f)
 	, fWidth(0.f)
@@ -124,10 +123,9 @@ void CArmorBar::SetProjection(glm::mat4 projection)
  */
 void CArmorBar::Update(const double dElapsedTime)
 {
-	if (armorBar)
+	if(armorBar)
 	{
-		//vec3Scale.x = vec3Scale.x - 0.1f * dElapsedTime * armorDmgMultiplier;
-		vec3Scale.x = vec3Scale.x - armorDmgMultiplier / 100.f;
+		vec3Scale.x = cPlayer3D->GetArmor() / cPlayer3D->GetMaxArmor();
 		armorBar = !armorBar;
 	}
 }
@@ -220,21 +218,4 @@ bool CArmorBar::GetArmorBarState()
 void CArmorBar::SetArmorBarState(bool state)
 {
 	armorBar = state;
-}
-
-float CArmorBar::GetArmorBarLength()
-{
-	return vec3Scale.x;
-}
-void CArmorBar::SetArmorDmgMultiplier(float dmg)
-{
-	armorDmgMultiplier = dmg;
-}
-void CArmorBar::SetArmourBarLength(float length)
-{
-	vec3Scale.x = length;
-}
-void CArmorBar::AddArmor(float armor)
-{
-	vec3Scale.x += armor / 100.f;
 }
