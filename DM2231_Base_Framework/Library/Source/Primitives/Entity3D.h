@@ -30,6 +30,11 @@ public:
 		ARMOR_PICKUP,
 		AMMO_PICKUP,
 		INVINCIBILITY,
+		BARREL_PICKUP,
+		MAGAZINE_PICKUP,
+		MINIGUN_PICKUP,
+		RIFLE_PICKUP,
+		SMG_PICKUP,
 		FREEZE_MOVEMENT,
 		OTHERS,		// Default value: Other entities such as ground and skybox
 		NUM_TYPES
@@ -129,6 +134,8 @@ protected:
 	GLuint index_buffer_size;
 	// The texture ID in OpenGL
 	GLuint iTextureID;
+	GLuint iTextureID1;
+	GLuint iTextureID2;
 	GLuint RifleID;
 
 	// Render Settings
