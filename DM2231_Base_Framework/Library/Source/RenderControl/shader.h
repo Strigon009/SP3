@@ -6,13 +6,13 @@
 #include <includes/glm.hpp>
 #include <includes/gtc/matrix_transform.hpp>
 #include <includes/gtc/type_ptr.hpp>
-
+#include "..//DesignPatterns/SingletonTemplate.h"
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <iostream>
 
-class Shader
+class Shader : public CSingletonTemplate<Shader>
 {
 public:
     unsigned int ID;

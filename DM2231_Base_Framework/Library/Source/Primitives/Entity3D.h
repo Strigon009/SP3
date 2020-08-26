@@ -7,7 +7,7 @@
 
 #include <GL/glew.h>
 #include <includes\glm.hpp>
-
+#include "..\DesignPatterns\SingletonTemplate.h"
 #include "../RenderControl/shader.h"
 
 // Include CCollider
@@ -36,6 +36,7 @@ public:
 		RIFLE_PICKUP,
 		SMG_PICKUP,
 		FREEZE_MOVEMENT,
+		ANTIDOTE,
 		OTHERS,		// Default value: Other entities such as ground and skybox
 		NUM_TYPES
 	};
