@@ -43,12 +43,17 @@ public:
 	bool GetArmorBarState();
 	void SetArmorBarState(bool state);
 
+	void SetIArmor(float iArmor);
+	float GetIArmor();
+	float GetIMaxArmor();
+
+
 protected:
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
 	bool armorBar;
 	float fHeight, fWidth;
-
+	float iArmor, iMaxArmor;
 	// Handler to the Player3D class
 	CPlayer3D* cPlayer3D;
 

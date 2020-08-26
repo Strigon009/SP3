@@ -5,11 +5,11 @@
  */
 #pragma once
 
-#include "DesignPatterns/SingletonTemplate.h"
+
 
 // Include Entity3D
 #include <Primitives/Entity3D.h>
-
+#include "DesignPatterns/SingletonTemplate.h"
 // Include GLM
 #include <includes/glm.hpp>
 #include <includes/gtc/matrix_transform.hpp>
@@ -23,11 +23,12 @@
 
 // Include GroundMap
 #include "GroundMap.h"
+#include "../App/Source/CameraEffects/InfectionBar.h"
 
 // An abstract camera class that processes input and calculates the corresponding Euler Angles, Vectors and Matrices for use in OpenGL
-class CStructureTower : public CSingletonTemplate<CStructureTower>, public CEntity3D
+class CStructureTower :public CSingletonTemplate<CStructureTower>, public CEntity3D
 {
-	friend class CSingletonTemplate<CStructureTower>;
+	//friend class CSingletonTemplate<CStructureTower>;
 public:
 	// Default Constructor
 	CStructureTower(void);
@@ -64,8 +65,12 @@ public:
 	// PostRender
 	virtual void PostRender(void);
 
-	int get_towerHP();
-	void set_towerHP(int hp);
+
+	//CInfectionBar* cInfectBar;
+
+	int GetTowerHealth();
+	int GetTowerMaxHealth();
+	void SetTowerHealth(int hp);
 
 	int GetInfection();
 	int GetMaxInfection();
@@ -73,7 +78,7 @@ public:
 protected:
 	// The handle to the CGroundMap class instance
 	CGroundMap* cGroundMap;
-
-	int towerHP;
+	
+	int towerHP, towerMaxHP;
 	int towerInfection, towerMaxInfection;
 };

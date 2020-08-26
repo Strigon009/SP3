@@ -11,8 +11,9 @@ CHealthBar::CHealthBar(void)
 	: healthBar(false)
 	, fHeight(0)
 	, fWidth(0)
+	, iHealth(100)
+	, iMaxHealth(iHealth)
 	, transform(glm::mat4(1.0f))
-	, dmgmultiplier(1.f)
 {
 }
 
@@ -123,7 +124,7 @@ void CHealthBar::SetProjection(glm::mat4 projection)
  */
 void CHealthBar::Update(const double dElapsedTime)
 {
-	vec3Scale.x = cPlayer3D->GetHealth() / cPlayer3D->GetMaxHealth();
+	vec3Scale.x = iHealth / iMaxHealth;
 }
 
 /**
@@ -216,7 +217,17 @@ void CHealthBar::SetHealthBarState(bool state)
 	healthBar = state;
 }
 
-void CHealthBar::SetDmgMultiplier(float dmg)
+void CHealthBar::SetIHealth(float iHealth)
 {
-	dmgmultiplier = dmg;
+	this->iHealth = iHealth;
+}
+
+float CHealthBar::GetIHealth()
+{
+	return iHealth;
+}
+
+float CHealthBar::GetIMaxHealth()
+{
+	return iMaxHealth;
 }

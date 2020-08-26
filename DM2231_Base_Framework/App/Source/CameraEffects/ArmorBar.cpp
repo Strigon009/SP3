@@ -14,6 +14,8 @@ CArmorBar::CArmorBar(void)
 	, fHeight(0.f)
 	, fWidth(0.f)
 	, transform (glm::mat4(1.0f))
+	, iArmor(100)
+	, iMaxArmor(iArmor)
 {
 }
 
@@ -123,11 +125,7 @@ void CArmorBar::SetProjection(glm::mat4 projection)
  */
 void CArmorBar::Update(const double dElapsedTime)
 {
-	if(armorBar)
-	{
-		vec3Scale.x = cPlayer3D->GetArmor() / cPlayer3D->GetMaxArmor();
-		armorBar = !armorBar;
-	}
+	vec3Scale.x = iArmor / iMaxArmor;
 }
 
 /**
@@ -218,4 +216,19 @@ bool CArmorBar::GetArmorBarState()
 void CArmorBar::SetArmorBarState(bool state)
 {
 	armorBar = state;
+}
+
+void CArmorBar::SetIArmor(float iArmor)
+{
+	this->iArmor = iArmor;
+}
+
+float CArmorBar::GetIArmor()
+{
+	return iArmor;
+}
+
+float CArmorBar::GetIMaxArmor()
+{
+	return iMaxArmor;
 }

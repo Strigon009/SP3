@@ -1,5 +1,6 @@
 #include "WeaponInfo.h"
 #include "Projectile.h"
+#include "AntidoteProjectile.h"
 #include "../../SoundController/SoundController.h"
 #include <iostream>
 #include "BarrelAttachment.h"
@@ -258,6 +259,35 @@ CProjectile* CWeaponInfo::Discharge(glm::vec3 vec3Position, glm::vec3 vec3Front,
 	return NULL;
 }
 
+CAntidoteProjectile* CWeaponInfo::Discharge2(glm::vec3 vec3Position, glm::vec3 vec3Front, CEntity3D* pSource)
+{
+	if (bFire)
+	{
+		// If there is still ammo in the magazine, then fire
+		if (iMagRounds > 0)
+		{
+			// Create a projectile. 
+			// Its position is slightly in front of the player to prevent collision
+			// Its direction is same as the player.
+			// It will last for 2.0 seconds and travel at 20 units per frame
+			CAntidoteProjectile* aProjectile = new CAntidoteProjectile();
+			aProjectile->SetShader(cShader);
+			aProjectile->Init(vec3Position + vec3Front * 0.75f, vec3Front, 2.0f, 20.0f);
+			aProjectile->ActivateCollider(cShader);
+			aProjectile->SetStatus(true);
+			aProjectile->SetSource(pSource);
+			
+			// Lock the weapon after this discharge
+			bFire = false;
+			// Reduce the rounds by 1
+			iMagRounds--;
+			CSoundController::GetInstance()->PlaySoundByID(iAudioShoot);
+			return aProjectile;
+		}
+	}
+	return NULL;
+}
+
 /**
  @brief Reload this weapon
  */
@@ -321,7 +351,7 @@ float CWeaponInfo::GetWeaponWeight()
 
 void CWeaponInfo::EquipBarrel()
 {
-
+	weaponRecoil = weaponOriRecoil / 0.95;
 }
 
 void CWeaponInfo::EquipMagazine()

@@ -139,6 +139,12 @@
     <ClCompile Include="Source\CameraEffects\HealthBar.cpp">
       <Filter>CameraEffects</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene3D\WeaponInfo\AntidoteGun.cpp">
+      <Filter>Scene3D\WeaponInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene3D\WeaponInfo\AntidoteProjectile.cpp">
+      <Filter>Scene3D\WeaponInfo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\SoundController\SoundController.h">
@@ -275,6 +281,12 @@
     </ClInclude>
     <ClInclude Include="Source\CameraEffects\HealthBar.h">
       <Filter>CameraEffects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene3D\WeaponInfo\AntidoteGun.h">
+      <Filter>Scene3D\WeaponInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene3D\WeaponInfo\AntidoteProjectile.h">
+      <Filter>Scene3D\WeaponInfo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

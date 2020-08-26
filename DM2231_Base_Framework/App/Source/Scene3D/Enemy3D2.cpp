@@ -25,8 +25,9 @@ CEnemy3D2::CEnemy3D2(void)
 	, cCamera(NULL)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
-	, enemyHealth(7)
-	, enemyExp(5.f)
+	, enemyHealth(12)
+	, enemyExp(8.f)
+	, enemyDamage(4.f)
 	
 {
 	// Set the default position to the origin
@@ -60,7 +61,9 @@ CEnemy3D2::CEnemy3D2(	const glm::vec3 vec3Position,
 	, cCamera(NULL)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
-	, enemyHealth(5)
+	, enemyHealth(12)
+	, enemyExp(8.f)
+	, enemyDamage(4.f)
 {
 	// Set the default position to the origin
 	this->vec3Position = vec3Position;
@@ -397,16 +400,6 @@ void CEnemy3D2::PostRender(void)
 	glDepthFunc(GL_LESS); // set depth function back to default
 }
 
-int CEnemy3D2::get_enemyHealth()
-{
-	return enemyHealth;
-}
-
-void CEnemy3D2::set_enemyHealth(int x)
-{
-	enemyHealth = x;
-}
-
 /**
  @brief Calculates the front vector from the Camera's (updated) Euler Angles
  */
@@ -461,4 +454,34 @@ void CEnemy3D2::UpdateEnemyVectors(void)
 void CEnemy3D2::Constraint(void)
 {
 	vec3Position = cGroundMap->GetExactPosition(vec3Position);
+}
+
+int CEnemy3D2::GetEnemyHealth()
+{
+	return enemyHealth;
+}
+
+void CEnemy3D2::SetEnemyHealth(int x)
+{
+	enemyHealth = x;
+}
+
+int CEnemy3D2::GetEnemyDamage()
+{
+	return enemyDamage;
+}
+
+void CEnemy3D2::SetEnemyDamage(int t)
+{
+	enemyDamage = t;
+}
+
+void CEnemy3D2::SetEnemyExp(float exp)
+{
+	enemyExp = exp;
+}
+
+float CEnemy3D2::GetEnemyExp()
+{
+	return enemyExp;
 }

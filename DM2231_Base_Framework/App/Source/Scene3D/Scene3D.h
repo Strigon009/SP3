@@ -59,6 +59,7 @@
 #include "WeaponInfo/SMG.h"
 #include "WeaponInfo/Minigun.h"
 #include "WeaponInfo/Rifle.h"
+#include "WeaponInfo/AntidoteGun.h"
 
 // Include CameraEffects
 #include "../CameraEffects/CameraEffects.h"
@@ -164,9 +165,13 @@ protected:
 	CPlayer3D* cPlayer3D;
 	// Handler to the camera class
 	CCamera* cCamera;
+	CStructureTower* cTower;
 
 	// Handler to the Player3D class
 	CEnemy3D* cEnemy3D;
+	CEnemy3D2* cEnemy3D2;
+	CEnemy3D3* cEnemy3D3;
+	CEnemyBoss3D* cEnemyBoss;
 
 	// Handler to the CSkyBox
 	CSkyBox* cSkyBox;
@@ -198,7 +203,7 @@ protected:
 
 	bool barrelAttachment;
 	bool magazineAttachment;
-
+	int pLevel;
 	int wave_count;
 
 	int zombieCount;
@@ -245,6 +250,9 @@ protected:
 	void SetMinigun(int index);
 	void SetSMG(int index);
 	glm::vec3 set_enemySpawnPos();
+
+	void CheckDamage(int num);
+
 
 	// Constructor
 	CScene3D(void);

@@ -28,12 +28,9 @@ CPlayer3D::CPlayer3D(void)
 	, bCameraSwayDirection(false)	// false = left, true = right
 	, bCameraSwayActive(true)
 	, pHealth(100)
+	, pMaxHealth(pHealth)
 	, pArmor(100)
-	, pLevel(1)
-	, pMaxLevel(5)
-	, pExp(1)
-	, pMaxExp(pLevel * pMaxLevel * 10)
-
+	, pMaxArmor(pArmor)
 {
 	// Set the default position so it is above the ground
 	vec3Position = glm::vec3(0.0f, 0.5f, 0.0f);
@@ -66,9 +63,9 @@ CPlayer3D::CPlayer3D(	const glm::vec3 vec3Position,
 	, iCurrentWeapon(0)
 	, fCameraSwayAngle(0.0f)
 	, fCameraSwayDeltaAngle(0.5f)
-	, pHealth(100)
+	, pHealth(100.f)
 	, pMaxHealth(pHealth)
-	, pArmor(100)
+	, pArmor(100.f)
 	, pMaxArmor(pArmor)
 	, bCameraSwayDirection(false)	// false = left, true = right
 	, bCameraSwayActive(true)
@@ -95,6 +92,11 @@ CPlayer3D::~CPlayer3D(void)
 	{
 		delete cPrimaryWeapon;
 		cPrimaryWeapon = NULL;
+	}
+	if (cAntidoteGun)
+	{
+		delete cAntidoteGun;
+		cAntidoteGun = NULL;
 	}
 
 	if (cGroundMap)
@@ -291,6 +293,8 @@ void CPlayer3D::SetWeapon(const int iSlot, CWeaponInfo* cWeaponInfo)
 		cPrimaryWeapon = cWeaponInfo;
 	else if (iSlot == 1)
 		cSecondaryWeapon = cWeaponInfo;
+	else if (iSlot == 2)
+		cAntidoteGun = cWeaponInfo;
 }
 
 /**
@@ -303,7 +307,8 @@ CWeaponInfo* CPlayer3D::GetWeapon(void) const
 		return cPrimaryWeapon;
 	else if (iCurrentWeapon == 1)
 		return cSecondaryWeapon;
-
+	else if (iCurrentWeapon == 2)
+		return cAntidoteGun;
 	return NULL;
 }
 
@@ -334,6 +339,15 @@ CProjectile* CPlayer3D::DischargeWeapon(void) const
 	else if ((iCurrentWeapon == 1) && (cSecondaryWeapon))
 	{
 		return cSecondaryWeapon->Discharge(vec3Position, vec3Front, (CEntity3D*)this);
+	}
+	
+	return NULL;
+}
+CAntidoteProjectile* CPlayer3D::DischargeWeapon2(void) const
+{
+	if ((iCurrentWeapon == 2) && (cAntidoteGun))
+	{
+		return cAntidoteGun->Discharge2(vec3Position, vec3Front, (CEntity3D*)this);
 	}
 	return NULL;
 }
@@ -412,6 +426,8 @@ void CPlayer3D::Update(const double dElapsedTime)
 		cPrimaryWeapon->Update(dElapsedTime);
 	if (cSecondaryWeapon)
 		cSecondaryWeapon->Update(dElapsedTime);
+	if (cAntidoteGun)
+		cAntidoteGun->Update(dElapsedTime);
 
 	// Update the Jump/Fall
 	UpdateJumpFall(dElapsedTime);
@@ -677,14 +693,18 @@ int CPlayer3D::GetCurrentWeaponIndex(void) const
 	return iCurrentWeapon;
 }
 
-int CPlayer3D::GetCurrentPlayerLevel()
-{
-	return pLevel;
-}
-
 void CPlayer3D::TakeDamage(int damage)
 {
-	this->pHealth -= damage;
+	if (pArmor > 0.f)
+	{
+		// Take damage on armor
+		this->pArmor -= damage;
+	}
+	else
+	{
+		// Take damage on health
+		this->pHealth -= damage;
+	}
 }
 void CPlayer3D::SetToDodge(void)
 {

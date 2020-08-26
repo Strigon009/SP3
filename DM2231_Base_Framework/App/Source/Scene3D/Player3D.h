@@ -86,6 +86,8 @@ public:
 	// Discharge current weapon
 	CProjectile* DischargeWeapon(void) const;
 
+	CAntidoteProjectile* DischargeWeapon2(void) const;
+
 	// Set to Jump
 	void SetToJump(void);
 
@@ -131,21 +133,18 @@ public:
 	void TakeDamage(int damage);
 	void SetToDodge(void);
 
-
-	
-	
 	int GetCurrentWeaponIndex(void) const;
 
 protected:
 
 	//Player's level , Experience
-	int pExp, pMaxExp;
-	int pLevel, pMaxLevel;
+	float pExp, pMaxExp;
+	
 
 	// Player's health
-	int pHealth, pMaxHealth;
+	float pHealth, pMaxHealth;
 	// Player's Armor
-	int pArmor, pMaxArmor;
+	float pArmor, pMaxArmor;
 
 	// The handle to the CCamera class instance
 	CCamera* cCamera;
@@ -156,6 +155,8 @@ protected:
 	// The handle to the CWeaponInfo class instance
 	CWeaponInfo* cPrimaryWeapon;
 	CWeaponInfo* cSecondaryWeapon;
+	CWeaponInfo* cAntidoteGun;
+
 	int iCurrentWeapon;
 
 	// Player/Camera Sway

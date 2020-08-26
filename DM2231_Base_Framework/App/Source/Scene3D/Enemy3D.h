@@ -7,6 +7,7 @@
 
 // Include Entity3D
 #include <Primitives/Entity3D.h>
+#include "DesignPatterns/SingletonTemplate.h"
 
 // Include GLM
 #include <includes/glm.hpp>
@@ -26,7 +27,7 @@
 class CEntityManager;
 
 // An abstract camera class that processes input and calculates the corresponding Euler Angles, Vectors and Matrices for use in OpenGL
-class CEnemy3D : public CEntity3D
+class CEnemy3D : public CSingletonTemplate<CEnemy3D>, public CEntity3D
 {
 public:
 	// Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
@@ -86,11 +87,11 @@ public:
 	// PostRender
 	virtual void PostRender(void);
 
-	int get_enemyHealth();
-	void set_enemyHealth(int x);
+	int GetEnemyHealth();
+	void SetEnemyHealth(int x);
 
-	int get_enemyDamage();
-	void set_enemyDamage(int t);
+	int GetEnemyDamage();
+	void SetEnemyDamage(int t);
 
 	float GetEnemyExp();
 	void SetEnemyExp(float exp);
@@ -111,9 +112,7 @@ protected:
 	int iMaxNumMovement;
 
 	int enemyHealth;
-
 	int enemyDamage;
-
 	float enemyExp;
 	// The handle to the CCamera class instance
 	CCamera* cCamera;

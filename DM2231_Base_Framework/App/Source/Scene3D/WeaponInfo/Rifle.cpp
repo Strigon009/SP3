@@ -26,21 +26,22 @@ void CRifle::Init(void)
 	iAudioReload = 11;
 	iAudioShoot = 21;
 	// The number of ammunition in a magazine for this weapon
-	iMagRounds = 99;
+	iMagRounds = 30;
 	// The maximum number of ammunition for this magazine for this weapon
-	iMaxMagRounds = 99;
+	iMaxMagRounds = 30;
 	// The current total number of rounds currently carried by this player
-	iTotalRounds = 150;
+	iTotalRounds = 90;
 	// The max total number of rounds currently carried by this player
-	iMaxTotalRounds = 99;
+	iMaxTotalRounds = 180;
 	// Weapon Stats
-	reloadTime = 3.f;
-	weaponDamage = 2.f;
+	reloadTime = 2.2f;
+	weaponDamage = 3.f;
 	dTimeBetweenShots = 0.05;
 	weaponWeight = 0.75f;
 	autoFire = true;
 	iMaxOriMaxRounds = iMaxMagRounds;
-	weaponRecoil = 0.5f;
+	weaponRecoil = 0.15f;
+	weaponOriRecoil = weaponRecoil;
 	// The elapsed time (between shots)
 	dElapsedTime = 0.0;
 	// Boolean flag to indicate if weapon can fire now

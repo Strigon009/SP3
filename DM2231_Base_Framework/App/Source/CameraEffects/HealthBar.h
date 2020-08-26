@@ -44,14 +44,17 @@ public:
 
 	bool GetHealthBarState();
 	void SetHealthBarState(bool state);
-	void SetDmgMultiplier(float dmg);
+
+	void SetIHealth(float iHealth);
+	float GetIHealth();
+	float GetIMaxHealth();
 
 protected:
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
 	bool healthBar;
+	float iHealth, iMaxHealth;
 	float fHeight, fWidth;
-	float dmgmultiplier;
 
 	// Handler to the Player3D class
 	CPlayer3D* cPlayer3D;

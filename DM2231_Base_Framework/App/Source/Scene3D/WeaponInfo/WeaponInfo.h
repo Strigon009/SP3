@@ -16,6 +16,7 @@
 
 // Include Projectile
 #include "Projectile.h"
+#include "AntidoteProjectile.h"
 
 class CWeaponInfo
 {
@@ -68,6 +69,7 @@ public:
 	virtual void Update(const double dElapsedTime);
 	// Discharge this weapon
 	virtual CProjectile* Discharge(glm::vec3 vec3Position, glm::vec3 vec3Front, CEntity3D* pSource = NULL);
+	virtual CAntidoteProjectile* Discharge2(glm::vec3 vec3Position, glm::vec3 vec3Front, CEntity3D* pSource = NULL);
 	// Reload this weapon
 	virtual void Reload(void);
 	// Add rounds
@@ -88,7 +90,8 @@ public:
 		PISTOL,
 		RIFLE,
 		MINIGUN,
-		SMG
+		SMG,
+		ANTIDOTEGUN
 	};
 
 	WeaponType type;
@@ -123,4 +126,5 @@ protected:
 	bool autoFire;
 	bool MagazineEquipped;
 	float weaponRecoil;
+	float weaponOriRecoil;
 };

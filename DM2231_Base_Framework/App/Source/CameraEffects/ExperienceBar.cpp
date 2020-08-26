@@ -9,10 +9,13 @@ using namespace std;
  */
 CExperienceBar::CExperienceBar(void)
 	:cPlayer3D(NULL)
-	, ExpMulti(1.f)
 	, fHeight(0.f)
 	, fWidth(0.f)
+	, expBar(false)
 	, transform(glm::mat4(1.0f))
+	, iExp(0)
+	, iMaxExp(100)
+	, iLevel(1)
 {
 }
 
@@ -56,7 +59,7 @@ bool CExperienceBar::Init(glm::vec3 pos, glm::vec4 color)
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
 	fHeight = 0.0333f * 0.8;
-	fWidth = 0.0333f * 8;
+	fWidth = 0.0333f * 6;
 	vec3Position = pos;
 	vec4Colour = color;
 	vec3Scale.x = 0.f;
@@ -123,7 +126,8 @@ void CExperienceBar::SetProjection(glm::mat4 projection)
  */
 void CExperienceBar::Update(const double dElapsedTime)
 {
-	vec3Scale.x = cPlayer3D->GetCurrentExp() / cPlayer3D->GetMaxExp();
+	vec3Scale.x = iExp / iMaxExp;
+
 }
 
 /**
@@ -203,4 +207,24 @@ void CExperienceBar::PostRender(void)
 {
 	// Disable blending
 	glDisable(GL_BLEND);
+}
+
+float CExperienceBar::GetiExp()
+{
+	return iExp;
+}
+
+float CExperienceBar::GetiMaxExp()
+{
+	return iMaxExp;
+}
+
+void CExperienceBar::SetiExp(float iexp)
+{
+	iExp = iexp;
+}
+
+void CExperienceBar::SetiMaxExp(float imaxexp)
+{
+	iMaxExp = imaxexp;
 }

@@ -8,7 +8,8 @@ using namespace std;
  @brief Default Constructor
  */
 CInfectionBar::CInfectionBar(void)
-	: cStructureTower(NULL)
+	: iTowerHealth(2000)
+	, iTowerMaxHealth(iTowerHealth)
 {
 }
 
@@ -24,7 +25,7 @@ CInfectionBar::~CInfectionBar(void)
 	// We set this to NULL, since it was created elsewhere so we don't delete it here
 	cShader = NULL;
 	cPlayer3D = NULL;
-	cStructureTower = NULL;
+	
 }
 
 /**
@@ -45,7 +46,7 @@ bool CInfectionBar::Init(glm::vec3 pos, glm::vec4 color)
 
 	// Initialise the cPlayer3D
 	cPlayer3D = CPlayer3D::GetInstance();
-	cStructureTower = CStructureTower::GetInstance();
+	
 
 	// Set the type
 	SetType(CEntity3D::TYPE::OTHERS);
@@ -56,7 +57,7 @@ bool CInfectionBar::Init(glm::vec3 pos, glm::vec4 color)
 	fWidth = 0.0333f * 8;
 	vec3Position = pos;
 	vec4Colour = color;
-
+	vec3Scale.x = 1.f;
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	float vertices[] = {
 		// positions		// texture coords
@@ -119,7 +120,7 @@ void CInfectionBar::SetProjection(glm::mat4 projection)
  */
 void CInfectionBar::Update(const double dElapsedTime)
 {
-	vec3Scale.x = cStructureTower->GetInfection() / cStructureTower->GetMaxInfection();
+	vec3Scale.x = 1.f - iTowerHealth / iTowerMaxHealth ;
 }
 
 /**
@@ -200,4 +201,19 @@ void CInfectionBar::PostRender(void)
 {
 	// Disable blending
 	glDisable(GL_BLEND);
+}
+
+void CInfectionBar::SetiTowerHealth(int towerhp)
+{
+	iTowerHealth = towerhp;
+}
+
+float CInfectionBar::GetiTowerHealth()
+{
+	return iTowerHealth;
+}
+
+float CInfectionBar::GetiTowerMaxHealth()
+{
+	return iTowerMaxHealth;
 }

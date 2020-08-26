@@ -26,21 +26,22 @@ void CSMG::Init(void)
 	iAudioReload = 11;
 	iAudioShoot = 21;
 	// The number of ammunition in a magazine for this weapon
-	iMagRounds = 30;
+	iMagRounds = 25;
 	// The maximum number of ammunition for this magazine for this weapon
-	iMaxMagRounds = 30;
+	iMaxMagRounds = 25;
 	// The current total number of rounds currently carried by this player
-	iTotalRounds = 150;
+	iTotalRounds = 75;
 	// The max total number of rounds currently carried by this player
-	iMaxTotalRounds = 99;
+	iMaxTotalRounds = 150;
 	// Weapon Stats
-	reloadTime = 3.f;
+	reloadTime = 1.8f;
 	weaponDamage = 2.f;
 	dTimeBetweenShots = 0.05;
-	weaponWeight = 0.75f;
+	weaponWeight = 0.85f;
 	autoFire = true;
 	iMaxOriMaxRounds = iMaxMagRounds;
-	weaponRecoil = 0.2f;
+	weaponRecoil = 0.12f;
+	weaponOriRecoil = weaponRecoil;
 	// The elapsed time (between shots)
 	dElapsedTime = 0.0;
 	// Boolean flag to indicate if weapon can fire now

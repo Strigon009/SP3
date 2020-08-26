@@ -5,6 +5,10 @@
 
 // Include Entity3D
 #include <Primitives/Entity3D.h>
+#include <cmath>
+#include <exception>
+#include <ctime>
+#include <cstdlib>
 
 // Include GLM
 #include <includes/glm.hpp>
@@ -22,9 +26,23 @@
 #include "../CameraEffects/ExperienceBar.h"
 #include "../CameraEffects/InfectionBar.h"
 #include "WeaponInfo/WeaponInfo.h"
+// Include CrossHair
+#include "CrossHair/CrossHair.h"
+#include "WeaponInfo/WeaponInfo.h"
+#include "WeaponInfo/BarrelAttachment.h"
+#include "WeaponInfo/MagazineAttachment.h"
+#include "CrossHair/BarrelHUD.h"
+#include "CrossHair/MagazineHUD.h"
+// Include Pickups
 #include "ArmorPickup.h"
-#include "WeaponInfo/Pistol.h"
-#include "WeaponInfo/Rifle.h"
+#include "HealthPickup.h"
+#include "AmmoPickup.h"
+#include "Invincibility.h"
+#include "FreezeMovement.h"
+
+#include "SMGPickup.h"
+#include "RiflePickup.h"
+#include "MinigunPickup.h"
 #include "../SoundController/SoundController.h"
 
 class CEntityManager : public CSingletonTemplate<CEntityManager>
@@ -52,7 +70,7 @@ public:
 	virtual int CollisionCheck(CEntity3D* cEntity3D);
 
 	// Update this class instance
-	virtual void Update(const double dElapsedTime);
+	virtual int Update(const double dElapsedTime);
 
 	// CleanUp all CEntity3Ds which are marked for deletion
 	virtual void CleanUp(void);
@@ -80,8 +98,31 @@ public:
 	virtual bool GetFreezeMovement();
 	virtual void SetFreezeMovement(bool bFreezeMovement);
 
-	//int enemyHealth;
+	void LootDrop(glm::vec3 pos);
 
+	virtual void AddArmorPickUp(CArmorPickup* cArmorPickup, glm::vec3 pos, glm::vec3 scale);
+	virtual void AddHealthPickUp(CHealthPickup* cHealthPickup, glm::vec3 pos, glm::vec3 scale);
+	virtual void AddAmmoPickUp(CAmmoPickup* cAmmoPickup, glm::vec3 pos, glm::vec3 scale);
+	virtual void AddInvincibility(CInvincibility* cInvincibility, glm::vec3 pos, glm::vec3 scale);
+	virtual void AddFreezeMovement(CFreezeMovement* cFreezeMovement, glm::vec3 pos, glm::vec3 scale);
+
+	virtual void AddBarrelPickup(CBarrelAttachment* cBarrelAttachment, glm::vec3 pos, glm::vec3 scale);
+	virtual void AddMagazinePickup(CMagazineAttachment* cMagazineAttachment, glm::vec3 pos, glm::vec3 scale);
+	virtual void AddRiflePickup(CRiflePickup* cRiflePickup, glm::vec3 pos, glm::vec3 scale);
+	virtual void AddMinigunPickup(CMinigunPickup* cRiflePickup, glm::vec3 pos, glm::vec3 scale);
+	virtual void AddSMGPickup(CSMGPickup* cRiflePickup, glm::vec3 pos, glm::vec3 scale);
+
+
+	inline void InitRNG(void)
+	{
+		srand(static_cast<unsigned> (time(0)));
+	}//end of InitRNG function
+
+	inline int RandIntMinMax(int min, int max)
+	{
+		int num = rand() % (max - min + 1);
+		return (num + min);
+	}//end of RandIntMinMax function
 protected:
 	// Render Settings
 	glm::mat4 model;
@@ -94,6 +135,15 @@ protected:
 	//CEnemy3D* cEnemy3D;
 
 	//CEnemyBoss3D cEnemyBoss3D;
+
+	// Handler to the Shader Program instance
+	Shader* cShader;
+	// Handler to the LineShader Program instance
+	Shader* cSimpleShader;
+	// Handler to the GUIShader Shader Program instance
+	Shader* cGUIShader;
+	// Handler to the GUISimpleShader Shader Program instance
+	Shader* cGUISimpleShader;
 
 	CHealthBar* cHealthBar;
 	CArmorBar* cArmorBar;
@@ -108,12 +158,23 @@ protected:
 	CWeaponInfo* cSecondaryWeapon;
 	CWeaponInfo* cCurrentWeapon;
 
+	CWeaponInfo* cWeaponInfo;
+	CArmorPickup* cArmorPickup;
+	CHealthPickup* cHealthPickup;
+	CAmmoPickup* cAmmoPickup;
+	CInvincibility* cInvincibility;
+	CFreezeMovement* cFreezeMovement;
+
+	// Handler to the EntityManager class
+	CEntityManager* cEntityManager;
+
 	int enemy_deathCount;
 
 	bool moveTo_Tower;
 
 	bool bInvincibility;
 	bool iFrames;
+	bool iFramesTower;
 
 	float lastTime, lastTime2, lastTime3;
 	float currentTime;

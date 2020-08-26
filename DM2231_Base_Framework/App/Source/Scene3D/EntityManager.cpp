@@ -54,7 +54,14 @@ bool CEntityManager::Init(void)
 	cSoundController->Init();
 	cPlayer3D = CPlayer3D::GetInstance();
 	cCurrentWeapon = CPlayer3D::GetInstance()->GetWeapon();
-	
+	cEntityManager = CEntityManager::GetInstance();
+	//cShader = Shader::GetInstance();
+	//cSimpleShader = Shader::GetInstance();
+
+	// Setup the shaders
+	cShader = new Shader("Shader//Scene3D.vs", "Shader//Scene3D.fs");
+	// Setup the shaders
+	cSimpleShader = new Shader("Shader//SimpleShader.vs", "Shader//SimpleShader.fs");
 	//cSoundController->LoadSound("../Sounds/damage.ogg", 1);
 
 	lEntity3D.clear();
@@ -122,10 +129,6 @@ bool CEntityManager::Erase(CEntity3D* cEntity3D)
 */
 int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 {
-	//static_cast<CHealthBar*>(cHealthBar)->SetDmgMultiplier(1.f);
-	//static_cast<CArmorBar*>(cArmorBar)->SetArmorDmgMultiplier(1.f);
-	
-	
 
 	int bResult = 0;
 		
@@ -137,26 +140,87 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 		if (cEntity3D->CheckForCollision(*it) == true)
 		{
 			
-			if ((*it)->GetType() == CEntity3D::TYPE::NPC)
-			{
-				cout << "** Collision between Player and NPC ***" << endl;
-			
-				//static_cast<CHealthBar*>(cHealthBar)->SetDmgMultiplier(1.f);
-				//static_cast<CArmorBar*>(cArmorBar)->SetArmorDmgMultiplier(1.f);
-				
-					//if (static_cast<CArmorBar*>(cArmorBar)->GetArmorBarLength() * 100 >= 0.f)
-					//	static_cast<CArmorBar*>(cArmorBar)->SetArmorBarState(true);
-					//else
-					//	static_cast<CHealthBar*>(cHealthBar)->SetHealthBarState(true);
 
-					// Rollback the cEntity3D's position
-					//cEntity3D->RollbackPosition();
-					// Rollback the NPC's position
+			if ((*it)->GetType2() == CEntity3D::ENEMYTYPE::CRAWLER)
+			{
+
+				cout << "** Collision between Player and NPC2 ***" << endl;
+
+				if (bInvincibility || iFrames)
+				{
+					bResult = 1;
+				}
+				else if (!bInvincibility && !iFrames)
+				{
+					
+					bResult = 2;
 					(*it)->RollbackPosition();
 					lastTime2 = currentTime;
 					iFrames = true;
-				
-				bResult = 1;
+				}
+
+				break;
+			}	
+			else if ((*it)->GetType2() == CEntity3D::ENEMYTYPE::BASIC)
+			{
+
+				cout << "** Collision between Player and NPC2 ***" << endl;
+
+				if (bInvincibility || iFrames)
+				{
+					bResult = 1;
+				}
+				else if (!bInvincibility && !iFrames)
+				{
+					
+					bResult = 3;
+					(*it)->RollbackPosition();
+					lastTime2 = currentTime;
+					iFrames = true;
+				}
+
+				break;
+			}
+			else if ((*it)->GetType2() == CEntity3D::ENEMYTYPE::SCRAKE)
+			{
+
+				static_cast<CEnemy3D*>(*it)->SetEnemyDamage(static_cast<CEnemy3D*>(*it)->GetEnemyDamage());
+				cout << "** Collision between Player and NPC2 ***" << endl;
+
+				if (bInvincibility || iFrames)
+				{
+
+					bResult = 1;
+				}
+				else if (!bInvincibility && !iFrames)
+				{
+
+					bResult = 4;
+					(*it)->RollbackPosition();
+					lastTime2 = currentTime;
+					iFrames = true;
+				}
+
+				break;
+			}
+			else if ((*it)->GetType2() == CEntity3D::ENEMYTYPE::BOSS)
+			{
+
+				cout << "** Collision between Player and NPC2 ***" << endl;
+
+				if (bInvincibility || iFrames)
+				{
+					bResult = 1;
+				}
+				else if (!bInvincibility && !iFrames)
+				{
+					
+					bResult = 5;
+					(*it)->RollbackPosition();
+					lastTime2 = currentTime;
+					iFrames = true;
+				}
+
 				break;
 			}
 			else if ((*it)->GetType() == CEntity3D::TYPE::PROJECTILE)
@@ -164,7 +228,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				// Mark the projectile for deletion
 				(*it)->SetToDelete(true);
 				cout << "** Collision between Player and Projectile ***" << endl;
-				bResult = 2;
+				bResult = 6;
 				// Quit this loop since a collision has been found
 				
 				break;
@@ -175,7 +239,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				cEntity3D->RollbackPosition();
 
 				cout << "** Collision between Player and Structure ***" << endl;
-				bResult = 3;
+				bResult = 7;
 				// Quit this loop since a collision has been found
 				
 				break;
@@ -188,7 +252,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				cout << "** Collision between Player and Health_PickUp ***" << endl;
 				// Quit this loop since a collision has been found
 
-				bResult = 4;
+				bResult = 8;
 				break;
 			}
 			else if ((*it)->GetType() == CEntity3D::TYPE::ARMOR_PICKUP)
@@ -199,7 +263,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				cout << "** Collision between Player and Armor_PickUp ***" << endl;
 				
 				// Quit this loop since a collision has been found
-				bResult = 5;
+				bResult = 9;
 				break;
 			}
 			else if ((*it)->GetType() == CEntity3D::TYPE::AMMO_PICKUP)
@@ -212,7 +276,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				}
 
 				cout << "** Collision between Player and Ammo_PickUp ***" << endl;
-				bResult = 6;
+				bResult = 10;
 				// Quit this loop since a collision has been found
 
 				break;
@@ -225,7 +289,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				bInvincibility = true;
 				lastTime = currentTime;
 				cout << "** Collision between Player and Invincibility ***" << endl;
-				bResult = 7;
+				bResult = 11;
 				// Quit this loop since a collision has been found
 				
 				break;
@@ -236,7 +300,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				(*it)->RollbackPosition();
 
 				cout << "** Collision between Player and Barrel ***" << endl;
-				bResult = 7;
+				bResult = 12;
 				// Quit this loop since a collision has been found
 				
 				break;
@@ -247,7 +311,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				(*it)->RollbackPosition();
 
 				cout << "** Collision between Player and Magazine ***" << endl;
-				bResult = 8;
+				bResult = 13;
 				// Quit this loop since a collision has been found
 				
 				break;
@@ -259,12 +323,12 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				if (cPlayer3D->GetWeaponInfo() == NULL && CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_F))
 				{
 					(*it)->SetToDelete(true);
-					bResult = 9;
+					bResult = 14;
 				}
 				else if (cPlayer3D->GetWeaponInfo() != NULL && CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_F))
 				{
 					(*it)->SetToDelete(true);
-					bResult = 10;
+					bResult = 15;
 				}
 				// Quit this loop since a collision has been found
 				break;
@@ -275,12 +339,12 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				if (cPlayer3D->GetWeaponInfo() == NULL && CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_F))
 				{
 					(*it)->SetToDelete(true);
-					bResult = 11;
+					bResult = 16;
 				}
 				else if (cPlayer3D->GetWeaponInfo() != NULL && CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_F))
 				{
 					(*it)->SetToDelete(true);
-					bResult = 12;
+					bResult = 17;
 				}
 				// Quit this loop since a collision has been found
 				break;
@@ -291,16 +355,24 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 				if (cPlayer3D->GetWeaponInfo() == NULL && CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_F))
 				{
 					(*it)->SetToDelete(true);
-					bResult = 13;
+					bResult = 18;
 				}
 				else if (cPlayer3D->GetWeaponInfo() != NULL && CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_F))
 				{
 					(*it)->SetToDelete(true);
-					bResult = 14;
+					bResult = 19;
 				}
 				// Quit this loop since a collision has been found
 				break;
 			}
+			else if ((*it)->GetType() == CEntity3D::TYPE::TOWER)
+			{
+				cout << "** Collision between Player and Tower ***" << endl;
+				
+				// Quit this loop since a collision has been found
+				break;
+			}
+
 		}
 	}
 	return bResult;
@@ -309,7 +381,7 @@ int CEntityManager::CollisionCheck(CEntity3D* cEntity3D)
 /**
  @brief Update this class instance
  */
-void CEntityManager::Update(const double dElapsedTime)
+int CEntityManager::Update(const double dElapsedTime)
 {
 	//static_cast<CExperienceBar*>(cExpBar)->SetExpMultiplier(1.f);
 	std::list<CEntity3D*>::iterator it, end;
@@ -317,6 +389,7 @@ void CEntityManager::Update(const double dElapsedTime)
 	cCurrentWeapon = CPlayer3D::GetInstance()->GetWeapon();
 	currentTime = GetTickCount64() * 0.001f;
 
+	int iResult = 0;
 
 	// Update all CEntity3D
 	end = lEntity3D.end();
@@ -385,43 +458,167 @@ void CEntityManager::Update(const double dElapsedTime)
 			// Check for collisions between the 2 entities
 			if ((*it)->CheckForCollision(*it_other) == true)
 			{
-				if (((*it)->GetType() == CEntity3D::TYPE::NPC) &&
-					((*it_other)->GetType() == CEntity3D::TYPE::PROJECTILE))
+				if (((*it)->GetType2() == CEntity3D::ENEMYTYPE::CRAWLER) && ((*it_other)->GetType() == CEntity3D::TYPE::PROJECTILE))
 				{
-					static_cast<CEnemy3D*>(*it)->set_enemyHealth(static_cast<CEnemy3D*>(*it)->get_enemyHealth() - cPlayer3D->GetWeapon()->GetWeaponDamage());
 					
-					if (static_cast<CEnemy3D*>(*it)->get_enemyHealth() > 0)
+					(*it_other)->SetToDelete(true);
+					if (static_cast<CEnemy3D*>(*it)->GetEnemyHealth() > 0)
 					{
-						cout << static_cast<CEnemy3D*>(*it)->get_enemyHealth() << endl;
 						(*it)->RollbackPosition();
+						static_cast<CEnemy3D*>(*it)->SetEnemyHealth(static_cast<CEnemy3D*>(*it)->GetEnemyHealth() - cPlayer3D->GetWeapon()->GetWeaponDamage());
 					}
 					else
 					{
 						(*it)->SetToDelete(true);
+						static_cast<CExperienceBar*>(cExpBar)->SetiExp(static_cast<CExperienceBar*>(cExpBar)->GetiExp() + static_cast<CEnemy3D*>(*it)->GetEnemyExp());
+						LootDrop((*it)->GetPosition());
 						++enemy_deathCount;
-						
+						iResult = 6;
 					}
 					
-					(*it_other)->SetToDelete(true);
-					cout << "** Collision between NPC and Projectile ***" << endl;
-					
-				}
-				else if (((*it)->GetType() == CEntity3D::TYPE::PROJECTILE) &&((*it_other)->GetType() == CEntity3D::TYPE::NPC))
+					cout << "** Collision between Crawler and Projectile ***" << endl;
+					}
+				else if (((*it)->GetType() == CEntity3D::TYPE::PROJECTILE) &&((*it_other)->GetType2() == CEntity3D::ENEMYTYPE::CRAWLER))
 				{
-					(*it)->SetToDelete(true);
 
-					if (static_cast<CEnemy3D*>(*it)->get_enemyHealth() > 0)
+					(*it)->SetToDelete(true);
+					if (static_cast<CEnemy3D*>(*it)->GetEnemyHealth() > 0)
 					{
 						(*it_other)->RollbackPosition();
+						static_cast<CEnemy3D*>(*it)->SetEnemyHealth(static_cast<CEnemy3D*>(*it)->GetEnemyHealth() - cPlayer3D->GetWeapon()->GetWeaponDamage());
+					
 					}
 					else
 					{
 						(*it_other)->SetToDelete(true);
+						static_cast<CExperienceBar*>(cExpBar)->SetiExp(static_cast<CExperienceBar*>(cExpBar)->GetiExp() + static_cast<CEnemy3D*>(*it)->GetEnemyExp());
+						LootDrop((*it)->GetPosition());
 						++enemy_deathCount;
+						iResult = 6;
 					}
 
-					cout << "** Collision between NPC and Projectile ***" << endl;
-					static_cast<CEnemy3D*>(*it)->set_enemyHealth(static_cast<CEnemy3D*>(*it)->get_enemyHealth() - cPlayer3D->GetWeapon()->GetWeaponDamage());
+					cout << "** Collision between Crawler and Projectile ***" << endl;
+				}
+				else if (((*it)->GetType2() == CEntity3D::ENEMYTYPE::BASIC) && ((*it_other)->GetType() == CEntity3D::TYPE::PROJECTILE))
+				{
+					
+					(*it_other)->SetToDelete(true);
+					if (static_cast<CEnemy3D2*>(*it)->GetEnemyHealth() > 0)
+					{
+						(*it)->RollbackPosition();
+						static_cast<CEnemy3D2*>(*it)->SetEnemyHealth(static_cast<CEnemy3D2*>(*it)->GetEnemyHealth() - cPlayer3D->GetWeapon()->GetWeaponDamage());
+					}
+					else
+					{
+						(*it)->SetToDelete(true);
+						static_cast<CExperienceBar*>(cExpBar)->SetiExp(static_cast<CExperienceBar*>(cExpBar)->GetiExp() + static_cast<CEnemy3D2*>(*it)->GetEnemyExp());
+						LootDrop((*it)->GetPosition());
+						++enemy_deathCount;
+						iResult = 6;
+						
+					}
+					
+					cout << "** Collision between Basic and Projectile ***" << endl;
+				}
+				else if (((*it)->GetType() == CEntity3D::TYPE::PROJECTILE) &&((*it_other)->GetType2() == CEntity3D::ENEMYTYPE::BASIC))
+				{
+
+					(*it)->SetToDelete(true);
+					if (static_cast<CEnemy3D2*>(*it)->GetEnemyHealth() > 0)
+					{
+						(*it_other)->RollbackPosition();
+						static_cast<CEnemy3D2*>(*it)->SetEnemyHealth(static_cast<CEnemy3D2*>(*it)->GetEnemyHealth() - cPlayer3D->GetWeapon()->GetWeaponDamage());
+					}
+					else
+					{
+						(*it_other)->SetToDelete(true); 
+						static_cast<CExperienceBar*>(cExpBar)->SetiExp(static_cast<CExperienceBar*>(cExpBar)->GetiExp() + static_cast<CEnemy3D2*>(*it)->GetEnemyExp());
+						LootDrop((*it)->GetPosition());
+						++enemy_deathCount;
+						iResult = 6;
+					}
+
+					cout << "** Collision between Basic and Projectile ***" << endl;
+				}
+				else if (((*it)->GetType2() == CEntity3D::ENEMYTYPE::SCRAKE) && ((*it_other)->GetType() == CEntity3D::TYPE::PROJECTILE))
+				{
+					
+					(*it_other)->SetToDelete(true);
+					if (static_cast<CEnemy3D3*>(*it)->GetEnemyHealth() > 0)
+					{
+						(*it)->RollbackPosition();
+						static_cast<CEnemy3D3*>(*it)->SetEnemyHealth(static_cast<CEnemy3D3*>(*it)->GetEnemyHealth() - cPlayer3D->GetWeapon()->GetWeaponDamage());
+					}
+					else
+					{
+						(*it)->SetToDelete(true);
+						static_cast<CExperienceBar*>(cExpBar)->SetiExp(static_cast<CExperienceBar*>(cExpBar)->GetiExp() + static_cast<CEnemy3D3*>(*it)->GetEnemyExp());
+						LootDrop((*it)->GetPosition());
+						++enemy_deathCount;
+						iResult = 6;
+					}
+					
+					cout << "** Collision between Scrake and Projectile ***" << endl;
+					}
+				else if (((*it)->GetType() == CEntity3D::TYPE::PROJECTILE) &&((*it_other)->GetType2() == CEntity3D::ENEMYTYPE::SCRAKE))
+				{
+
+					(*it)->SetToDelete(true);
+					if (static_cast<CEnemy3D3*>(*it)->GetEnemyHealth() > 0)
+					{
+						(*it_other)->RollbackPosition();
+						static_cast<CEnemy3D3*>(*it)->SetEnemyHealth(static_cast<CEnemy3D3*>(*it)->GetEnemyHealth() - cPlayer3D->GetWeapon()->GetWeaponDamage());
+					}
+					else
+					{
+						(*it_other)->SetToDelete(true);
+						static_cast<CExperienceBar*>(cExpBar)->SetiExp(static_cast<CExperienceBar*>(cExpBar)->GetiExp() + static_cast<CEnemy3D3*>(*it)->GetEnemyExp());
+						LootDrop((*it)->GetPosition());
+						++enemy_deathCount;
+						iResult = 6;
+					}
+
+					cout << "** Collision between Scrake and Projectile ***" << endl;
+				}
+				else if (((*it)->GetType2() == CEntity3D::ENEMYTYPE::BOSS) && ((*it_other)->GetType() == CEntity3D::TYPE::PROJECTILE))
+				{
+					
+					(*it_other)->SetToDelete(true);
+					if (static_cast<CEnemyBoss3D*>(*it)->GetEnemyHealth() > 0)
+					{
+						(*it)->RollbackPosition();
+						static_cast<CEnemyBoss3D*>(*it)->SetEnemyHealth(static_cast<CEnemyBoss3D*>(*it)->GetEnemyHealth() - cPlayer3D->GetWeapon()->GetWeaponDamage());
+					}
+					else
+					{
+						(*it)->SetToDelete(true);
+						static_cast<CExperienceBar*>(cExpBar)->SetiExp(static_cast<CExperienceBar*>(cExpBar)->GetiExp() + static_cast<CEnemyBoss3D*>(*it)->GetEnemyExp());
+						LootDrop((*it)->GetPosition());
+						++enemy_deathCount;
+						iResult = 6;
+					}
+					
+					cout << "** Collision between Boss and Projectile ***" << endl;
+					}
+				else if (((*it)->GetType() == CEntity3D::TYPE::PROJECTILE) &&((*it_other)->GetType2() == CEntity3D::ENEMYTYPE::BOSS))
+				{
+
+					(*it)->SetToDelete(true);
+					if (static_cast<CEnemyBoss3D*>(*it)->GetEnemyHealth() > 0)
+					{
+						(*it_other)->RollbackPosition();
+						static_cast<CEnemyBoss3D*>(*it)->SetEnemyHealth(static_cast<CEnemyBoss3D*>(*it)->GetEnemyHealth() - cPlayer3D->GetWeapon()->GetWeaponDamage());
+					}
+					else
+					{
+						(*it_other)->SetToDelete(true);
+						static_cast<CExperienceBar*>(cExpBar)->SetiExp(static_cast<CExperienceBar*>(cExpBar)->GetiExp() + static_cast<CEnemyBoss3D*>(*it)->GetEnemyExp());
+						LootDrop((*it)->GetPosition());
+						++enemy_deathCount;
+						iResult = 6;
+					}
+
+					cout << "** Collision between Boss and Projectile ***" << endl;
 				}
 				else if (((*it)->GetType() == CEntity3D::TYPE::PROJECTILE) &&
 					((*it_other)->GetType() == CEntity3D::TYPE::PROJECTILE))
@@ -453,27 +650,70 @@ void CEntityManager::Update(const double dElapsedTime)
 				}
 
 				// CHECK COLLISION BETWEEN NPC AND TOWER
-				else if (((*it)->GetType() == CEntity3D::TYPE::NPC) && ((*it_other)->GetType() == CEntity3D::TYPE::TOWER))
+				else if (((*it)->GetType2() == CEntity3D::ENEMYTYPE::CRAWLER) && ((*it_other)->GetType() == CEntity3D::TYPE::TOWER))
 				{
 					(*it)->RollbackPosition();
-
-					static_cast<CStructureTower*>(*it_other)->set_towerHP(static_cast<CStructureTower*>(*it_other)->get_towerHP() - 1/*static_cast<CEnemy3D*>(*it)->get_enemyDamage()*/);
-					cout << static_cast<CStructureTower*>(*it_other)->get_towerHP() << endl;
-
-					cout << "** Collision between NPC and tower ***" << endl;
+					cout << "** Collision between Crawler and tower ***" << endl;
+					iResult = 1;
 				}
-				else if (((*it)->GetType() == CEntity3D::TYPE::TOWER) && ((*it_other)->GetType() == CEntity3D::TYPE::NPC))
+				else if (((*it)->GetType() == CEntity3D::TYPE::TOWER) && ((*it_other)->GetType2() == CEntity3D::ENEMYTYPE::CRAWLER))
 				{
 					(*it_other)->RollbackPosition();
-
-					static_cast<CStructureTower*>(*it)->set_towerHP(static_cast<CStructureTower*>(*it_other)->get_towerHP() - 1/*static_cast<CEnemy3D*>(*it)->get_enemyDamage()*/);
-					cout << static_cast<CStructureTower*>(*it)->get_towerHP() << endl;
-
-					cout << "** Collision between NPC and tower ***" << endl;
+					cout << "** Collision between Crawler and tower ***" << endl;
+					iResult = 1;
+				}
+				else if (((*it)->GetType2() == CEntity3D::ENEMYTYPE::BASIC) && ((*it_other)->GetType() == CEntity3D::TYPE::TOWER))
+				{
+					(*it)->RollbackPosition();
+					cout << "** Collision between Basic and tower ***" << endl;
+					iResult = 2;
+				}
+				else if (((*it)->GetType() == CEntity3D::TYPE::TOWER) && ((*it_other)->GetType2() == CEntity3D::ENEMYTYPE::BASIC))
+				{
+					(*it_other)->RollbackPosition();
+					cout << "** Collision between Basic and tower ***" << endl;
+					iResult = 2;
+				}
+				else if (((*it)->GetType2() == CEntity3D::ENEMYTYPE::SCRAKE) && ((*it_other)->GetType() == CEntity3D::TYPE::TOWER))
+				{
+					(*it)->RollbackPosition();
+					cout << "** Collision between Scrake and tower ***" << endl;
+					iResult = 3;
+				}
+				else if (((*it)->GetType() == CEntity3D::TYPE::TOWER) && ((*it_other)->GetType2() == CEntity3D::ENEMYTYPE::SCRAKE))
+				{
+					(*it_other)->RollbackPosition();
+					cout << "** Collision between Scrake and tower ***" << endl;
+					iResult = 3;
+				}
+				else if (((*it)->GetType2() == CEntity3D::ENEMYTYPE::BOSS) && ((*it_other)->GetType() == CEntity3D::TYPE::TOWER))
+				{
+					(*it)->RollbackPosition();
+					cout << "** Collision between Boss and tower ***" << endl;
+					iResult = 4;
+				}
+				else if (((*it)->GetType() == CEntity3D::TYPE::TOWER) && ((*it_other)->GetType2() == CEntity3D::ENEMYTYPE::BOSS))
+				{
+					(*it_other)->RollbackPosition();
+					cout << "** Collision between Boss and tower ***" << endl;
+					iResult = 4;
+				}
+				else if (((*it)->GetType() == CEntity3D::TYPE::TOWER) && ((*it_other)->GetType() == CEntity3D::TYPE::ANTIDOTE))
+				{
+					(*it_other)->SetToDelete(true);					
+					iResult = 5;
+					cout << "** Collision between NPC and Antidote ***" << endl;
+				}
+				else if (((*it)->GetType() == CEntity3D::TYPE::ANTIDOTE) && ((*it_other)->GetType() == CEntity3D::TYPE::TOWER))
+				{
+					(*it_other)->SetToDelete(true);
+					iResult = 5;
+					cout << "** Collision between NPC and Antidote ***" << endl;
 				}
 			}
 		}
 	}
+	return iResult;
 }
 
 /**
@@ -577,4 +817,167 @@ bool CEntityManager::GetFreezeMovement()
 void CEntityManager::SetFreezeMovement(bool bFreezeMovement)
 {
 	this->bFreezeMovement = bFreezeMovement;
+}
+
+
+void CEntityManager::LootDrop(glm::vec3 pos)
+{
+	int chance = RandIntMinMax(1, 100);
+	if (chance >= 1 && chance <= 10)
+	{
+		CHealthPickup* cHealthPickup = new CHealthPickup;
+		AddHealthPickUp(cHealthPickup, pos, glm::vec3(1.f,1.f,1.f));
+	}
+	else if (chance >= 11 && chance <= 20)
+	{
+		CArmorPickup* cArmorPickup = new CArmorPickup;
+		AddArmorPickUp(cArmorPickup, pos, glm::vec3(1.f, 1.f, 1.f));
+	}
+	else if (chance >= 21 && chance <= 30)
+	{
+		CAmmoPickup* cAmmoPickup = new CAmmoPickup;
+		AddAmmoPickUp(cAmmoPickup, pos, glm::vec3(1.f, 1.f, 1.f));
+	}
+	else if (chance >= 31 && chance <= 37)
+	{
+		CSMGPickup* cSMGPickup = new CSMGPickup;
+		AddSMGPickup(cSMGPickup, pos, glm::vec3(1.f, 1.f, 1.f));
+	}
+	else if (chance >= 38 && chance <= 40)
+	{
+		CMinigunPickup* cMinigunPickup = new CMinigunPickup;
+		AddMinigunPickup(cMinigunPickup, pos, glm::vec3(1.f, 1.f, 1.f));
+	}
+	else if (chance >= 41 && chance <= 45)
+	{
+		CRiflePickup* cRiflePickup = new CRiflePickup;
+		AddRiflePickup(cRiflePickup, pos, glm::vec3(1.f, 1.f, 1.f));
+	}
+	else if (chance >= 46 && chance <= 53)
+	{
+		CBarrelAttachment* cBarrelPickup = new CBarrelAttachment;
+		AddBarrelPickup(cBarrelPickup, pos, glm::vec3(1.f, 1.f, 1.f));
+	}
+	else if (chance >= 54 && chance <= 61)
+	{
+		CMagazineAttachment* cMagazinePickup = new CMagazineAttachment;
+		AddMagazinePickup(cMagazinePickup, pos, glm::vec3(1.f, 1.f, 1.f));
+	}
+	else if (chance >= 62 && chance <= 67)
+	{
+		CInvincibility* cInvincibility = new CInvincibility;
+		AddInvincibility(cInvincibility, pos, glm::vec3(1.f, 1.f, 1.f));
+	}
+	else if (chance >= 68 && chance <= 73)
+	{
+		CFreezeMovement* cFreezemovement = new CFreezeMovement;
+		AddFreezeMovement(cFreezeMovement, pos, glm::vec3(1.f, 1.f, 1.f));
+	}
+	else
+	{
+
+	}
+}
+
+
+void CEntityManager::AddArmorPickUp(CArmorPickup* cArmorPickup, glm::vec3 pos, glm::vec3 scale)
+{
+	cArmorPickup = new CArmorPickup(pos);
+	cArmorPickup->SetShader(cShader);
+	cArmorPickup->Init();
+	cArmorPickup->SetScale(scale);
+	cArmorPickup->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cArmorPickup);
+
+}
+
+void CEntityManager::AddHealthPickUp(CHealthPickup* cHealthPickup, glm::vec3 pos, glm::vec3 scale)
+{
+	cHealthPickup = new CHealthPickup(pos);
+	cHealthPickup->SetShader(cShader);
+	cHealthPickup->Init();
+	cHealthPickup->SetScale(scale);
+	cHealthPickup->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cHealthPickup);
+}
+
+void CEntityManager::AddAmmoPickUp(CAmmoPickup* cAmmoPickup, glm::vec3 pos, glm::vec3 scale)
+{
+	cAmmoPickup = new CAmmoPickup(pos);
+	cAmmoPickup->SetShader(cShader);
+	cAmmoPickup->Init();
+	cAmmoPickup->SetScale(scale);
+	cAmmoPickup->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cAmmoPickup);
+}
+
+void CEntityManager::AddInvincibility(CInvincibility* cInvincibility, glm::vec3 pos, glm::vec3 scale)
+{
+	cInvincibility = new CInvincibility(pos);
+	cInvincibility->SetShader(cShader);
+	cInvincibility->Init();
+	cInvincibility->SetScale(scale);
+	cInvincibility->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cInvincibility);
+}
+
+void CEntityManager::AddFreezeMovement(CFreezeMovement* cFreezeMovement, glm::vec3 pos, glm::vec3 scale)
+{
+	cFreezeMovement = new CFreezeMovement(pos);
+	cFreezeMovement->SetShader(cShader);
+	cFreezeMovement->Init();
+	cFreezeMovement->SetScale(scale);
+	cFreezeMovement->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cFreezeMovement);
+}
+
+void CEntityManager::AddBarrelPickup(CBarrelAttachment* cBarrelAttachment, glm::vec3 pos, glm::vec3 scale)
+{
+	cBarrelAttachment = new CBarrelAttachment(pos);
+	cBarrelAttachment->SetShader(cShader);
+	cBarrelAttachment->Init();
+	cBarrelAttachment->SetScale(scale);
+	cBarrelAttachment->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cBarrelAttachment);
+}
+
+void CEntityManager::AddMagazinePickup(CMagazineAttachment* cMagazineAttachment, glm::vec3 pos, glm::vec3 scale)
+{
+	cMagazineAttachment = new CMagazineAttachment(pos);
+	cMagazineAttachment->SetShader(cShader);
+	cMagazineAttachment->Init();
+	cMagazineAttachment->SetScale(scale);
+	cMagazineAttachment->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cMagazineAttachment);
+
+}
+
+void CEntityManager::AddRiflePickup(CRiflePickup* cRiflePickup, glm::vec3 pos, glm::vec3 scale)
+{
+	cRiflePickup = new CRiflePickup(pos);
+	cRiflePickup->SetShader(cShader);
+	cRiflePickup->Init();
+	cRiflePickup->SetScale(scale);
+	cRiflePickup->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cRiflePickup);
+}
+
+void CEntityManager::AddMinigunPickup(CMinigunPickup* cMinigunPickup, glm::vec3 pos, glm::vec3 scale)
+{
+	cMinigunPickup = new CMinigunPickup(pos);
+	cMinigunPickup->SetShader(cShader);
+	cMinigunPickup->Init();
+	cMinigunPickup->SetScale(scale);
+	cMinigunPickup->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cMinigunPickup);
+}
+
+void CEntityManager::AddSMGPickup(CSMGPickup* cSMGPickup, glm::vec3 pos, glm::vec3 scale)
+{
+	cSMGPickup = new CSMGPickup(pos);
+	cSMGPickup->SetShader(cShader);
+	cSMGPickup->Init();
+	cSMGPickup->SetScale(scale);
+	cSMGPickup->ActivateCollider(cSimpleShader);
+	cEntityManager->Add(cSMGPickup);
 }

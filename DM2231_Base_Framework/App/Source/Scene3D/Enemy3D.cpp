@@ -26,8 +26,8 @@ CEnemy3D::CEnemy3D(void)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
 	, enemyDamage(2)
-	, enemyHealth(3)
-	, enemyExp(3.f)
+	, enemyHealth(6)
+	, enemyExp(6.f)
 {
 	// Set the default position to the origin
 	vec3Position = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -60,8 +60,9 @@ CEnemy3D::CEnemy3D(	const glm::vec3 vec3Position,
 	, cCamera(NULL)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
-	, enemyHealth(2)
 	, enemyDamage(2)
+	, enemyHealth(6)
+	, enemyExp(6.f)
 {
 	// Set the default position to the origin
 	this->vec3Position = vec3Position;
@@ -400,22 +401,22 @@ void CEnemy3D::PostRender(void)
 	glDepthFunc(GL_LESS); // set depth function back to default
 }
 
-int CEnemy3D::get_enemyHealth()
+int CEnemy3D::GetEnemyHealth()
 {
 	return enemyHealth;
 }
 
-void CEnemy3D::set_enemyHealth(int x)
+void CEnemy3D::SetEnemyHealth(int x)
 {
 	enemyHealth = x;
 }
 
-int CEnemy3D::get_enemyDamage()
+int CEnemy3D::GetEnemyDamage()
 {
 	return enemyDamage;
 }
 
-void CEnemy3D::set_enemyDamage(int t)
+void CEnemy3D::SetEnemyDamage(int t)
 {
 	enemyDamage = t;
 }

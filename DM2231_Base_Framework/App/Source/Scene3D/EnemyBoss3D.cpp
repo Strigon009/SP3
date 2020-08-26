@@ -24,8 +24,9 @@ CEnemyBoss3D::CEnemyBoss3D(void)
 	, cCamera(NULL)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
-	, enemyHealth(3)
-	, enemyExp(20.f)
+	, enemyHealth(400)
+	, enemyDamage(10.f)
+	, enemyExp(100.f)
 	, elapsedtime(0)
 	, iMovementCharge(0)
 	, chargeOrNot(false)
@@ -58,8 +59,9 @@ CEnemyBoss3D::CEnemyBoss3D(	const glm::vec3 vec3Position,
 	, cCamera(NULL)
 	, cPlayer3D(NULL)
 	, cGroundMap(NULL)
-	, enemyHealth(30)
-	, enemyExp(20.f)
+	, enemyHealth(400)
+	, enemyDamage(10.f)
+	, enemyExp(100.f)
 	, elapsedtime(0)
 	, iMovementCharge(0)
 	, chargeOrNot(false)
@@ -447,16 +449,6 @@ void CEnemyBoss3D::PostRender(void)
 	glDepthFunc(GL_LESS); // set depth function back to default
 }
 
-int CEnemyBoss3D::get_enemyHealth()
-{
-	return enemyHealth;
-}
-
-void CEnemyBoss3D::set_enemyHealth(int x)
-{
-	enemyHealth = x;
-}
-
 /**
  @brief Calculates the front vector from the Camera's (updated) Euler Angles
  */
@@ -502,4 +494,34 @@ void CEnemyBoss3D::UpdateEnemyVectors(void)
 void CEnemyBoss3D::Constraint(void)
 {
 	vec3Position = cGroundMap->GetExactPosition(vec3Position);
+}
+
+int CEnemyBoss3D::GetEnemyHealth()
+{
+	return enemyHealth;
+}
+
+void CEnemyBoss3D::SetEnemyHealth(int x)
+{
+	enemyHealth = x;
+}
+
+int CEnemyBoss3D::GetEnemyDamage()
+{
+	return enemyDamage;
+}
+
+void CEnemyBoss3D::SetEnemyDamage(int t)
+{
+	enemyDamage = t;
+}
+
+void CEnemyBoss3D::SetEnemyExp(float exp)
+{
+	enemyExp = exp;
+}
+
+float CEnemyBoss3D::GetEnemyExp()
+{
+	return enemyExp;
 }

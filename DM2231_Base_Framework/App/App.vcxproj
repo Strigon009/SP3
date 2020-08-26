@@ -47,6 +47,8 @@
     <ClCompile Include="Source\Scene3D\Structure3D.cpp" />
     <ClCompile Include="Source\Scene3D\Structure3D_2.cpp" />
     <ClCompile Include="Source\Scene3D\Structure3D_Tower.cpp" />
+    <ClCompile Include="Source\Scene3D\WeaponInfo\AntidoteGun.cpp" />
+    <ClCompile Include="Source\Scene3D\WeaponInfo\AntidoteProjectile.cpp" />
     <ClCompile Include="Source\Scene3D\WeaponInfo\MagazineAttachment.cpp" />
     <ClCompile Include="Source\Scene3D\WeaponInfo\Minigun.cpp" />
     <ClCompile Include="Source\Scene3D\WeaponInfo\Pistol.cpp" />
@@ -94,6 +96,8 @@
     <ClInclude Include="Source\Scene3D\Structure3D.h" />
     <ClInclude Include="Source\Scene3D\Structure3D_2.h" />
     <ClInclude Include="Source\Scene3D\Structure3D_Tower.h" />
+    <ClInclude Include="Source\Scene3D\WeaponInfo\AntidoteGun.h" />
+    <ClInclude Include="Source\Scene3D\WeaponInfo\AntidoteProjectile.h" />
     <ClInclude Include="Source\Scene3D\WeaponInfo\MagazineAttachment.h" />
     <ClInclude Include="Source\Scene3D\WeaponInfo\Minigun.h" />
     <ClInclude Include="Source\Scene3D\WeaponInfo\Pistol.h" />

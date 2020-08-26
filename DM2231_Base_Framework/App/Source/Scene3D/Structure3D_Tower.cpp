@@ -14,7 +14,9 @@ using namespace std;
 CStructureTower::CStructureTower(void)
 	: cGroundMap(NULL)
 	, towerHP(2000)
+	, towerMaxHP(towerHP)
 {
+	towerHP = 2000;
 	// Set the default position to the origin
 	vec3Position = glm::vec3(0.0f, 0.0f, 0.0f);
 }
@@ -115,6 +117,8 @@ bool CStructureTower::Init(void)
 		return false;
 	}
 
+	//cInfectBar = CInfectionBar::GetInstance();
+
 	return true;
 }
 
@@ -151,6 +155,7 @@ void CStructureTower::SetProjection(glm::mat4 projection)
 */
 void CStructureTower::Update(const double dElapsedTime)
 {
+
 	//vec3ColliderScale = vec3Scale;
 }
 
@@ -250,12 +255,17 @@ void CStructureTower::PostRender(void)
 	glDepthFunc(GL_LESS); // set depth function back to default
 }
 
-int CStructureTower::get_towerHP()
+int CStructureTower::GetTowerHealth()
 {
 	return towerHP;
 }
 
-void CStructureTower::set_towerHP(int hp)
+int CStructureTower::GetTowerMaxHealth()
+{
+	return towerMaxHP;
+}
+
+void CStructureTower::SetTowerHealth(int hp)
 {
 	towerHP = hp;
 }

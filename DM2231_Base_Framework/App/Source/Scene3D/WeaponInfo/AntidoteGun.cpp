@@ -1,47 +1,46 @@
-#include "Pistol.h"
+#include "AntidoteGun.h"
 
 /**
 @brief Default Constructor
 */
-CPistol::CPistol()
+CAntidoteGun::CAntidoteGun()
 {
 }
 
 /**
 @brief Default Destructor
 */
-CPistol::~CPistol()
+CAntidoteGun::~CAntidoteGun()
 {
 }
 
 /**
 @brief Initialise this instance to default values
 */
-void CPistol::Init(void)
+void CAntidoteGun::Init(void)
 {
 	// Call the parent's Init method
 	CWeaponInfo::Init();
 
-	type = CWeaponInfo::WeaponType::PISTOL;
-	iAudioReload = 12;
-	iAudioShoot = 22;
+	type = CWeaponInfo::WeaponType::ANTIDOTEGUN;
+	iAudioReload = 15;
+	iAudioShoot = 25;
 	// The number of ammunition in a magazine for this weapon
-	iMagRounds = 8;
+	iMagRounds = 1;
 	// The maximum number of ammunition for this magazine for this weapon
-	iMaxMagRounds = 8;
+	iMaxMagRounds = 1;
 	// The current total number of rounds currently carried by this player
 	iTotalRounds = INT_MAX;
 	// The max total number of rounds currently carried by this player
 	iMaxTotalRounds = INT_MAX;
 	// Weapon Stats
-	reloadTime = 0.7f;
-	weaponDamage = 15.f;
+	reloadTime = 10.f;
+	weaponDamage = 75.f;
 	weaponWeight = 1.f;
 	dTimeBetweenShots = 0.3333;
 	autoFire = false;
 	iMaxOriMaxRounds = iMaxMagRounds;
-	weaponRecoil = 0.1f;
-	weaponOriRecoil = weaponRecoil;
+	weaponRecoil = 50.f;
 	// The elapsed time (between shots)
 	dElapsedTime = 0.0;
 	// Boolean flag to indicate if weapon can fire now

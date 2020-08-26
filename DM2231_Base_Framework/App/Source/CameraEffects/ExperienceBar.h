@@ -39,6 +39,12 @@ public:
 	// PostRender
 	virtual void PostRender(void);
 
+	float GetiExp();
+	float GetiMaxExp();
+
+	void SetiExp(float iexp);
+	void SetiMaxExp(float imaxexp);
+
 protected:
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
@@ -46,6 +52,7 @@ protected:
 	CPlayer3D* cPlayer3D;
 	bool expBar;
 	float fHeight, fWidth;
-	float ExpMulti;
+	float iExp, iMaxExp;
+	int iLevel;
 
 };
